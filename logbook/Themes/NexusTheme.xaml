@@ -1,0 +1,56 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!-- Nexus Тема: Тёмно-серая Zinc палитра с оранжевыми акцентами -->
+    <SolidColorBrush x:Key="WindowBackgroundBrush" Color="#0F0F10"/>
+    <SolidColorBrush x:Key="WindowForegroundBrush" Color="#E4E4E7"/>
+
+    <SolidColorBrush x:Key="CellBackgroundBrush" Color="#1D1D21"/>
+    <SolidColorBrush x:Key="CellForegroundBrush" Color="#E4E4E7"/>
+
+    <SolidColorBrush x:Key="HeaderCellBackgroundBrush" Color="#29292E"/>
+    <SolidColorBrush x:Key="HeaderCellForegroundBrush" Color="#FFFFFF"/>
+
+    <SolidColorBrush x:Key="StartCellBackgroundBrush" Color="#38271A"/>
+    <SolidColorBrush x:Key="StartCellForegroundBrush" Color="#FFE4C4"/>
+
+    <SolidColorBrush x:Key="FixedCellBackgroundBrush" Color="#38271A"/>
+    <SolidColorBrush x:Key="FixedCellForegroundBrush" Color="#FFE4C4"/>
+
+    <SolidColorBrush x:Key="BorderBrush" Color="#3E3E47"/>
+    <SolidColorBrush x:Key="GridLineBrush" Color="#29292E"/>
+
+    <!-- Акцентный оранжевый Orange 900 / Orange 500 -->
+    <SolidColorBrush x:Key="AccentBackgroundBrush" Color="#7C2D12"/>
+    <SolidColorBrush x:Key="AccentForegroundBrush" Color="#FFFFFF"/>
+
+    <SolidColorBrush x:Key="WarningBackgroundBrush" Color="#5C3A10"/>
+    <SolidColorBrush x:Key="WarningForegroundBrush" Color="#FFFFFF"/>
+
+    <!-- Заголовок ресурсов -->
+    <SolidColorBrush x:Key="ResourceHeaderBrush" Color="#431407"/>
+    <SolidColorBrush x:Key="ResourceHeaderForegroundBrush" Color="#FFEDD5"/>
+
+    <SolidColorBrush x:Key="OilCellBackgroundBrush" Color="#38271A"/>
+    <SolidColorBrush x:Key="AlertBackgroundBrush" Color="#5C3A10"/>
+
+    <!-- ==================== ЯЧЕЙКИ-ПРЕДУПРЕЖДЕНИЯ ==================== -->
+    <SolidColorBrush x:Key="WarningCellBackgroundBrush" Color="#7C4A03"/>
+    <SolidColorBrush x:Key="WarningCellForegroundBrush" Color="#FFFFFF"/>
+
+    <SolidColorBrush x:Key="CriticalCellBackgroundBrush" Color="#7F1D1D"/>
+    <SolidColorBrush x:Key="CriticalCellForegroundBrush" Color="#FEE2E2"/>
+
+    <!-- Красный текст -->
+    <SolidColorBrush x:Key="RedTextBrush" Color="#EF4444"/>
+
+    <!-- Каретка ввода текста (Nexus оранжевая) -->
+    <SolidColorBrush x:Key="CaretBrush" Color="#F97316"/>
+
+    <DropShadowEffect x:Key="HeaderTextShadow"
+                      Color="Black"
+                      BlurRadius="2"
+                      ShadowDepth="0"
+                      Opacity="0.9"/>
+
+</ResourceDictionary>

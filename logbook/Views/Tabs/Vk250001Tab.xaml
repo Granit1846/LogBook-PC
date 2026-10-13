@@ -1,0 +1,648 @@
+<UserControl x:Class="logbook.Views.Tabs.Vk250001Tab"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:helpers="clr-namespace:logbook.Helpers"
+             mc:Ignorable="d">
+
+    <UserControl.Resources>
+        <Style x:Key="HeaderCellStyle" TargetType="{x:Type Border}">
+            <Setter Property="Background" Value="{DynamicResource HeaderCellBackgroundBrush}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource BorderBrush}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="2"/>
+        </Style>
+        <Style x:Key="DataCellStyle" TargetType="{x:Type Border}">
+            <Setter Property="BorderBrush" Value="{DynamicResource GridLineBrush}"/>
+            <Setter Property="BorderThickness" Value="0.5"/>
+            <Setter Property="Padding" Value="2"/>
+            <Setter Property="Background" Value="{DynamicResource CellBackgroundBrush}"/>
+        </Style>
+        <Style x:Key="StartCellStyle" TargetType="{x:Type Border}">
+            <Setter Property="BorderBrush" Value="{DynamicResource GridLineBrush}"/>
+            <Setter Property="BorderThickness" Value="0.5"/>
+            <Setter Property="Padding" Value="2"/>
+            <Setter Property="Background" Value="{DynamicResource StartCellBackgroundBrush}"/>
+        </Style>
+
+        <Style x:Key="VerticalText" TargetType="{x:Type TextBlock}">
+            <Setter Property="LayoutTransform">
+                <Setter.Value>
+                    <RotateTransform Angle="-90"/>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="FontSize" Value="{DynamicResource AppFontSizeSmall}"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Foreground" Value="{DynamicResource HeaderCellForegroundBrush}"/>
+            <Setter Property="Effect" Value="{StaticResource HeaderTextShadow}"/>
+        </Style>
+        <Style x:Key="HorizontalText" TargetType="{x:Type TextBlock}">
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="FontSize" Value="{DynamicResource AppFontSizeSmall}"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="TextWrapping" Value="Wrap"/>
+            <Setter Property="Foreground" Value="{DynamicResource HeaderCellForegroundBrush}"/>
+            <Setter Property="Effect" Value="{StaticResource HeaderTextShadow}"/>
+        </Style>
+
+        <Style x:Key="TableCellText" TargetType="{x:Type TextBlock}">
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="FontSize" Value="{DynamicResource AppFontSizeSmall}"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="TextWrapping" Value="Wrap"/>
+            <Setter Property="Foreground" Value="{DynamicResource CellForegroundBrush}"/>
+        </Style>
+
+        <Style x:Key="DataText" TargetType="{x:Type TextBlock}">
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="FontSize" Value="{DynamicResource AppFontSizeSmall}"/>
+            <Setter Property="Foreground" Value="{DynamicResource CellForegroundBrush}"/>
+        </Style>
+
+        <Style x:Key="InputTextBox" TargetType="{x:Type TextBox}">
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="{DynamicResource CellForegroundBrush}"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="FontSize" Value="{DynamicResource AppFontSizeSmall}"/>
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="CaretBrush" Value="{DynamicResource CaretBrush}"/>
+            <Setter Property="helpers:SelectAllOnFocusBehavior.IsEnabled" Value="True"/>
+        </Style>
+        <Style x:Key="RemoveButtonStyle" TargetType="{x:Type Button}">
+            <Setter Property="Content" Value="✕"/>
+            <Setter Property="FontSize" Value="{DynamicResource AppFontSizeSmall}"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Foreground" Value="Red"/>
+            <Setter Property="Width" Value="22"/>
+            <Setter Property="Height" Value="22"/>
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="FontFamily" Value="Segoe UI Symbol"/>
+            <Setter Property="Cursor" Value="Hand"/>
+        </Style>
+    </UserControl.Resources>
+
+    <Grid Background="{DynamicResource WindowBackgroundBrush}"
+          Grid.IsSharedSizeScope="True">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- ================= ВЕРХНИЙ БЛОК ================= -->
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <ScrollViewer x:Name="Vk250001HeaderScroll"
+                          Grid.Column="0"
+                          Background="{DynamicResource WindowBackgroundBrush}"
+                          HorizontalScrollBarVisibility="Hidden"
+                          VerticalScrollBarVisibility="Disabled"
+                          Focusable="False"
+                          CanContentScroll="False"
+                          PreviewMouseWheel="Vk250001HeaderScroll_PreviewMouseWheel">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto" MinHeight="25"/>
+                    <RowDefinition Height="Auto" MinHeight="25"/>
+                </Grid.RowDefinitions>
+
+                <!-- ============ ШАПКА ============ -->
+                <Grid Grid.Row="0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" MinHeight="30"/>
+                        <RowDefinition Height="Auto" MinHeight="90"/>
+                        <RowDefinition Height="Auto" MinHeight="108"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" SharedSizeGroup="Col0" MinWidth="70"/>
+                        <ColumnDefinition Width="Auto" SharedSizeGroup="Col1" MinWidth="60"/>
+                        <ColumnDefinition Width="Auto" SharedSizeGroup="Col2" MinWidth="40"/>
+                        <ColumnDefinition Width="Auto" SharedSizeGroup="Col3" MinWidth="60"/>
+                        <ColumnDefinition Width="Auto" SharedSizeGroup="Col4" MinWidth="40"/>
+                        <ColumnDefinition Width="Auto" SharedSizeGroup="Col5" MinWidth="70"/>
+                        <ColumnDefinition Width="Auto" SharedSizeGroup="Col6" MinWidth="40"/>
+                        <ColumnDefinition Width="Auto" SharedSizeGroup="Col7" MinWidth="40"/>
+                        <ColumnDefinition Width="Auto" SharedSizeGroup="Col8" MinWidth="60"/>
+                        <ColumnDefinition Width="Auto" SharedSizeGroup="Col9" MinWidth="40"/>
+                        <ColumnDefinition Width="Auto" SharedSizeGroup="Col10" MinWidth="40"/>
+                        <ColumnDefinition Width="Auto" SharedSizeGroup="Col11" MinWidth="40"/>
+                        <ColumnDefinition Width="Auto" SharedSizeGroup="Col12" MinWidth="40"/>
+                        <ColumnDefinition Width="Auto" SharedSizeGroup="Col13" MinWidth="60"/>
+                        <ColumnDefinition Width="Auto" SharedSizeGroup="Col14" MinWidth="40"/>
+                        <ColumnDefinition Width="Auto" SharedSizeGroup="Col15" MinWidth="60"/>
+                        <ColumnDefinition Width="Auto" SharedSizeGroup="Col16" MinWidth="40"/>
+                        <ColumnDefinition Width="Auto" SharedSizeGroup="Col17" MinWidth="70"/>
+                        <ColumnDefinition Width="Auto" SharedSizeGroup="Col18" MinWidth="40"/>
+                        <ColumnDefinition Width="Auto" SharedSizeGroup="Col19" MinWidth="50"/>
+                        <ColumnDefinition Width="Auto" SharedSizeGroup="Col20" MinWidth="60"/>
+                        <ColumnDefinition Width="Auto" SharedSizeGroup="Col21" MinWidth="60"/>
+                        <ColumnDefinition Width="Auto" SharedSizeGroup="Col22" MinWidth="30"/>
+                    </Grid.ColumnDefinitions>
+
+                    <!-- Уровень 1 -->
+                    <Border Grid.Column="1" Grid.Row="0" Grid.RowSpan="3" Style="{StaticResource HeaderCellStyle}">
+                        <TextBlock Text="{DynamicResource Header_Vk_StartCountI}" Style="{StaticResource VerticalText}" FontWeight="Normal" FontSize="{DynamicResource AppFontSizeMedium}"/>
+                    </Border>
+                    <Border Grid.Column="0" Grid.Row="0" Grid.RowSpan="3" Style="{StaticResource HeaderCellStyle}">
+                        <TextBlock Text="{DynamicResource Header_Date}" Style="{StaticResource VerticalText}" FontSize="{DynamicResource AppFontSizeMedium}" FontWeight="Normal"/>
+                    </Border>
+                    <Border Grid.Column="2" Grid.Row="0" Style="{StaticResource HeaderCellStyle}" Grid.ColumnSpan="17">
+                        <TextBlock TextAlignment="Center" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Center" Style="{StaticResource HorizontalText}" Text="{DynamicResource Header_Vk_EngineHours}"/>
+                    </Border>
+                    <Border Grid.Column="2" Grid.Row="2" Style="{StaticResource HeaderCellStyle}"/>
+                    <Border Grid.Column="2" Grid.Row="1" Style="{StaticResource HeaderCellStyle}" Grid.ColumnSpan="2">
+                        <TextBlock HorizontalAlignment="Center" TextWrapping="Wrap" TextAlignment="Center" Margin="0,10,0,10" VerticalAlignment="Center" Style="{StaticResource HorizontalText}">
+                            <Run x:Name="Run_Vk_Equivalent1"/><LineBreak/>
+                            <Run x:Name="Run_Vk_Equivalent2"/><LineBreak/>
+                            <Run x:Name="Run_Vk_Equivalent3"/>
+                        </TextBlock>
+                    </Border>
+                    <Border Style="{StaticResource HeaderCellStyle}" Margin="0,0,0,-5" Grid.Column="3" Grid.Row="2">
+                        <TextBlock TextAlignment="Center" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Center" Style="{StaticResource HorizontalText}">
+                            <Run x:Name="Run_Vk_Total1"/><LineBreak/>
+                            <Run x:Name="Run_Vk_Total2"/><LineBreak/>
+                            <Run x:Name="Run_Vk_Total3"/>
+                        </TextBlock>
+                    </Border>
+                    <Border Grid.Column="4" Grid.Row="1" Style="{StaticResource HeaderCellStyle}" Grid.ColumnSpan="3">
+                        <TextBlock HorizontalAlignment="Center" TextWrapping="Wrap" TextAlignment="Center" VerticalAlignment="Center" Style="{StaticResource HorizontalText}">
+                            <Run x:Name="Run_Vk_TotalA1"/><LineBreak/>
+                            <Run x:Name="Run_Vk_TotalA2"/><LineBreak/>
+                            <Run x:Name="Run_Vk_TotalA3"/>
+                        </TextBlock>
+                    </Border>
+                    <Border Grid.Column="4" Grid.Row="2" Style="{StaticResource HeaderCellStyle}"/>
+                    <Border Grid.Column="5" Grid.Row="2" Style="{StaticResource HeaderCellStyle}">
+                        <TextBlock TextWrapping="Wrap" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center" Style="{StaticResource HorizontalText}">
+                            <Run x:Name="Run_Vk_SinceOp1"/><LineBreak/>
+                            <Run x:Name="Run_Vk_SinceOp2"/><LineBreak/>
+                            <Run x:Name="Run_Vk_SinceOp3"/>
+                        </TextBlock>
+                    </Border>
+                    <Border Grid.Column="6" Grid.Row="2" Style="{StaticResource HeaderCellStyle}">
+                        <TextBlock TextWrapping="Wrap" Style="{StaticResource VerticalText}" TextAlignment="Center" VerticalAlignment="Center" HorizontalAlignment="Center" FontWeight="Normal" FontSize="{DynamicResource AppFontSizeMedium}">
+                            <Run x:Name="Run_Vk_AfterCap1"/><LineBreak/>
+                            <Run x:Name="Run_Vk_AfterCap2"/>
+                        </TextBlock>
+                    </Border>
+                    <Border Grid.Column="7" Grid.Row="1" Style="{StaticResource HeaderCellStyle}" Grid.ColumnSpan="2">
+                        <TextBlock HorizontalAlignment="Center" TextWrapping="Wrap" TextAlignment="Center" VerticalAlignment="Center" Style="{StaticResource HorizontalText}">
+                            <Run x:Name="Run_Vk_TakeoffMode1"/><LineBreak/>
+                            <Run x:Name="Run_Vk_TakeoffMode2"/><LineBreak/>
+                            <Run x:Name="Run_Vk_TakeoffMode3"/>
+                        </TextBlock>
+                    </Border>
+                    <Border Grid.Column="7" Grid.Row="2" Style="{StaticResource HeaderCellStyle}">
+                        <TextBlock TextAlignment="Center" HorizontalAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Center" Style="{StaticResource HorizontalText}">
+                            <Run x:Name="Run_Vk_From6To15_1"/><LineBreak/>
+                            <Run x:Name="Run_Vk_From6To15_2"/><LineBreak/>
+                            <Run x:Name="Run_Vk_From6To15_3"/>
+                        </TextBlock>
+                    </Border>
+                    <Border Grid.Column="8" Grid.Row="2" Style="{StaticResource HeaderCellStyle}">
+                        <TextBlock TextAlignment="Center" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Center" Style="{StaticResource HorizontalText}">
+                            <Run x:Name="Run_Vk_Total2_1"/><LineBreak/>
+                            <Run x:Name="Run_Vk_Total2_2"/><LineBreak/>
+                            <Run x:Name="Run_Vk_Total2_3"/>
+                        </TextBlock>
+                    </Border>
+                    <Border Grid.Column="9" Grid.Row="1" Style="{StaticResource HeaderCellStyle}" Grid.ColumnSpan="3">
+                        <TextBlock HorizontalAlignment="Center" TextWrapping="Wrap" TextAlignment="Center" VerticalAlignment="Center" Style="{StaticResource HorizontalText}">
+                            <Run x:Name="Run_Vk_MaxMode1"/><LineBreak/>
+                            <Run x:Name="Run_Vk_MaxMode2"/><LineBreak/>
+                            <Run x:Name="Run_Vk_MaxMode3"/>
+                        </TextBlock>
+                    </Border>
+                    <Border Grid.Column="9" Grid.Row="2" Style="{StaticResource HeaderCellStyle}">
+                        <TextBlock Text="{DynamicResource Header_Vk_Total}" HorizontalAlignment="Center" VerticalAlignment="Center" TextAlignment="Center" TextWrapping="Wrap" Style="{StaticResource VerticalText}" FontWeight="Normal" FontSize="{DynamicResource AppFontSizeMedium}"/>
+                    </Border>
+                    <Border Grid.Column="10" Grid.Row="2" Style="{StaticResource HeaderCellStyle}">
+                        <TextBlock Text="{DynamicResource Header_Vk_OnGround}" Style="{StaticResource VerticalText}" TextAlignment="Center" FontWeight="Normal" FontSize="{DynamicResource AppFontSizeMedium}"/>
+                    </Border>
+                    <Border Grid.Column="11" Grid.Row="2" Style="{StaticResource HeaderCellStyle}">
+                        <TextBlock Text="{DynamicResource Header_Vk_InFlight}" Style="{StaticResource VerticalText}" TextAlignment="Center" FontWeight="Normal" FontSize="{DynamicResource AppFontSizeMedium}"/>
+                    </Border>
+                    <Border Grid.Column="12" Grid.Row="1" Style="{StaticResource HeaderCellStyle}" Grid.ColumnSpan="2">
+                        <TextBlock HorizontalAlignment="Center" TextWrapping="Wrap" TextAlignment="Center" VerticalAlignment="Center" Style="{StaticResource HorizontalText}">
+                            <Run x:Name="Run_Vk_HighTemp1"/><LineBreak/>
+                            <Run x:Name="Run_Vk_HighTemp2"/><LineBreak/>
+                            <Run x:Name="Run_Vk_HighTemp3"/>
+                        </TextBlock>
+                    </Border>
+                    <Border Grid.Column="12" Grid.Row="2" Style="{StaticResource HeaderCellStyle}"/>
+                    <Border Grid.Column="13" Grid.Row="2" Style="{StaticResource HeaderCellStyle}">
+                        <TextBlock Style="{StaticResource HorizontalText}" FontWeight="Normal" FontSize="{DynamicResource AppFontSizeMedium}" TextAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Center" HorizontalAlignment="Center">
+                            <Run x:Name="Run_Vk_Total3_1"/><LineBreak/>
+                            <Run x:Name="Run_Vk_Total3_2"/><LineBreak/>
+                            <Run x:Name="Run_Vk_Total3_3"/>
+                        </TextBlock>
+                    </Border>
+                    <Border Grid.Column="14" Grid.Row="1" Style="{StaticResource HeaderCellStyle}" Grid.ColumnSpan="2">
+                        <TextBlock TextWrapping="Wrap" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center" Style="{StaticResource HorizontalText}">
+                            <Run x:Name="Run_Vk_BarkOff1"/><LineBreak/>
+                            <Run x:Name="Run_Vk_BarkOff2"/><LineBreak/>
+                            <Run x:Name="Run_Vk_BarkOff3"/>
+                        </TextBlock>
+                    </Border>
+                    <Border Grid.Column="14" Grid.Row="2" Style="{StaticResource HeaderCellStyle}"/>
+                    <Border Grid.Column="15" Grid.Row="2" Style="{StaticResource HeaderCellStyle}">
+                        <TextBlock Style="{StaticResource HorizontalText}" FontWeight="Normal" FontSize="{DynamicResource AppFontSizeMedium}" TextAlignment="Center" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Center">
+                            <Run x:Name="Run_Vk_Total4_1"/><LineBreak/>
+                            <Run x:Name="Run_Vk_Total4_2"/><LineBreak/>
+                            <Run x:Name="Run_Vk_Total4_3"/>
+                        </TextBlock>
+                    </Border>
+                    <Border Grid.Column="16" Grid.Row="1" Style="{StaticResource HeaderCellStyle}" Grid.ColumnSpan="3">
+                        <TextBlock HorizontalAlignment="Center" TextWrapping="Wrap" TextAlignment="Center" VerticalAlignment="Center" Style="{StaticResource HorizontalText}">
+                            <Run x:Name="Run_Vk_Cyclic1"/><LineBreak/>
+                            <Run x:Name="Run_Vk_Cyclic2"/><LineBreak/>
+                            <Run x:Name="Run_Vk_Cyclic3"/>
+                        </TextBlock>
+                    </Border>
+                    <Border Grid.Column="16" Grid.Row="2" Style="{StaticResource HeaderCellStyle}"/>
+                    <Border Grid.Column="17" Grid.Row="2" Style="{StaticResource HeaderCellStyle}">
+                        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" TextAlignment="Center" TextWrapping="Wrap" Style="{StaticResource HorizontalText}">
+                            <Run x:Name="Run_Vk_CyclicSince1"/><LineBreak/>
+                            <Run x:Name="Run_Vk_CyclicSince2"/><LineBreak/>
+                            <Run x:Name="Run_Vk_CyclicSince3"/>
+                        </TextBlock>
+                    </Border>
+                    <Border Grid.Column="18" Grid.Row="2" Style="{StaticResource HeaderCellStyle}">
+                        <TextBlock Style="{StaticResource VerticalText}" TextAlignment="Center" TextWrapping="Wrap" FontWeight="Normal" FontSize="{DynamicResource AppFontSizeMedium}">
+                            <Run x:Name="Run_Vk_AfterCap2_1"/><LineBreak/>
+                            <Run x:Name="Run_Vk_AfterCap2_2"/>
+                        </TextBlock>
+                    </Border>
+                    <Border Grid.Column="19" Style="{StaticResource HeaderCellStyle}" Grid.RowSpan="3">
+                        <TextBlock Text="{DynamicResource Header_Signature}" Style="{StaticResource VerticalText}" TextWrapping="Wrap" TextAlignment="Center" FontWeight="Normal" FontSize="{DynamicResource AppFontSizeMedium}"/>
+                    </Border>
+
+                    <Border Grid.Column="20" Grid.Row="0" Grid.RowSpan="3" Style="{StaticResource HeaderCellStyle}">
+                        <TextBlock Text="{DynamicResource Header_CoeffA}" Style="{StaticResource VerticalText}"/>
+                    </Border>
+                    <Border Grid.Column="21" Grid.Row="0" Grid.RowSpan="3" Style="{StaticResource HeaderCellStyle}">
+                        <TextBlock Text="{DynamicResource Header_CoeffH}" Style="{StaticResource VerticalText}"/>
+                    </Border>
+                </Grid>
+
+                <!-- ============ БЕЛАЯ СТРОКА ============ -->
+                <Grid Grid.Row="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" SharedSizeGroup="Col0" MinWidth="70"/>
+                        <ColumnDefinition Width="Auto" SharedSizeGroup="Col1" MinWidth="60"/>
+                        <ColumnDefinition Width="Auto" SharedSizeGroup="Col2" MinWidth="40"/>
+                        <ColumnDefinition Width="Auto" SharedSizeGroup="Col3" MinWidth="60"/>
+                        <ColumnDefinition Width="Auto" SharedSizeGroup="Col4" MinWidth="40"/>
+                        <ColumnDefinition Width="Auto" SharedSizeGroup="Col5" MinWidth="70"/>
+                        <ColumnDefinition Width="Auto" SharedSizeGroup="Col6" MinWidth="40"/>
+                        <ColumnDefinition Width="Auto" SharedSizeGroup="Col7" MinWidth="40"/>
+                        <ColumnDefinition Width="Auto" SharedSizeGroup="Col8" MinWidth="60"/>
+                        <ColumnDefinition Width="Auto" SharedSizeGroup="Col9" MinWidth="40"/>
+                        <ColumnDefinition Width="Auto" SharedSizeGroup="Col10" MinWidth="40"/>
+                        <ColumnDefinition Width="Auto" SharedSizeGroup="Col11" MinWidth="40"/>
+                        <ColumnDefinition Width="Auto" SharedSizeGroup="Col12" MinWidth="40"/>
+                        <ColumnDefinition Width="Auto" SharedSizeGroup="Col13" MinWidth="60"/>
+                        <ColumnDefinition Width="Auto" SharedSizeGroup="Col14" MinWidth="40"/>
+                        <ColumnDefinition Width="Auto" SharedSizeGroup="Col15" MinWidth="60"/>
+                        <ColumnDefinition Width="Auto" SharedSizeGroup="Col16" MinWidth="40"/>
+                        <ColumnDefinition Width="Auto" SharedSizeGroup="Col17" MinWidth="70"/>
+                        <ColumnDefinition Width="Auto" SharedSizeGroup="Col18" MinWidth="40"/>
+                        <ColumnDefinition Width="Auto" SharedSizeGroup="Col19" MinWidth="50"/>
+                        <ColumnDefinition Width="Auto" SharedSizeGroup="Col20" MinWidth="60"/>
+                        <ColumnDefinition Width="Auto" SharedSizeGroup="Col21" MinWidth="60"/>
+                        <ColumnDefinition Width="Auto" SharedSizeGroup="Col22" MinWidth="30"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Border Grid.Column="0" Style="{StaticResource DataCellStyle}">
+                        <TextBlock Text="{DynamicResource Header_Date}" Style="{StaticResource TableCellText}"/>
+                    </Border>
+                    <Border Grid.Column="1" Style="{StaticResource DataCellStyle}">
+                        <TextBlock Text="{DynamicResource Launch_Label}" Style="{StaticResource TableCellText}"/>
+                    </Border>
+                    <Border Grid.Column="2" Style="{StaticResource DataCellStyle}">
+                        <TextBlock Text="3" Style="{StaticResource TableCellText}"/>
+                    </Border>
+                    <Border Grid.Column="3" Style="{StaticResource DataCellStyle}">
+                        <TextBlock Text="G" Style="{StaticResource TableCellText}"/>
+                    </Border>
+                    <Border Grid.Column="4" Style="{StaticResource DataCellStyle}">
+                        <TextBlock Text="5" Style="{StaticResource TableCellText}"/>
+                    </Border>
+                    <Border Grid.Column="5" Style="{StaticResource DataCellStyle}">
+                        <TextBlock Text="{DynamicResource Header_SNE}" Style="{StaticResource TableCellText}"/>
+                    </Border>
+                    <Border Grid.Column="6" Style="{StaticResource DataCellStyle}">
+                        <TextBlock Text="7" Style="{StaticResource TableCellText}"/>
+                    </Border>
+                    <Border Grid.Column="7" Style="{StaticResource DataCellStyle}">
+                        <TextBlock Text="8" Style="{StaticResource TableCellText}"/>
+                    </Border>
+                    <Border Grid.Column="8" Style="{StaticResource DataCellStyle}">
+                        <TextBlock Text="B" Style="{StaticResource TableCellText}"/>
+                    </Border>
+                    <Border Grid.Column="9" Style="{StaticResource DataCellStyle}">
+                        <TextBlock Text="10" Style="{StaticResource TableCellText}"/>
+                    </Border>
+                    <Border Grid.Column="10" Style="{StaticResource DataCellStyle}">
+                        <TextBlock Text="11" Style="{StaticResource TableCellText}"/>
+                    </Border>
+                    <Border Grid.Column="11" Style="{StaticResource DataCellStyle}">
+                        <TextBlock Text="12" Style="{StaticResource TableCellText}"/>
+                    </Border>
+                    <Border Grid.Column="12" Style="{StaticResource DataCellStyle}">
+                        <TextBlock Text="13" Style="{StaticResource TableCellText}"/>
+                    </Border>
+                    <Border Grid.Column="13" Style="{StaticResource DataCellStyle}">
+                        <TextBlock Text="D" Style="{StaticResource TableCellText}"/>
+                    </Border>
+                    <Border Grid.Column="14" Style="{StaticResource DataCellStyle}">
+                        <TextBlock Text="15" Style="{StaticResource TableCellText}"/>
+                    </Border>
+                    <Border Grid.Column="15" Style="{StaticResource DataCellStyle}">
+                        <TextBlock Text="E" Style="{StaticResource TableCellText}"/>
+                    </Border>
+                    <Border Grid.Column="16" Style="{StaticResource DataCellStyle}">
+                        <TextBlock Text="17" Style="{StaticResource TableCellText}"/>
+                    </Border>
+                    <Border Grid.Column="17" Style="{StaticResource DataCellStyle}">
+                        <TextBlock Text="H" Style="{StaticResource TableCellText}"/>
+                    </Border>
+                    <Border Grid.Column="18" Style="{StaticResource DataCellStyle}">
+                        <TextBlock Text="19" Style="{StaticResource TableCellText}"/>
+                    </Border>
+                    <Border Grid.Column="19" Style="{StaticResource DataCellStyle}">
+                        <TextBlock Text="20" Style="{StaticResource TableCellText}"/>
+                    </Border>
+                    <Border Grid.Column="20" Style="{StaticResource DataCellStyle}">
+                        <TextBlock Text="{DynamicResource Header_CoeffA}" Style="{StaticResource TableCellText}"/>
+                    </Border>
+                    <Border Grid.Column="21" Style="{StaticResource DataCellStyle}">
+                        <TextBlock Text="{DynamicResource Header_CoeffH}" Style="{StaticResource TableCellText}"/>
+                    </Border>
+                    <Border Grid.Column="22" Style="{StaticResource DataCellStyle}">
+                        <TextBlock Text="" Style="{StaticResource TableCellText}"/>
+                    </Border>
+                </Grid>
+
+                <!-- ============ СТАРТОВАЯ СТРОКА ============ -->
+                <Grid Grid.Row="2">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" SharedSizeGroup="Col0" MinWidth="70"/>
+                        <ColumnDefinition Width="Auto" SharedSizeGroup="Col1" MinWidth="60"/>
+                        <ColumnDefinition Width="Auto" SharedSizeGroup="Col2" MinWidth="40"/>
+                        <ColumnDefinition Width="Auto" SharedSizeGroup="Col3" MinWidth="60"/>
+                        <ColumnDefinition Width="Auto" SharedSizeGroup="Col4" MinWidth="40"/>
+                        <ColumnDefinition Width="Auto" SharedSizeGroup="Col5" MinWidth="70"/>
+                        <ColumnDefinition Width="Auto" SharedSizeGroup="Col6" MinWidth="40"/>
+                        <ColumnDefinition Width="Auto" SharedSizeGroup="Col7" MinWidth="40"/>
+                        <ColumnDefinition Width="Auto" SharedSizeGroup="Col8" MinWidth="60"/>
+                        <ColumnDefinition Width="Auto" SharedSizeGroup="Col9" MinWidth="40"/>
+                        <ColumnDefinition Width="Auto" SharedSizeGroup="Col10" MinWidth="40"/>
+                        <ColumnDefinition Width="Auto" SharedSizeGroup="Col11" MinWidth="40"/>
+                        <ColumnDefinition Width="Auto" SharedSizeGroup="Col12" MinWidth="40"/>
+                        <ColumnDefinition Width="Auto" SharedSizeGroup="Col13" MinWidth="60"/>
+                        <ColumnDefinition Width="Auto" SharedSizeGroup="Col14" MinWidth="40"/>
+                        <ColumnDefinition Width="Auto" SharedSizeGroup="Col15" MinWidth="60"/>
+                        <ColumnDefinition Width="Auto" SharedSizeGroup="Col16" MinWidth="40"/>
+                        <ColumnDefinition Width="Auto" SharedSizeGroup="Col17" MinWidth="70"/>
+                        <ColumnDefinition Width="Auto" SharedSizeGroup="Col18" MinWidth="40"/>
+                        <ColumnDefinition Width="Auto" SharedSizeGroup="Col19" MinWidth="50"/>
+                        <ColumnDefinition Width="Auto" SharedSizeGroup="Col20" MinWidth="60"/>
+                        <ColumnDefinition Width="Auto" SharedSizeGroup="Col21" MinWidth="60"/>
+                        <ColumnDefinition Width="Auto" SharedSizeGroup="Col22" MinWidth="30"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Border Grid.Column="0" Style="{StaticResource StartCellStyle}">
+                        <TextBox Text="{Binding Vk250001StartRecord.Date, UpdateSourceTrigger=PropertyChanged}" 
+                                 Style="{StaticResource InputTextBox}"
+                                 helpers:DateDotBehavior.IsEnabled="True"/>
+                    </Border>
+
+                    <Border Grid.Column="1" Style="{StaticResource StartCellStyle}">
+                        <TextBox Text="{Binding Vk250001StartRecord.I, UpdateSourceTrigger=PropertyChanged}" 
+                                 Style="{StaticResource InputTextBox}"
+                                 helpers:IntegerOnlyBehavior.IsEnabled="True"/>
+                    </Border>
+
+                    <Border Grid.Column="2" Style="{StaticResource StartCellStyle}"/>
+
+                    <Border Grid.Column="3" Style="{StaticResource StartCellStyle}">
+                        <TextBox Text="{Binding Vk250001StartRecord.G, UpdateSourceTrigger=PropertyChanged}" 
+                                 Style="{StaticResource InputTextBox}"
+                                 helpers:DecimalCommaBehavior.IsEnabled="True"
+                                 helpers:DecimalCommaBehavior.MaxDecimalPlaces="2"/>
+                    </Border>
+
+                    <Border Grid.Column="4" Style="{StaticResource StartCellStyle}"/>
+
+                    <Border Grid.Column="5" Style="{StaticResource StartCellStyle}">
+                        <TextBox Text="{Binding Vk250001StartRecord.A, UpdateSourceTrigger=PropertyChanged}" 
+                                 Style="{StaticResource InputTextBox}"
+                                 helpers:TimeInputBehavior.IsEnabled="True"/>
+                    </Border>
+
+                    <Border Grid.Column="6" Style="{StaticResource StartCellStyle}">
+                        <TextBox Text="{Binding Vk250001StartRecord.A_PPR, UpdateSourceTrigger=PropertyChanged}" 
+                                 Style="{StaticResource InputTextBox}"
+                                 helpers:TimeInputBehavior.IsEnabled="True"/>
+                    </Border>
+                    <Border Grid.Column="7" Style="{StaticResource StartCellStyle}"/>
+
+                    <Border Grid.Column="8" Style="{StaticResource StartCellStyle}">
+                        <TextBox Text="{Binding Vk250001StartRecord.B, UpdateSourceTrigger=PropertyChanged}" 
+                                 Style="{StaticResource InputTextBox}"
+                                 helpers:DecimalCommaBehavior.IsEnabled="True"
+                                 helpers:DecimalCommaBehavior.MaxDecimalPlaces="3"/>
+                    </Border>
+
+                    <Border Grid.Column="9" Style="{StaticResource StartCellStyle}"/>
+                    <Border Grid.Column="10" Style="{StaticResource StartCellStyle}"/>
+                    <Border Grid.Column="11" Style="{StaticResource StartCellStyle}"/>
+                    <Border Grid.Column="12" Style="{StaticResource StartCellStyle}"/>
+
+                    <Border Grid.Column="13" Style="{StaticResource StartCellStyle}">
+                        <TextBox Text="{Binding Vk250001StartRecord.D, UpdateSourceTrigger=PropertyChanged}" 
+                                 Style="{StaticResource InputTextBox}"
+                                 helpers:DecimalCommaBehavior.IsEnabled="True"
+                                 helpers:DecimalCommaBehavior.MaxDecimalPlaces="3"/>
+                    </Border>
+
+                    <Border Grid.Column="14" Style="{StaticResource StartCellStyle}"/>
+
+                    <Border Grid.Column="15" Style="{StaticResource StartCellStyle}">
+                        <TextBox Text="{Binding Vk250001StartRecord.E, UpdateSourceTrigger=PropertyChanged}" 
+                                 Style="{StaticResource InputTextBox}"
+                                 helpers:DecimalCommaBehavior.IsEnabled="True"
+                                 helpers:DecimalCommaBehavior.MaxDecimalPlaces="3"/>
+                    </Border>
+
+                    <Border Grid.Column="16" Style="{StaticResource StartCellStyle}"/>
+
+                    <Border Grid.Column="17" Style="{StaticResource StartCellStyle}">
+                        <TextBox Text="{Binding Vk250001StartRecord.H, UpdateSourceTrigger=PropertyChanged}" 
+                                 Style="{StaticResource InputTextBox}"
+                                 helpers:DecimalCommaBehavior.IsEnabled="True"
+                                 helpers:DecimalCommaBehavior.MaxDecimalPlaces="1"/>
+                    </Border>
+
+                    <Border Grid.Column="18" Style="{StaticResource StartCellStyle}">
+                        <TextBox Text="{Binding Vk250001StartRecord.H_PPR, UpdateSourceTrigger=PropertyChanged}" 
+                                 Style="{StaticResource InputTextBox}"
+                                 helpers:DecimalCommaBehavior.IsEnabled="True"
+                                 helpers:DecimalCommaBehavior.MaxDecimalPlaces="1"/>
+                    </Border>
+                    <Border Grid.Column="19" Style="{StaticResource StartCellStyle}"/>
+
+                    <Border Grid.Column="20" Style="{StaticResource StartCellStyle}">
+                        <TextBox Text="{Binding Vk250001CoeffA, UpdateSourceTrigger=PropertyChanged}" 
+                                 Style="{StaticResource InputTextBox}"
+                                 helpers:DecimalCommaBehavior.IsEnabled="True"
+                                 helpers:DecimalCommaBehavior.MaxDecimalPlaces="99"/>
+                    </Border>
+
+                    <Border Grid.Column="21" Style="{StaticResource StartCellStyle}">
+                        <TextBox Text="{Binding Vk250001CoeffH, UpdateSourceTrigger=PropertyChanged}" 
+                                 Style="{StaticResource InputTextBox}"
+                                 helpers:DecimalCommaBehavior.IsEnabled="True"
+                                 helpers:DecimalCommaBehavior.MaxDecimalPlaces="99"/>
+                    </Border>
+
+                    <Border Grid.Column="22" Style="{StaticResource StartCellStyle}"/>
+                </Grid>
+            </Grid>
+        </ScrollViewer>
+
+            <!-- Заглушка над вертикальным скроллбаром таблицы -->
+            <Border Grid.Column="1"
+                    Width="{x:Static SystemParameters.VerticalScrollBarWidth}"
+                    Style="{StaticResource HeaderCellStyle}"/>
+        </Grid>
+
+        <!-- ================= ОБЛАСТЬ ДАННЫХ ================= -->
+        <ScrollViewer x:Name="Vk250001DataScroll"
+                      Grid.Row="1"
+                      Background="{DynamicResource WindowBackgroundBrush}"
+                      HorizontalScrollBarVisibility="Auto"
+                      VerticalScrollBarVisibility="Visible"
+                      CanContentScroll="False"
+                      ScrollChanged="Vk250001DataScroll_ScrollChanged"
+                      PreviewMouseWheel="Vk250001DataScroll_PreviewMouseWheel">
+            <ItemsControl ItemsSource="{Binding Vk250001Records}" HorizontalAlignment="Left" VerticalAlignment="Top">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel Orientation="Vertical"/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Border>
+                            <Border.Style>
+                                <Style TargetType="Border">
+                                    <Setter Property="BorderThickness" Value="0"/>
+                                    <Setter Property="BorderBrush" Value="Transparent"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding NeedsManualRecalc}" Value="True">
+                                            <Setter Property="BorderThickness" Value="2"/>
+                                            <Setter Property="BorderBrush" Value="Red"/>
+                                            <Setter Property="ToolTip" Value="Необходим ручной пересчет"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Border.Style>
+                            <Grid MinHeight="25">
+                                <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" SharedSizeGroup="Col0" MinWidth="70"/>
+                                <ColumnDefinition Width="Auto" SharedSizeGroup="Col1" MinWidth="60"/>
+                                <ColumnDefinition Width="Auto" SharedSizeGroup="Col2" MinWidth="40"/>
+                                <ColumnDefinition Width="Auto" SharedSizeGroup="Col3" MinWidth="60"/>
+                                <ColumnDefinition Width="Auto" SharedSizeGroup="Col4" MinWidth="40"/>
+                                <ColumnDefinition Width="Auto" SharedSizeGroup="Col5" MinWidth="70"/>
+                                <ColumnDefinition Width="Auto" SharedSizeGroup="Col6" MinWidth="40"/>
+                                <ColumnDefinition Width="Auto" SharedSizeGroup="Col7" MinWidth="40"/>
+                                <ColumnDefinition Width="Auto" SharedSizeGroup="Col8" MinWidth="60"/>
+                                <ColumnDefinition Width="Auto" SharedSizeGroup="Col9" MinWidth="40"/>
+                                <ColumnDefinition Width="Auto" SharedSizeGroup="Col10" MinWidth="40"/>
+                                <ColumnDefinition Width="Auto" SharedSizeGroup="Col11" MinWidth="40"/>
+                                <ColumnDefinition Width="Auto" SharedSizeGroup="Col12" MinWidth="40"/>
+                                <ColumnDefinition Width="Auto" SharedSizeGroup="Col13" MinWidth="60"/>
+                                <ColumnDefinition Width="Auto" SharedSizeGroup="Col14" MinWidth="40"/>
+                                <ColumnDefinition Width="Auto" SharedSizeGroup="Col15" MinWidth="60"/>
+                                <ColumnDefinition Width="Auto" SharedSizeGroup="Col16" MinWidth="40"/>
+                                <ColumnDefinition Width="Auto" SharedSizeGroup="Col17" MinWidth="70"/>
+                                <ColumnDefinition Width="Auto" SharedSizeGroup="Col18" MinWidth="40"/>
+                                <ColumnDefinition Width="Auto" SharedSizeGroup="Col19" MinWidth="50"/>
+                                <ColumnDefinition Width="Auto" SharedSizeGroup="Col20" MinWidth="60"/>
+                                <ColumnDefinition Width="Auto" SharedSizeGroup="Col21" MinWidth="60"/>
+                                <ColumnDefinition Width="Auto" SharedSizeGroup="Col22" MinWidth="30"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Border Grid.Column="0" Style="{StaticResource DataCellStyle}">
+                                <TextBlock Text="{Binding Date}" Style="{StaticResource DataText}"/>
+                            </Border>
+                            <Border Grid.Column="1" Style="{StaticResource DataCellStyle}">
+                                <TextBlock Text="{Binding I}" Style="{StaticResource DataText}"/>
+                            </Border>
+                            <Border Grid.Column="2" Style="{StaticResource DataCellStyle}"/>
+                            <Border Grid.Column="3" Style="{StaticResource DataCellStyle}">
+                                <TextBlock Text="{Binding G}" Style="{StaticResource DataText}"/>
+                            </Border>
+                            <Border Grid.Column="4" Style="{StaticResource DataCellStyle}"/>
+                            <Border Grid.Column="5" Style="{StaticResource DataCellStyle}">
+                                <TextBlock Text="{Binding A}" Style="{StaticResource DataText}"/>
+                            </Border>
+                            <Border Grid.Column="6" Style="{StaticResource DataCellStyle}">
+                                <TextBlock Text="{Binding A_PPR}" Style="{StaticResource DataText}"/>
+                            </Border>
+                            <Border Grid.Column="7" Style="{StaticResource DataCellStyle}"/>
+                            <Border Grid.Column="8" Style="{StaticResource DataCellStyle}">
+                                <TextBlock Text="{Binding B}" Style="{StaticResource DataText}"/>
+                            </Border>
+                            <Border Grid.Column="9" Style="{StaticResource DataCellStyle}"/>
+                            <Border Grid.Column="10" Style="{StaticResource DataCellStyle}"/>
+                            <Border Grid.Column="11" Style="{StaticResource DataCellStyle}"/>
+                            <Border Grid.Column="12" Style="{StaticResource DataCellStyle}"/>
+                            <Border Grid.Column="13" Style="{StaticResource DataCellStyle}">
+                                <TextBlock Text="{Binding D}" Style="{StaticResource DataText}"/>
+                            </Border>
+                            <Border Grid.Column="14" Style="{StaticResource DataCellStyle}"/>
+                            <Border Grid.Column="15" Style="{StaticResource DataCellStyle}">
+                                <TextBlock Text="{Binding E}" Style="{StaticResource DataText}"/>
+                            </Border>
+                            <Border Grid.Column="16" Style="{StaticResource DataCellStyle}"/>
+                            <Border Grid.Column="17" Style="{StaticResource DataCellStyle}">
+                                <TextBlock Text="{Binding H}" Style="{StaticResource DataText}"/>
+                            </Border>
+                            <Border Grid.Column="18" Style="{StaticResource DataCellStyle}">
+                                <TextBlock Text="{Binding H_PPR}" Style="{StaticResource DataText}"/>
+                            </Border>
+                            <Border Grid.Column="19" Style="{StaticResource DataCellStyle}"/>
+                            <Border Grid.Column="20" Style="{StaticResource DataCellStyle}"/>
+                            <Border Grid.Column="21" Style="{StaticResource DataCellStyle}"/>
+
+                                <Button Grid.Column="22"
+                                    Style="{StaticResource RemoveButtonStyle}"
+                                    Command="{Binding DataContext.RemoveVk250001RecordCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                    CommandParameter="{Binding}"
+                                    ToolTip="{DynamicResource Launch_Delete}"/>
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
+    </Grid>
+</UserControl>

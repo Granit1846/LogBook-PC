@@ -1,0 +1,10 @@
+{
+  "1.1.9": "Исправлено определение версии в сборке EXE и проверка коротких номеров версий. При выпуске автоматически создаётся JSON с описанием, размером и SHA-256 сборки. Включены исправления 1.1.8: один итог за месяц во всех формулярах, правильный порядок строк, смена языка без пересоздания итогов. Сохранены исправления переноса пустых значений ресурсов, масел и формуляров.",
+  "1.1.10": "Обновлены сведения о программе и руководство на русском и английском. Проверка обновлений использует единый адрес релизов; ошибки подключения и некорректный JSON больше не выдаются за отсутствие обновлений. Ссылки скачивания проверяются перед открытием.",
+  "1.1.11": "Состояние синхронизации сохраняется отдельно для каждого аккаунта; переключение Wi-Fi и облака сохраняет ожидающие отправки. Завершена локализация окон синхронизации и истории обменов на русский и английский.",
+  "1.1.11.en": "Synchronization checkpoints are kept separately for each account; switching between Wi-Fi and cloud preserves pending uploads. Synchronization and exchange history windows are localized in Russian and English.",
+  "1.1.12": "Добавлено общее пространство синхронизации для всех зарегистрированных пользователей с отдельным состоянием обмена. Личная синхронизация сохранена. Повреждённые файлы данных и настроек больше не заменяются пустыми; смена папки данных сохраняет исходную книгу.",
+  "1.1.12.en": "Added a shared synchronization space for all registered users with separate exchange state. Personal synchronization remains available. Damaged data and settings files are no longer replaced with empty data; changing the data folder keeps the original book.",
+  "1.1.13": "Общее пространство хранит профили отдельно. При обмене все локальные профили публикуются в общий каталог, а пользователь выбирает, какие профили загрузить. Невыбранные локальные профили сохраняются.",
+  "1.1.13.en": "The shared space stores profiles separately. Each exchange publishes all local profiles to the shared catalog, and the user chooses which profiles to download. Unselected local profiles are preserved."
+}

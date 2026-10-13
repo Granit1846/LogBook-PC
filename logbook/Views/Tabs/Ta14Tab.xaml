@@ -1,0 +1,430 @@
+<UserControl x:Class="logbook.Views.Tabs.Ta14Tab"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:helpers="clr-namespace:logbook.Helpers"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d">
+
+    <UserControl.Resources>
+        <Style x:Key="HeaderCellStyle" TargetType="{x:Type Border}">
+            <Setter Property="Background" Value="{DynamicResource HeaderCellBackgroundBrush}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource BorderBrush}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="2"/>
+        </Style>
+        <Style x:Key="DataCellStyle" TargetType="{x:Type Border}">
+            <Setter Property="BorderBrush" Value="{DynamicResource GridLineBrush}"/>
+            <Setter Property="BorderThickness" Value="0.5"/>
+            <Setter Property="Padding" Value="2"/>
+            <Setter Property="Background" Value="{DynamicResource CellBackgroundBrush}"/>
+        </Style>
+        <Style x:Key="StartCellStyle" TargetType="{x:Type Border}">
+            <Setter Property="BorderBrush" Value="{DynamicResource GridLineBrush}"/>
+            <Setter Property="BorderThickness" Value="0.5"/>
+            <Setter Property="Padding" Value="2"/>
+            <Setter Property="Background" Value="{DynamicResource StartCellBackgroundBrush}"/>
+        </Style>
+
+        <Style x:Key="VerticalText" TargetType="{x:Type TextBlock}">
+            <Setter Property="LayoutTransform">
+                <Setter.Value>
+                    <RotateTransform Angle="-90"/>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="FontSize" Value="{DynamicResource AppFontSizeSmall}"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Foreground" Value="{DynamicResource HeaderCellForegroundBrush}"/>
+            <Setter Property="Effect" Value="{StaticResource HeaderTextShadow}"/>
+        </Style>
+        <Style x:Key="HorizontalText" TargetType="{x:Type TextBlock}">
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="FontSize" Value="{DynamicResource AppFontSizeSmall}"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="TextWrapping" Value="Wrap"/>
+            <Setter Property="Foreground" Value="{DynamicResource HeaderCellForegroundBrush}"/>
+            <Setter Property="Effect" Value="{StaticResource HeaderTextShadow}"/>
+        </Style>
+
+        <Style x:Key="TableCellText" TargetType="{x:Type TextBlock}">
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="FontSize" Value="{DynamicResource AppFontSizeSmall}"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="TextWrapping" Value="Wrap"/>
+            <Setter Property="Foreground" Value="{DynamicResource CellForegroundBrush}"/>
+        </Style>
+
+        <Style x:Key="DataText" TargetType="{x:Type TextBlock}">
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="FontSize" Value="{DynamicResource AppFontSizeSmall}"/>
+            <Setter Property="Foreground" Value="{DynamicResource CellForegroundBrush}"/>
+        </Style>
+
+        <Style x:Key="InputTextBox" TargetType="{x:Type TextBox}">
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="{DynamicResource CellForegroundBrush}"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="FontSize" Value="{DynamicResource AppFontSizeSmall}"/>
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="CaretBrush" Value="{DynamicResource CaretBrush}"/>
+            <Setter Property="helpers:SelectAllOnFocusBehavior.IsEnabled" Value="True"/>
+        </Style>
+        <Style x:Key="RemoveButtonStyle" TargetType="{x:Type Button}">
+            <Setter Property="Content" Value="✕"/>
+            <Setter Property="FontSize" Value="{DynamicResource AppFontSizeSmall}"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Foreground" Value="Red"/>
+            <Setter Property="Width" Value="22"/>
+            <Setter Property="Height" Value="22"/>
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="FontFamily" Value="Segoe UI Symbol"/>
+            <Setter Property="Cursor" Value="Hand"/>
+        </Style>
+    </UserControl.Resources>
+
+    <Grid Background="{DynamicResource WindowBackgroundBrush}"
+          Grid.IsSharedSizeScope="True">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- ================= ВЕРХНИЙ БЛОК ================= -->
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <ScrollViewer x:Name="Ta14HeaderScroll"
+                          Grid.Column="0"
+                          Background="{DynamicResource WindowBackgroundBrush}"
+                          HorizontalScrollBarVisibility="Hidden"
+                          VerticalScrollBarVisibility="Disabled"
+                          Focusable="False"
+                          CanContentScroll="False"
+                          PreviewMouseWheel="Ta14HeaderScroll_PreviewMouseWheel">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto" MinHeight="25"/>
+                    <RowDefinition Height="Auto" MinHeight="25"/>
+                </Grid.RowDefinitions>
+
+                <!-- ============ ШАПКА ============ -->
+                <Grid Grid.Row="0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" MinHeight="90"/>
+                        <RowDefinition Height="Auto" MinHeight="80"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" SharedSizeGroup="Col0" MinWidth="70"/>
+                        <ColumnDefinition Width="Auto" SharedSizeGroup="Col1" MinWidth="70"/>
+                        <ColumnDefinition Width="Auto" SharedSizeGroup="Col2" MinWidth="100"/>
+                        <ColumnDefinition Width="Auto" SharedSizeGroup="Col3" MinWidth="80"/>
+                        <ColumnDefinition Width="Auto" SharedSizeGroup="Col4" MinWidth="90"/>
+                        <ColumnDefinition Width="Auto" SharedSizeGroup="Col5" MinWidth="70"/>
+                        <ColumnDefinition Width="Auto" SharedSizeGroup="Col6" MinWidth="65"/>
+                        <ColumnDefinition Width="Auto" SharedSizeGroup="Col7" MinWidth="65"/>
+                        <ColumnDefinition Width="Auto" SharedSizeGroup="Col8" MinWidth="70"/>
+                        <ColumnDefinition Width="Auto" SharedSizeGroup="Col9" MinWidth="65"/>
+                        <ColumnDefinition Width="Auto" SharedSizeGroup="Col10" MinWidth="90"/>
+                        <ColumnDefinition Width="Auto" SharedSizeGroup="Col11" MinWidth="30"/>
+                    </Grid.ColumnDefinitions>
+
+                    <!-- Уровень 1 -->
+                    <Border Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" Style="{StaticResource HeaderCellStyle}" Margin="0,0,0,0">
+                        <TextBlock Text="{DynamicResource Header_Date}" Style="{StaticResource VerticalText}" FontSize="{DynamicResource AppFontSizeMedium}"/>
+                    </Border>
+                    <Border Grid.Column="1" Grid.Row="0" Grid.RowSpan="2" Style="{StaticResource HeaderCellStyle}" Margin="0,0,0,0">
+                        <TextBlock Text="{DynamicResource Header_StartCountShort}" Style="{StaticResource VerticalText}" RenderTransformOrigin="0.064,3.911" FontSize="{DynamicResource AppFontSizeMedium}"/>
+                    </Border>
+                    <Border Grid.Column="2" Grid.Row="0" Grid.RowSpan="2" Style="{StaticResource HeaderCellStyle}" Margin="0,0,0,0">
+                        <TextBlock Style="{StaticResource VerticalText}" TextAlignment="Center" FontSize="{DynamicResource AppFontSizeMedium}">
+                            <Run x:Name="Run_Ta14_Counter1"/><LineBreak/>
+                            <Run x:Name="Run_Ta14_Counter2"/><LineBreak/>
+                            <Run x:Name="Run_Ta14_Counter3"/>
+                        </TextBlock>
+                    </Border>
+                    <Border Grid.Column="3" Grid.Row="0" Grid.RowSpan="2" Style="{StaticResource HeaderCellStyle}" Margin="0,0,0,0">
+                        <TextBlock Style="{StaticResource VerticalText}" FontSize="{DynamicResource AppFontSizeMedium}" TextAlignment="Center">
+                            <Run x:Name="Run_Ta14_GroundWork1"/><LineBreak/>
+                            <Run x:Name="Run_Ta14_GroundWork2"/><LineBreak/>
+                            <Run x:Name="Run_Ta14_GroundWork3"/>
+                        </TextBlock>
+                    </Border>
+                    <Border Grid.Column="4" Grid.Row="0" Grid.RowSpan="2" Style="{StaticResource HeaderCellStyle}" Margin="0,0,0,0">
+                        <TextBlock Style="{StaticResource VerticalText}" FontSize="{DynamicResource AppFontSizeMedium}" TextAlignment="Center">
+                            <Run x:Name="Run_Ta14_AirWork1"/><LineBreak/>
+                            <Run x:Name="Run_Ta14_AirWork2"/><LineBreak/>
+                            <Run x:Name="Run_Ta14_AirWork3"/>
+                        </TextBlock>
+                    </Border>
+                    <Border Grid.Column="5" Grid.Row="0" Grid.RowSpan="2" Style="{StaticResource HeaderCellStyle}" Margin="0,0,0,0">
+                        <TextBlock Style="{StaticResource VerticalText}" FontSize="{DynamicResource AppFontSizeMedium}" TextAlignment="Center">
+                            <Run x:Name="Run_Ta14_Total1"/><LineBreak/>
+                            <Run x:Name="Run_Ta14_Total2"/><LineBreak/>
+                            <Run x:Name="Run_Ta14_Total3"/>
+                        </TextBlock>
+                    </Border>
+                    <Border Grid.Column="6" Grid.ColumnSpan="4" Grid.Row="0" Style="{StaticResource HeaderCellStyle}">
+                        <TextBlock Style="{StaticResource HorizontalText}" FontSize="{DynamicResource AppFontSizeMedium}" TextAlignment="Center">
+                            <Run x:Name="Run_Ta14_Grand1"/><LineBreak/>
+                            <Run x:Name="Run_Ta14_Grand2"/>
+                        </TextBlock>
+                    </Border>
+                    <Border Grid.Column="10" Grid.Row="0" Grid.RowSpan="2" Style="{StaticResource HeaderCellStyle}" Margin="0,0,0,0">
+                        <TextBlock Text="{DynamicResource Header_Signature}" Style="{StaticResource VerticalText}" FontSize="{DynamicResource AppFontSizeMedium}" TextAlignment="Center"/>
+                    </Border>
+
+                    <!-- Уровень 2 -->
+                    <Border Grid.Column="6" Grid.ColumnSpan="2" Grid.Row="1" Style="{StaticResource HeaderCellStyle}" Margin="0,0,0,0">
+                        <TextBlock Style="{StaticResource HorizontalText}" FontSize="{DynamicResource AppFontSizeMedium}" TextAlignment="Center">
+                            <Run x:Name="Run_Ta14_AfterCap1"/><LineBreak/>
+                            <Run x:Name="Run_Ta14_AfterCap2"/>
+                        </TextBlock>
+                    </Border>
+                    <Border Grid.Column="8" Grid.ColumnSpan="2" Grid.Row="1" Style="{StaticResource HeaderCellStyle}" Margin="0,0,0,0">
+                        <TextBlock Style="{StaticResource HorizontalText}" FontSize="{DynamicResource AppFontSizeMedium}" TextAlignment="Center">
+                            <Run x:Name="Run_Ta14_Since1"/><LineBreak/>
+                            <Run x:Name="Run_Ta14_Since2"/>
+                        </TextBlock>
+                    </Border>
+                </Grid>
+
+                <!-- ============ БЕЛАЯ СТРОКА ============ -->
+                <Grid Grid.Row="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" SharedSizeGroup="Col0" MinWidth="70"/>
+                        <ColumnDefinition Width="Auto" SharedSizeGroup="Col1" MinWidth="70"/>
+                        <ColumnDefinition Width="Auto" SharedSizeGroup="Col2" MinWidth="100"/>
+                        <ColumnDefinition Width="Auto" SharedSizeGroup="Col3" MinWidth="80"/>
+                        <ColumnDefinition Width="Auto" SharedSizeGroup="Col4" MinWidth="90"/>
+                        <ColumnDefinition Width="Auto" SharedSizeGroup="Col5" MinWidth="70"/>
+                        <ColumnDefinition Width="Auto" SharedSizeGroup="Col6" MinWidth="65"/>
+                        <ColumnDefinition Width="Auto" SharedSizeGroup="Col7" MinWidth="65"/>
+                        <ColumnDefinition Width="Auto" SharedSizeGroup="Col8" MinWidth="70"/>
+                        <ColumnDefinition Width="Auto" SharedSizeGroup="Col9" MinWidth="65"/>
+                        <ColumnDefinition Width="Auto" SharedSizeGroup="Col10" MinWidth="90"/>
+                        <ColumnDefinition Width="Auto" SharedSizeGroup="Col11" MinWidth="30"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Border Grid.Column="0" Style="{StaticResource DataCellStyle}">
+                        <TextBlock Text="{DynamicResource Header_Date}" Style="{StaticResource TableCellText}"/>
+                    </Border>
+                    <Border Grid.Column="1" Style="{StaticResource DataCellStyle}">
+                        <TextBlock Text="{DynamicResource Header_Starts}" Style="{StaticResource TableCellText}"/>
+                    </Border>
+                    <Border Grid.Column="2" Style="{StaticResource DataCellStyle}">
+                        <TextBlock Text="3" Style="{StaticResource TableCellText}"/>
+                    </Border>
+                    <Border Grid.Column="3" Style="{StaticResource DataCellStyle}">
+                        <TextBlock Text="{DynamicResource Header_Time}" Style="{StaticResource TableCellText}"/>
+                    </Border>
+                    <Border Grid.Column="4" Style="{StaticResource DataCellStyle}">
+                        <TextBlock Text="5" Style="{StaticResource TableCellText}"/>
+                    </Border>
+                    <Border Grid.Column="5" Style="{StaticResource DataCellStyle}">
+                        <TextBlock Text="{DynamicResource Header_SNE}" Style="{StaticResource TableCellText}"/>
+                    </Border>
+                    <Border Grid.Column="6" Style="{StaticResource DataCellStyle}">
+                        <TextBlock Text="7" Style="{StaticResource TableCellText}"/>
+                    </Border>
+                    <Border Grid.Column="7" Style="{StaticResource DataCellStyle}">
+                        <TextBlock Text="8" Style="{StaticResource TableCellText}"/>
+                    </Border>
+                    <Border Grid.Column="8" Style="{StaticResource DataCellStyle}">
+                        <TextBlock Text="{DynamicResource Header_SNE2}" Style="{StaticResource TableCellText}"/>
+                    </Border>
+                    <Border Grid.Column="9" Style="{StaticResource DataCellStyle}">
+                        <TextBlock Text="{DynamicResource Header_Starts2}" Style="{StaticResource TableCellText}"/>
+                    </Border>
+                    <Border Grid.Column="10" Style="{StaticResource DataCellStyle}">
+                        <TextBlock Text="11" Style="{StaticResource TableCellText}"/>
+                    </Border>
+                    <Border Grid.Column="11" Style="{StaticResource DataCellStyle}">
+                        <TextBlock Text="" Style="{StaticResource TableCellText}"/>
+                    </Border>
+                </Grid>
+
+                <!-- ============ СТАРТОВАЯ СТРОКА ============ -->
+                <Grid Grid.Row="2">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" SharedSizeGroup="Col0" MinWidth="70"/>
+                        <ColumnDefinition Width="Auto" SharedSizeGroup="Col1" MinWidth="70"/>
+                        <ColumnDefinition Width="Auto" SharedSizeGroup="Col2" MinWidth="100"/>
+                        <ColumnDefinition Width="Auto" SharedSizeGroup="Col3" MinWidth="80"/>
+                        <ColumnDefinition Width="Auto" SharedSizeGroup="Col4" MinWidth="90"/>
+                        <ColumnDefinition Width="Auto" SharedSizeGroup="Col5" MinWidth="70"/>
+                        <ColumnDefinition Width="Auto" SharedSizeGroup="Col6" MinWidth="65"/>
+                        <ColumnDefinition Width="Auto" SharedSizeGroup="Col7" MinWidth="65"/>
+                        <ColumnDefinition Width="Auto" SharedSizeGroup="Col8" MinWidth="70"/>
+                        <ColumnDefinition Width="Auto" SharedSizeGroup="Col9" MinWidth="65"/>
+                        <ColumnDefinition Width="Auto" SharedSizeGroup="Col10" MinWidth="90"/>
+                        <ColumnDefinition Width="Auto" SharedSizeGroup="Col11" MinWidth="30"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Border Grid.Column="0" Style="{StaticResource StartCellStyle}">
+                        <TextBox Text="{Binding Ta14StartRecord.Date, UpdateSourceTrigger=PropertyChanged}" 
+                                 Style="{StaticResource InputTextBox}"
+                                 helpers:DateInputBehavior.IsEnabled="True"/>
+                    </Border>
+                    <Border Grid.Column="1" Style="{StaticResource StartCellStyle}">
+                        <TextBox Text="{Binding Ta14StartRecord.LaunchCount, UpdateSourceTrigger=PropertyChanged}" 
+                                 Style="{StaticResource InputTextBox}"/>
+                    </Border>
+                    <Border Grid.Column="2" Style="{StaticResource StartCellStyle}">
+                        <TextBox Text="{Binding Ta14StartRecord.Col3, UpdateSourceTrigger=PropertyChanged}" 
+                                 Style="{StaticResource InputTextBox}"/>
+                    </Border>
+                    <Border Grid.Column="3" Style="{StaticResource StartCellStyle}">
+                        <TextBox Text="{Binding Ta14StartRecord.ColVremya, UpdateSourceTrigger=PropertyChanged}" 
+                                 Style="{StaticResource InputTextBox}"
+                                 helpers:TimeInputBehavior.IsEnabled="True"/>
+                    </Border>
+                    <Border Grid.Column="4" Style="{StaticResource StartCellStyle}">
+                        <TextBox Text="{Binding Ta14StartRecord.Col5, UpdateSourceTrigger=PropertyChanged}" 
+                                 Style="{StaticResource InputTextBox}"/>
+                    </Border>
+                    <Border Grid.Column="5" Style="{StaticResource StartCellStyle}">
+                        <TextBox Text="{Binding Ta14StartRecord.ColSNE, UpdateSourceTrigger=PropertyChanged}" 
+                                 Style="{StaticResource InputTextBox}"
+                                 helpers:TimeInputBehavior.IsEnabled="True"/>
+                    </Border>
+                    <Border Grid.Column="6" Style="{StaticResource StartCellStyle}">
+                        <TextBox Text="{Binding Ta14StartRecord.Col7, UpdateSourceTrigger=PropertyChanged}" 
+                                 Style="{StaticResource InputTextBox}"
+                                 helpers:TimeInputBehavior.IsEnabled="True"/>
+                    </Border>
+                    <Border Grid.Column="7" Style="{StaticResource StartCellStyle}">
+                        <TextBox Text="{Binding Ta14StartRecord.Col8, UpdateSourceTrigger=PropertyChanged}" 
+                                 Style="{StaticResource InputTextBox}"
+                                 helpers:IntegerOnlyBehavior.IsEnabled="True"/>
+                    </Border>
+                    <Border Grid.Column="8" Style="{StaticResource StartCellStyle}">
+                        <TextBox Text="{Binding Ta14StartRecord.ColSNE2, UpdateSourceTrigger=PropertyChanged}" 
+                                 Style="{StaticResource InputTextBox}"
+                                 helpers:TimeInputBehavior.IsEnabled="True"/>
+                    </Border>
+                    <Border Grid.Column="9" Style="{StaticResource StartCellStyle}">
+                        <TextBox Text="{Binding Ta14StartRecord.LaunchCount2, UpdateSourceTrigger=PropertyChanged}" 
+                                 Style="{StaticResource InputTextBox}"/>
+                    </Border>
+                    <Border Grid.Column="10" Style="{StaticResource StartCellStyle}">
+                        <TextBox Text="{Binding Ta14StartRecord.Col11, UpdateSourceTrigger=PropertyChanged}" 
+                                 Style="{StaticResource InputTextBox}"/>
+                    </Border>
+                    <Border Grid.Column="11" Style="{StaticResource StartCellStyle}"/>
+                </Grid>
+            </Grid>
+        </ScrollViewer>
+
+            <!-- Заглушка над вертикальным скроллбаром таблицы -->
+            <Border Grid.Column="1"
+                    Width="{x:Static SystemParameters.VerticalScrollBarWidth}"
+                    Style="{StaticResource HeaderCellStyle}"/>
+        </Grid>
+
+        <!-- ================= ОБЛАСТЬ ДАННЫХ ================= -->
+        <ScrollViewer x:Name="Ta14DataScroll"
+                      Grid.Row="1"
+                      Background="{DynamicResource WindowBackgroundBrush}"
+                      HorizontalScrollBarVisibility="Auto"
+                      VerticalScrollBarVisibility="Visible"
+                      CanContentScroll="False"
+                      ScrollChanged="Ta14DataScroll_ScrollChanged"
+                      PreviewMouseWheel="Ta14DataScroll_PreviewMouseWheel">
+            <ItemsControl ItemsSource="{Binding Ta14Records}" HorizontalAlignment="Left" VerticalAlignment="Top">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel Orientation="Vertical"/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Border>
+                            <Border.Style>
+                                <Style TargetType="Border">
+                                    <Setter Property="BorderThickness" Value="0"/>
+                                    <Setter Property="BorderBrush" Value="Transparent"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding NeedsManualRecalc}" Value="True">
+                                            <Setter Property="BorderThickness" Value="2"/>
+                                            <Setter Property="BorderBrush" Value="Red"/>
+                                            <Setter Property="ToolTip" Value="Необходим ручной пересчет"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Border.Style>
+                            <Grid MinHeight="25">
+                                <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" SharedSizeGroup="Col0" MinWidth="70"/>
+                                <ColumnDefinition Width="Auto" SharedSizeGroup="Col1" MinWidth="70"/>
+                                <ColumnDefinition Width="Auto" SharedSizeGroup="Col2" MinWidth="100"/>
+                                <ColumnDefinition Width="Auto" SharedSizeGroup="Col3" MinWidth="80"/>
+                                <ColumnDefinition Width="Auto" SharedSizeGroup="Col4" MinWidth="90"/>
+                                <ColumnDefinition Width="Auto" SharedSizeGroup="Col5" MinWidth="70"/>
+                                <ColumnDefinition Width="Auto" SharedSizeGroup="Col6" MinWidth="65"/>
+                                <ColumnDefinition Width="Auto" SharedSizeGroup="Col7" MinWidth="65"/>
+                                <ColumnDefinition Width="Auto" SharedSizeGroup="Col8" MinWidth="70"/>
+                                <ColumnDefinition Width="Auto" SharedSizeGroup="Col9" MinWidth="65"/>
+                                <ColumnDefinition Width="Auto" SharedSizeGroup="Col10" MinWidth="90"/>
+                                <ColumnDefinition Width="Auto" SharedSizeGroup="Col11" MinWidth="30"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Border Grid.Column="0" Style="{StaticResource DataCellStyle}">
+                                <TextBlock Text="{Binding Date}" Style="{StaticResource DataText}"/>
+                            </Border>
+                            <Border Grid.Column="1" Style="{StaticResource DataCellStyle}">
+                                <TextBlock Text="{Binding LaunchCount}" Style="{StaticResource DataText}"/>
+                            </Border>
+                            <Border Grid.Column="2" Style="{StaticResource DataCellStyle}">
+                                <TextBlock Text="{Binding Col3}" Style="{StaticResource DataText}"/>
+                            </Border>
+                            <Border Grid.Column="3" Style="{StaticResource DataCellStyle}">
+                                <TextBlock Text="{Binding ColVremya}" Style="{StaticResource DataText}"/>
+                            </Border>
+                            <Border Grid.Column="4" Style="{StaticResource DataCellStyle}">
+                                <TextBlock Text="{Binding Col5}" Style="{StaticResource DataText}"/>
+                            </Border>
+                            <Border Grid.Column="5" Style="{StaticResource DataCellStyle}">
+                                <TextBlock Text="{Binding ColSNE}" Style="{StaticResource DataText}"/>
+                            </Border>
+                            <Border Grid.Column="6" Style="{StaticResource DataCellStyle}">
+                                <TextBlock Text="{Binding Col7}" Style="{StaticResource DataText}"/>
+                            </Border>
+                            <Border Grid.Column="7" Style="{StaticResource DataCellStyle}">
+                                <TextBlock Text="{Binding Col8}" Style="{StaticResource DataText}"/>
+                            </Border>
+                            <Border Grid.Column="8" Style="{StaticResource DataCellStyle}">
+                                <TextBlock Text="{Binding ColSNE2}" Style="{StaticResource DataText}"/>
+                            </Border>
+                            <Border Grid.Column="9" Style="{StaticResource DataCellStyle}">
+                                <TextBlock Text="{Binding LaunchCount2}" Style="{StaticResource DataText}"/>
+                            </Border>
+                            <Border Grid.Column="10" Style="{StaticResource DataCellStyle}">
+                                <TextBlock Text="{Binding Col11}" Style="{StaticResource DataText}"/>
+                            </Border>
+
+                                <Button Grid.Column="11"
+                                    Style="{StaticResource RemoveButtonStyle}"
+                                    Command="{Binding DataContext.RemoveTa14RecordCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                    CommandParameter="{Binding}"
+                                    ToolTip="{DynamicResource Launch_Delete}"/>
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
+    </Grid>
+</UserControl>

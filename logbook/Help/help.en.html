@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8"/>
+			<title>Logbook — Help</title>
+			<style>
+				body {
+				font-family: 'Segoe UI', Arial, sans-serif;
+				max-width: 900px;
+				margin: 30px auto;
+				padding: 0 20px;
+				line-height: 1.6;
+				color: #212121;
+				background: #f5f5f5;
+				}
+				h1 { color: #5B7C99; }
+				h2 { color: #37474F; margin-top: 30px; }
+				code {
+				background: #eceff1;
+				padding: 2px 6px;
+				border-radius: 3px;
+				font-family: Consolas, monospace;
+				}
+				.note {
+				background: #fff8e1;
+				border-left: 4px solid #ffb300;
+				padding: 10px 15px;
+				margin: 15px 0;
+				}
+			</style>
+		</head>
+	<body>
+
+		<h1>Logbook — Help</h1>
+
+		<p>Application for maintaining aircraft logbooks.</p>
+
+		<h2>1. Key concepts</h2>
+		<ul>
+			<li>
+				<b>Profile</b> — a unit of equipment (e.g., aircraft #92).
+			</li>
+			<li>
+				<b>Day</b> — one date with flight or HC records.
+			</li>
+			<li>
+				<b>Logbook</b> — table with operating hours (Part 1, VR-80, Ta-14, VK-2500-01/02, Resources).
+			</li>
+		</ul>
+
+		<h2>2. Daily workflow</h2>
+		<ol>
+			<li>
+				Select a <b>profile</b> and <b>date</b> on the left.
+			</li>
+			<li>
+				Enter the <b>crew</b> and <b>starts</b> (APU, Ground, Air).
+			</li>
+			<li>
+				Click <b>"End day"</b> — data will go to the logbooks.
+			</li>
+		</ol>
+
+		<div class="note">
+			<b>HC mode:</b> switch with the <code>HC</code> button, fill in values A–K, then "End day".
+		</div>
+
+		<h2>3. Saving</h2>
+		<ul>
+			<li>
+				<b>Ctrl+S</b> — save everything manually.
+			</li>
+			<li>
+				<b>Auto-save</b> — every 5 minutes (enabled by default).
+			</li>
+			<li>
+				<b>Ctrl+Z</b> — undo the last action.
+			</li>
+		</ul>
+
+		<h2>4. Settings</h2>
+		<p>⚙ button in the top right corner. Sections:</p>
+		<ul>
+			<li>
+				<b>Interface</b> — theme, font, text size.
+			</li>
+			<li>
+				<b>Actions</b> — profiles, backups, printing.
+			</li>
+			<li>
+				<b>Advanced</b> — auto-start, tray, data path.
+			</li>
+		</ul>
+
+		<h2>5. Printing</h2>
+		<p>Settings → Actions → "Print". Select pages and printer, or "Microsoft Print to PDF" to save as PDF.</p>
+
+		<h2>6. Hotkeys</h2>
+		<ul>
+			<li>
+				<b>Ctrl+S</b> — save
+			</li>
+			<li>
+				<b>Ctrl+Z</b> — undo
+			</li>
+			<li>
+				<b>Ctrl+mouse wheel</b> — zoom (0.3–2.0)
+			</li>
+		</ul>
+
+		<h2>7. Monthly totals</h2>
+		<p>Each logbook automatically creates a "Monthly total" row:</p>
+		<ul>
+			<li>
+				If a <b>previous month</b> with records exists — the total is calculated as the difference between the last values (for cumulative columns) or as a sum (for daily columns).
+			</li>
+			<li>
+				If there is <b>no previous month</b> — the total is calculated by summing the month's rows, and the row is highlighted with a <span style="color:red;font-weight:bold;">red border</span>. Hovering over it shows the tooltip "Manual recalculation required".
+			</li>
+			<li>
+				A value of <code>0</code> in totals is displayed as <code>—</code> (em dash).
+			</li>
+		</ul>
+
+		<div class="note">
+			<b>VK-2500-01/02 logbooks</b> do not calculate totals when there is no previous month — the row remains empty but is highlighted with a red border for manual recalculation.
+		</div>
+
+	<section><h2>Android exchange and updates</h2><p>Five logbooks, flights, component and oil resources, replacement history, printing and PDF. Offline work and backups. Two-way exchange with Android over the internet or Wi-Fi using a QR code. A backup is made before replacing the book; conflicts are resolved by choosing a complete book version.</p><p>Check for updates: Settings → About → Check for updates. An internet connection is required. Downloads open in your browser; the download button is hidden until the file link is published.</p></section>
+</body>
+</html>

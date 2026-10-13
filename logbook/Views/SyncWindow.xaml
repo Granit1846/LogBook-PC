@@ -1,0 +1,111 @@
+﻿<Window x:Class="logbook.Views.SyncWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="{DynamicResource Sync_Title}"
+        Icon="pack://application:,,,/Resources/Icons/logbook.ico"
+        Width="460" Height="340"
+        WindowStartupLocation="CenterOwner"
+        ResizeMode="NoResize"
+        Background="{DynamicResource WindowBackgroundBrush}"
+        Foreground="{DynamicResource WindowForegroundBrush}">
+
+    <Window.Resources>
+        <Style TargetType="TextBlock">
+            <Setter Property="FontFamily" Value="{DynamicResource AppFontFamily}"/>
+            <Setter Property="FontSize" Value="{DynamicResource AppFontSize}"/>
+            <Setter Property="Foreground" Value="{DynamicResource WindowForegroundBrush}"/>
+        </Style>
+
+        <Style x:Key="DialogButton" TargetType="Button">
+            <Setter Property="FontFamily" Value="{DynamicResource AppFontFamily}"/>
+            <Setter Property="FontSize" Value="{DynamicResource AppFontSize}"/>
+            <Setter Property="Foreground" Value="{DynamicResource WindowForegroundBrush}"/>
+            <Setter Property="Background" Value="{DynamicResource AccentBackgroundBrush}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource BorderBrush}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="10,5"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="Bd"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="3"
+                                Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center"
+                                              VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Bd" Property="Background" Value="{DynamicResource WarningBackgroundBrush}"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="Bd" Property="Background" Value="{DynamicResource HeaderCellBackgroundBrush}"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Opacity" Value="0.4"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="BigChoiceButton" TargetType="Button" BasedOn="{StaticResource DialogButton}">
+            <Setter Property="Width" Value="260"/>
+            <Setter Property="Height" Value="52"/>
+            <Setter Property="Margin" Value="0,5"/>
+            <Setter Property="FontSize" Value="15"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+        </Style>
+    </Window.Resources>
+
+    <Grid Margin="24">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Заголовок -->
+        <TextBlock Grid.Row="0"
+                   Text="{DynamicResource Sync_Header}"
+                   FontSize="15"
+                   FontWeight="Bold"
+                   HorizontalAlignment="Center"
+                   TextAlignment="Center"
+                   Margin="0,0,0,16"
+                   TextWrapping="Wrap"/>
+
+        <!-- Кнопки -->
+        <StackPanel Grid.Row="1"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center">
+            <Button x:Name="PushButton"
+                    Content="{DynamicResource Sync_ToServer}"
+                    Style="{StaticResource BigChoiceButton}"
+                    Click="Push_Click"/>
+            <Button x:Name="PullButton"
+                    Content="{DynamicResource Sync_FromServer}"
+                    Style="{StaticResource BigChoiceButton}"
+                    Click="Pull_Click"/>
+            <Button x:Name="PhoneButton"
+                    Content="{DynamicResource Sync_Phone}"
+                    Style="{StaticResource BigChoiceButton}"
+                    IsEnabled="False"
+                    Click="Phone_Click"/>
+        </StackPanel>
+
+        <!-- Галочка -->
+        <CheckBox Grid.Row="2"
+                  x:Name="NotificationsCheckBox"
+                  Content="{DynamicResource Sync_Notifications}"
+                  HorizontalAlignment="Center"
+                  Margin="0,16,0,0"
+                  Foreground="{DynamicResource WindowForegroundBrush}"
+                  FontSize="12"
+                  ToolTip="{DynamicResource Sync_NotificationsTooltip}"/>
+    </Grid>
+</Window>

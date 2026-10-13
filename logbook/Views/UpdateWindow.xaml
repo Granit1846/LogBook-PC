@@ -1,0 +1,127 @@
+<Window x:Class="logbook.Views.UpdateWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="{DynamicResource Update_Title}"
+        Icon="pack://application:,,,/Resources/Icons/logbook.ico"
+        Width="480" Height="380"
+        WindowStartupLocation="CenterOwner"
+        ResizeMode="NoResize"
+        Background="{DynamicResource WindowBackgroundBrush}"
+        Foreground="{DynamicResource WindowForegroundBrush}">
+
+    <Window.Resources>
+        <Style TargetType="TextBlock">
+            <Setter Property="FontSize" Value="15"/>
+            <Setter Property="Foreground" Value="{DynamicResource WindowForegroundBrush}"/>
+        </Style>
+
+        <Style TargetType="Button">
+            <Setter Property="FontSize" Value="15"/>
+            <Setter Property="Foreground" Value="{DynamicResource WindowForegroundBrush}"/>
+            <Setter Property="Background" Value="{DynamicResource AccentBackgroundBrush}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource BorderBrush}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="10,5"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="Bd"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="3"
+                                Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center"
+                                              VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Bd" Property="Background" Value="{DynamicResource WarningBackgroundBrush}"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="Bd" Property="Background" Value="{DynamicResource HeaderCellBackgroundBrush}"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Opacity" Value="0.5"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style TargetType="TextBox">
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Background" Value="{DynamicResource CellBackgroundBrush}"/>
+            <Setter Property="Foreground" Value="{DynamicResource CellForegroundBrush}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource BorderBrush}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="6"/>
+            <Setter Property="CaretBrush" Value="{DynamicResource CaretBrush}"/>
+        </Style>
+    </Window.Resources>
+
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Заголовок -->
+        <TextBlock x:Name="TitleText"
+                   Grid.Row="0"
+                   FontSize="18"
+                   FontWeight="Bold"
+                   Text="{DynamicResource Update_NewVersion}"
+                   Margin="0,0,0,15"/>
+
+        <!-- Версии -->
+        <StackPanel Grid.Row="1" Margin="0,0,0,15">
+            <TextBlock>
+                <Run Text="{DynamicResource Update_CurrentVersion}"/>
+                <Run Text=" "/>
+                <Run x:Name="CurrentVersionRun" FontWeight="Bold"/>
+            </TextBlock>
+            <TextBlock x:Name="NewVersionBlock" Margin="0,5,0,0">
+                <Run Text="{DynamicResource Update_NewVersionLabel}"/>
+                <Run Text=" "/>
+                <Run x:Name="NewVersionRun" FontWeight="Bold"/>
+            </TextBlock>
+        </StackPanel>
+
+        <!-- Что нового -->
+        <TextBlock x:Name="WhatNewLabel"
+                   Grid.Row="2"
+                   Text="{DynamicResource Update_WhatNew}"
+                   FontWeight="Bold"
+                   Margin="0,0,0,5"/>
+
+        <TextBox x:Name="NotesTextBox"
+                 Grid.Row="3"
+                 IsReadOnly="True"
+                 TextWrapping="Wrap"
+                 AcceptsReturn="True"
+                 VerticalScrollBarVisibility="Auto"
+                 HorizontalScrollBarVisibility="Disabled"/>
+
+        <!-- Кнопки -->
+        <StackPanel Grid.Row="4"
+                    Orientation="Horizontal"
+                    HorizontalAlignment="Right"
+                    Margin="0,15,0,0">
+            <Button x:Name="DownloadButton"
+                    Content="{DynamicResource Update_Download}"
+                    Width="120" Height="30"
+                    Margin="0,0,8,0"
+                    Click="Download_Click"/>
+            <Button x:Name="CloseButton"
+                    Content="{DynamicResource Update_Later}"
+                    Width="100" Height="30"
+                    Click="Close_Click"/>
+        </StackPanel>
+    </Grid>
+</Window>

@@ -1,0 +1,55 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <SolidColorBrush x:Key="WindowBackgroundBrush" Color="#1E1E1E"/>
+    <SolidColorBrush x:Key="WindowForegroundBrush" Color="#FFFFFF"/>
+
+    <SolidColorBrush x:Key="CellBackgroundBrush" Color="#2D2D2D"/>
+    <SolidColorBrush x:Key="CellForegroundBrush" Color="#FFFFFF"/>
+
+    <SolidColorBrush x:Key="HeaderCellBackgroundBrush" Color="#3E3E3E"/>
+    <SolidColorBrush x:Key="HeaderCellForegroundBrush" Color="#FFFFFF"/>
+
+    <SolidColorBrush x:Key="StartCellBackgroundBrush" Color="#3A3A1A"/>
+    <SolidColorBrush x:Key="StartCellForegroundBrush" Color="#FFFFFF"/>
+
+    <SolidColorBrush x:Key="FixedCellBackgroundBrush" Color="#3A3A1A"/>
+    <SolidColorBrush x:Key="FixedCellForegroundBrush" Color="#FFFFFF"/>
+
+    <SolidColorBrush x:Key="BorderBrush" Color="#555555"/>
+    <SolidColorBrush x:Key="GridLineBrush" Color="#4A4A4A"/>
+
+    <SolidColorBrush x:Key="AccentBackgroundBrush" Color="#2A4A6A"/>
+    <SolidColorBrush x:Key="AccentForegroundBrush" Color="#FFFFFF"/>
+
+    <SolidColorBrush x:Key="WarningBackgroundBrush" Color="#5A4A1A"/>
+    <SolidColorBrush x:Key="WarningForegroundBrush" Color="#FFFFFF"/>
+
+    <SolidColorBrush x:Key="ResourceHeaderBrush" Color="#3E5E2A"/>
+    <SolidColorBrush x:Key="ResourceHeaderForegroundBrush" Color="#FFFFFF"/>
+
+    <SolidColorBrush x:Key="OilCellBackgroundBrush" Color="#3A3A1A"/>
+    <SolidColorBrush x:Key="AlertBackgroundBrush" Color="#5A4A1A"/>
+
+    <!-- ==================== ЯЧЕЙКИ-ПРЕДУПРЕЖДЕНИЯ ==================== -->
+    <!-- Тёмно-жёлтый фон / белый текст -->
+    <SolidColorBrush x:Key="WarningCellBackgroundBrush" Color="#7A6000"/>
+    <SolidColorBrush x:Key="WarningCellForegroundBrush" Color="#FFFFFF"/>
+
+    <!-- Тёмно-красный фон / светло-жёлтый текст -->
+    <SolidColorBrush x:Key="CriticalCellBackgroundBrush" Color="#7A0000"/>
+    <SolidColorBrush x:Key="CriticalCellForegroundBrush" Color="#FFE060"/>
+
+    <!-- Красный текст (для тёмной темы — чуть светлее, чтобы читался) -->
+    <SolidColorBrush x:Key="RedTextBrush" Color="#FF6060"/>
+
+    <!-- Каретка ввода текста (белая для тёмной темы) -->
+    <SolidColorBrush x:Key="CaretBrush" Color="#FFFFFF"/>
+
+    <DropShadowEffect x:Key="HeaderTextShadow"
+                      Color="Black"
+                      BlurRadius="2"
+                      ShadowDepth="0"
+                      Opacity="0.9"/>
+
+</ResourceDictionary>

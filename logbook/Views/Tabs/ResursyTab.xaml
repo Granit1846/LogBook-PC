@@ -1,0 +1,775 @@
+<UserControl x:Class="logbook.Views.Tabs.ResursyTab"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:helpers="clr-namespace:logbook.Helpers"
+             xmlns:conv="clr-namespace:logbook.Converters"
+             mc:Ignorable="d">
+
+    <UserControl.Resources>
+        <conv:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+
+        <Style x:Key="HeaderCellStyle" TargetType="{x:Type Border}">
+            <Setter Property="Background" Value="{DynamicResource HeaderCellBackgroundBrush}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource BorderBrush}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="3"/>
+        </Style>
+
+        <Style x:Key="DataCellStyle" TargetType="{x:Type Border}">
+            <Setter Property="BorderBrush" Value="{DynamicResource GridLineBrush}"/>
+            <Setter Property="BorderThickness" Value="0.5"/>
+            <Setter Property="Padding" Value="3"/>
+            <Setter Property="Background" Value="{DynamicResource CellBackgroundBrush}"/>
+        </Style>
+
+        <Style x:Key="FixedCellStyle" TargetType="{x:Type Border}">
+            <Setter Property="BorderBrush" Value="{DynamicResource GridLineBrush}"/>
+            <Setter Property="BorderThickness" Value="0.5"/>
+            <Setter Property="Padding" Value="3"/>
+            <Setter Property="Background" Value="{DynamicResource FixedCellBackgroundBrush}"/>
+        </Style>
+
+        <Style x:Key="OilCellStyle" TargetType="{x:Type Border}">
+            <Setter Property="BorderBrush" Value="{DynamicResource GridLineBrush}"/>
+            <Setter Property="BorderThickness" Value="0.5"/>
+            <Setter Property="Padding" Value="3"/>
+            <Setter Property="Background" Value="{DynamicResource OilCellBackgroundBrush}"/>
+        </Style>
+
+        <Style x:Key="CellText" TargetType="{x:Type TextBlock}">
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Foreground" Value="{DynamicResource CellForegroundBrush}"/>
+        </Style>
+
+        <Style x:Key="FixedCellText" TargetType="{x:Type TextBlock}">
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Foreground" Value="{DynamicResource FixedCellForegroundBrush}"/>
+        </Style>
+
+        <Style x:Key="HorizontalText" TargetType="{x:Type TextBlock}">
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="FontSize" Value="{DynamicResource AppFontSizeSmall}"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="TextWrapping" Value="Wrap"/>
+            <Setter Property="Foreground" Value="{DynamicResource HeaderCellForegroundBrush}"/>
+            <Setter Property="Effect" Value="{StaticResource HeaderTextShadow}"/>
+        </Style>
+
+        <Style x:Key="TableCellText" TargetType="{x:Type TextBlock}">
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="FontSize" Value="{DynamicResource AppFontSizeSmall}"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="TextWrapping" Value="Wrap"/>
+            <Setter Property="Foreground" Value="{DynamicResource CellForegroundBrush}"/>
+        </Style>
+
+        <Style x:Key="RemainingText" TargetType="{x:Type TextBlock}">
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="FontSize" Value="{DynamicResource AppFontSizeSmall}"/>
+            <Setter Property="TextWrapping" Value="Wrap"/>
+            <Setter Property="Foreground" Value="{DynamicResource CellForegroundBrush}"/>
+        </Style>
+
+        <Style x:Key="InputTextBox" TargetType="{x:Type TextBox}">
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="{DynamicResource CellForegroundBrush}"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="FontSize" Value="{DynamicResource AppFontSizeSmall}"/>
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="CaretBrush" Value="{DynamicResource CaretBrush}"/>
+            <Setter Property="helpers:SelectAllOnFocusBehavior.IsEnabled" Value="True"/>
+        </Style>
+
+        <Style x:Key="RemoveButtonStyle" TargetType="{x:Type Button}">
+            <Setter Property="Content" Value="✕"/>
+            <Setter Property="FontSize" Value="{DynamicResource AppFontSizeSmall}"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Foreground" Value="{DynamicResource RedTextBrush}"/>
+            <Setter Property="Width" Value="22"/>
+            <Setter Property="Height" Value="22"/>
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="FontFamily" Value="Segoe UI Symbol"/>
+            <Setter Property="Cursor" Value="Hand"/>
+        </Style>
+    </UserControl.Resources>
+
+    <TabControl Margin="5"
+                Background="{DynamicResource WindowBackgroundBrush}"
+                BorderBrush="{DynamicResource BorderBrush}">
+
+        <!-- ============================================================ -->
+        <!-- ============== ВКЛАДКА «АГРЕГАТЫ НА БОРТУ» ================= -->
+        <!-- ============================================================ -->
+        <TabItem Header="{DynamicResource Tab_Resources_OnBoard}">
+            <Grid Margin="10" Background="{DynamicResource WindowBackgroundBrush}">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <TextBlock Grid.Row="0"
+                           Text="{DynamicResource OnBoard_Title}"
+                           FontSize="16"
+                           FontWeight="Bold"
+                           Foreground="{DynamicResource WindowForegroundBrush}"
+                           Margin="0,0,0,10"/>
+
+                <ScrollViewer Grid.Row="1"
+                              VerticalScrollBarVisibility="Auto"
+                              HorizontalScrollBarVisibility="Disabled"
+                              HorizontalAlignment="Left">
+                    <ItemsControl ItemsSource="{Binding AggregateRows}"
+                                  Width="620">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Border BorderBrush="{DynamicResource GridLineBrush}"
+                                        BorderThickness="0.5"
+                                        CornerRadius="4"
+                                        Padding="10,6"
+                                        Margin="0,0,0,4"
+                                        Background="{DynamicResource CellBackgroundBrush}">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="180"/>
+                                            <ColumnDefinition Width="160"/>
+                                            <ColumnDefinition Width="140"/>
+                                            <ColumnDefinition Width="110"/>
+                                        </Grid.ColumnDefinitions>
+
+                                        <TextBlock Grid.Column="0"
+                                                   Text="{Binding DisplayName}"
+                                                   FontWeight="SemiBold"
+                                                   VerticalAlignment="Center"
+                                                   Foreground="{DynamicResource CellForegroundBrush}"/>
+
+                                        <TextBlock Grid.Column="1"
+                                                   Text="{Binding Number}"
+                                                   VerticalAlignment="Center"
+                                                   Foreground="{DynamicResource CellForegroundBrush}"/>
+
+                                        <TextBlock Grid.Column="2"
+                                                   Text="{Binding Status}"
+                                                   VerticalAlignment="Center"
+                                                   Foreground="Gray"
+                                                   FontSize="{DynamicResource AppFontSizeSmall}"/>
+
+                                        <Button Grid.Column="3"
+                                                Content="{DynamicResource OnBoard_Replace}"
+                                                Command="{Binding DataContext.ReplaceAggregateCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                CommandParameter="{Binding}"
+                                                Visibility="{Binding ShowReplaceButton, Converter={StaticResource BoolToVisibilityConverter}}"
+                                                Padding="8,3"
+                                                HorizontalAlignment="Right"/>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ScrollViewer>
+
+                <StackPanel Grid.Row="2"
+                            Orientation="Horizontal"
+                            HorizontalAlignment="Left"
+                            Margin="0,15,0,0">
+                    <Button Content="{DynamicResource OnBoard_History}"
+                            Command="{Binding OpenAggregateHistoryCommand}"
+                            Padding="12,5"
+                            Margin="0,0,8,0"/>
+
+                    <Button Content="{DynamicResource OnBoard_Setup}"
+                            Command="{Binding OpenSetupAggregatesCommand}"
+                            IsEnabled="{Binding CanOpenSetupAggregates}"
+                            Padding="12,5"/>
+                </StackPanel>
+            </Grid>
+        </TabItem>
+
+        <!-- ============================================================ -->
+        <!-- ==================== ВКЛАДКА «АГРЕГАТЫ» ==================== -->
+        <!-- ============================================================ -->
+        <TabItem Header="{DynamicResource Tab_Resources_Aggregates}">
+            <Grid Margin="5" Background="{DynamicResource WindowBackgroundBrush}" Grid.IsSharedSizeScope="True">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <Grid Grid.Row="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <ScrollViewer x:Name="AggregatesHeaderScroll"
+                                  Grid.Column="0"
+                                  Background="{DynamicResource WindowBackgroundBrush}"
+                                  HorizontalScrollBarVisibility="Hidden"
+                                  VerticalScrollBarVisibility="Disabled"
+                                  Focusable="False"
+                                  CanContentScroll="False"
+                                  PreviewMouseWheel="AggregatesHeaderScroll_PreviewMouseWheel">
+                    <StackPanel HorizontalAlignment="Left">
+
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" SharedSizeGroup="AggCol0" MinWidth="140"/>
+                                <ColumnDefinition Width="Auto" SharedSizeGroup="AggCol1" MinWidth="80"/>
+                                <ColumnDefinition Width="Auto" SharedSizeGroup="AggCol2" MinWidth="80"/>
+                                <ColumnDefinition Width="Auto" SharedSizeGroup="AggCol3" MinWidth="80"/>
+                                <ColumnDefinition Width="Auto" SharedSizeGroup="AggCol4" MinWidth="90"/>
+                                <ColumnDefinition Width="Auto" SharedSizeGroup="AggCol5" MinWidth="90"/>
+                                <ColumnDefinition Width="Auto" SharedSizeGroup="AggCol6" MinWidth="100"/>
+                                <ColumnDefinition Width="Auto" SharedSizeGroup="AggCol7" MinWidth="80"/>
+                                <ColumnDefinition Width="Auto" SharedSizeGroup="AggCol8" MinWidth="80"/>
+                                <ColumnDefinition Width="Auto" SharedSizeGroup="AggCol9" MinWidth="30"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Border Grid.Column="0" Grid.ColumnSpan="10"
+                                    Background="{DynamicResource ResourceHeaderBrush}"
+                                    Padding="8,4">
+                                <TextBlock Text="{DynamicResource Resursy_AggregatesTitle}"
+                                           FontSize="16"
+                                           FontWeight="Bold"
+                                           Foreground="{DynamicResource ResourceHeaderForegroundBrush}"
+                                           HorizontalAlignment="Center"
+                                           TextAlignment="Center"/>
+                            </Border>
+                        </Grid>
+
+                        <Grid MinHeight="60">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" SharedSizeGroup="AggCol0" MinWidth="140"/>
+                                <ColumnDefinition Width="Auto" SharedSizeGroup="AggCol1" MinWidth="80"/>
+                                <ColumnDefinition Width="Auto" SharedSizeGroup="AggCol2" MinWidth="80"/>
+                                <ColumnDefinition Width="Auto" SharedSizeGroup="AggCol3" MinWidth="80"/>
+                                <ColumnDefinition Width="Auto" SharedSizeGroup="AggCol4" MinWidth="90"/>
+                                <ColumnDefinition Width="Auto" SharedSizeGroup="AggCol5" MinWidth="90"/>
+                                <ColumnDefinition Width="Auto" SharedSizeGroup="AggCol6" MinWidth="100"/>
+                                <ColumnDefinition Width="Auto" SharedSizeGroup="AggCol7" MinWidth="80"/>
+                                <ColumnDefinition Width="Auto" SharedSizeGroup="AggCol8" MinWidth="80"/>
+                                <ColumnDefinition Width="Auto" SharedSizeGroup="AggCol9" MinWidth="30"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Border Grid.Column="0" Style="{StaticResource HeaderCellStyle}">
+                                <TextBlock Style="{StaticResource HorizontalText}" TextAlignment="Center">
+                                    <Run x:Name="Run_Resursy_ItemName1"/><LineBreak/>
+                                    <Run x:Name="Run_Resursy_ItemName2"/>
+                                </TextBlock>
+                            </Border>
+                            <Border Grid.Column="1" Style="{StaticResource HeaderCellStyle}">
+                                <TextBlock Text="{DynamicResource Header_SNE}" Style="{StaticResource HorizontalText}"/>
+                            </Border>
+                            <Border Grid.Column="2" Style="{StaticResource HeaderCellStyle}">
+                                <TextBlock Style="{StaticResource HorizontalText}" TextAlignment="Center">
+                                    <Run x:Name="Run_Resursy_Assigned1"/><LineBreak/>
+                                    <Run x:Name="Run_Resursy_Assigned2"/><LineBreak/>
+                                    <Run x:Name="Run_Resursy_Assigned3"/>
+                                </TextBlock>
+                            </Border>
+                            <Border Grid.Column="3" Style="{StaticResource HeaderCellStyle}">
+                                <TextBlock Style="{StaticResource HorizontalText}" TextAlignment="Center">
+                                    <Run x:Name="Run_Resursy_RemainingHh1"/><LineBreak/>
+                                    <Run x:Name="Run_Resursy_RemainingHh2"/>
+                                </TextBlock>
+                            </Border>
+                            <Border Grid.Column="4" Style="{StaticResource HeaderCellStyle}">
+                                <TextBlock Style="{StaticResource HorizontalText}" TextAlignment="Center">
+                                    <Run x:Name="Run_Resursy_AssignedYears1"/><LineBreak/>
+                                    <Run x:Name="Run_Resursy_AssignedYears2"/>
+                                </TextBlock>
+                            </Border>
+                            <Border Grid.Column="5" Style="{StaticResource HeaderCellStyle}">
+                                <TextBlock Text="{DynamicResource Header_IssueDate}" Style="{StaticResource HorizontalText}"/>
+                            </Border>
+                            <Border Grid.Column="6" Style="{StaticResource HeaderCellStyle}">
+                                <TextBlock Style="{StaticResource HorizontalText}" TextAlignment="Center">
+                                    <Run x:Name="Run_Resursy_RemainingDate1"/><LineBreak/>
+                                    <Run x:Name="Run_Resursy_RemainingDate2"/>
+                                </TextBlock>
+                            </Border>
+                            <Border Grid.Column="7" Style="{StaticResource HeaderCellStyle}">
+                                <TextBlock Style="{StaticResource HorizontalText}" TextAlignment="Center">
+                                    <Run x:Name="Run_Resursy_InstalledResource1"/><LineBreak/>
+                                    <Run x:Name="Run_Resursy_InstalledResource2"/><LineBreak/>
+                                    <Run x:Name="Run_Resursy_InstalledResource3"/>
+                                </TextBlock>
+                            </Border>
+                            <Border Grid.Column="8" Grid.ColumnSpan="2" Style="{StaticResource HeaderCellStyle}">
+                                <TextBlock Style="{StaticResource HorizontalText}" TextAlignment="Center">
+                                    <Run x:Name="Run_Resursy_BeforeInstall1"/><LineBreak/>
+                                    <Run x:Name="Run_Resursy_BeforeInstall2"/><LineBreak/>
+                                    <Run x:Name="Run_Resursy_BeforeInstall3"/>
+                                </TextBlock>
+                            </Border>
+                        </Grid>
+                    </StackPanel>
+                </ScrollViewer>
+
+                    <!-- Заглушка над вертикальным скроллбаром таблицы -->
+                    <Border Grid.Column="1"
+                            Width="{x:Static SystemParameters.VerticalScrollBarWidth}"
+                            Style="{StaticResource HeaderCellStyle}"/>
+                </Grid>
+
+                <!-- Область данных -->
+                <ScrollViewer x:Name="AggregatesDataScroll"
+                              Grid.Row="1"
+                              Background="{DynamicResource WindowBackgroundBrush}"
+                              HorizontalScrollBarVisibility="Auto"
+                              VerticalScrollBarVisibility="Visible"
+                              CanContentScroll="False"
+                              ScrollChanged="AggregatesDataScroll_ScrollChanged"
+                              PreviewMouseWheel="AggregatesDataScroll_PreviewMouseWheel">
+                    <StackPanel HorizontalAlignment="Left">
+                        <ItemsControl ItemsSource="{Binding ResourceRecords}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid MinHeight="25">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto" SharedSizeGroup="AggCol0" MinWidth="140"/>
+                                            <ColumnDefinition Width="Auto" SharedSizeGroup="AggCol1" MinWidth="80"/>
+                                            <ColumnDefinition Width="Auto" SharedSizeGroup="AggCol2" MinWidth="80"/>
+                                            <ColumnDefinition Width="Auto" SharedSizeGroup="AggCol3" MinWidth="80"/>
+                                            <ColumnDefinition Width="Auto" SharedSizeGroup="AggCol4" MinWidth="90"/>
+                                            <ColumnDefinition Width="Auto" SharedSizeGroup="AggCol5" MinWidth="90"/>
+                                            <ColumnDefinition Width="Auto" SharedSizeGroup="AggCol6" MinWidth="100"/>
+                                            <ColumnDefinition Width="Auto" SharedSizeGroup="AggCol7" MinWidth="80"/>
+                                            <ColumnDefinition Width="Auto" SharedSizeGroup="AggCol8" MinWidth="80"/>
+                                            <ColumnDefinition Width="Auto" SharedSizeGroup="AggCol9" MinWidth="30"/>
+                                        </Grid.ColumnDefinitions>
+
+                                        <Border Grid.Column="0" Style="{StaticResource DataCellStyle}">
+                                            <TextBox Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource InputTextBox}"/>
+                                        </Border>
+
+                                        <Border Grid.Column="1" Style="{StaticResource FixedCellStyle}">
+                                            <TextBlock Text="{Binding SNE}" Style="{StaticResource FixedCellText}" FontSize="{DynamicResource AppFontSizeSmall}"/>
+                                        </Border>
+
+                                        <Border Grid.Column="2" Style="{StaticResource DataCellStyle}">
+                                            <TextBox Text="{Binding ExtendedTo1, UpdateSourceTrigger=PropertyChanged}" 
+                                                     Style="{StaticResource InputTextBox}"
+                                                     helpers:TimeInputBehavior.IsEnabled="True"/>
+                                        </Border>
+
+                                        <Border Grid.Column="3">
+                                            <Border.Style>
+                                                <Style TargetType="Border">
+                                                    <Setter Property="BorderBrush" Value="{DynamicResource GridLineBrush}"/>
+                                                    <Setter Property="BorderThickness" Value="0.5"/>
+                                                    <Setter Property="Padding" Value="3"/>
+                                                    <Setter Property="Background" Value="{DynamicResource FixedCellBackgroundBrush}"/>
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding Remaining1IsYellowBg}" Value="True">
+                                                            <Setter Property="Background" Value="{DynamicResource WarningCellBackgroundBrush}"/>
+                                                        </DataTrigger>
+                                                        <DataTrigger Binding="{Binding Remaining1IsCritical}" Value="True">
+                                                            <Setter Property="Background" Value="{DynamicResource CriticalCellBackgroundBrush}"/>
+                                                        </DataTrigger>
+                                                        <DataTrigger Binding="{Binding Remaining1IsNegative}" Value="True">
+                                                            <Setter Property="Background" Value="{DynamicResource CriticalCellBackgroundBrush}"/>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </Border.Style>
+
+                                            <TextBlock Text="{Binding Remaining1}">
+                                                <TextBlock.Style>
+                                                    <Style TargetType="TextBlock" BasedOn="{StaticResource RemainingText}">
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding Remaining1IsYellowBg}" Value="True">
+                                                                <Setter Property="Foreground" Value="{DynamicResource WarningCellForegroundBrush}"/>
+                                                                <Setter Property="FontWeight" Value="Bold"/>
+                                                            </DataTrigger>
+                                                            <DataTrigger Binding="{Binding Remaining1IsRedText}" Value="True">
+                                                                <Setter Property="Foreground" Value="{DynamicResource RedTextBrush}"/>
+                                                                <Setter Property="FontWeight" Value="Bold"/>
+                                                            </DataTrigger>
+                                                            <DataTrigger Binding="{Binding Remaining1IsCritical}" Value="True">
+                                                                <Setter Property="Foreground" Value="{DynamicResource CriticalCellForegroundBrush}"/>
+                                                                <Setter Property="FontWeight" Value="Bold"/>
+                                                            </DataTrigger>
+                                                            <DataTrigger Binding="{Binding Remaining1IsNegative}" Value="True">
+                                                                <Setter Property="Foreground" Value="{DynamicResource WarningCellForegroundBrush}"/>
+                                                                <Setter Property="FontWeight" Value="Bold"/>
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </TextBlock.Style>
+                                            </TextBlock>
+                                        </Border>
+
+                                        <Border Grid.Column="4" Style="{StaticResource DataCellStyle}">
+                                            <TextBox Text="{Binding YearsResource, UpdateSourceTrigger=PropertyChanged}" 
+                                                     Style="{StaticResource InputTextBox}"/>
+                                        </Border>
+
+                                        <Border Grid.Column="5" Style="{StaticResource DataCellStyle}">
+                                            <TextBox Text="{Binding IssueDate, UpdateSourceTrigger=PropertyChanged}" 
+                                                     Style="{StaticResource InputTextBox}"
+                                                     helpers:DateInputBehavior.IsEnabled="True"/>
+                                        </Border>
+
+                                        <Border Grid.Column="6">
+                                            <Border.Style>
+                                                <Style TargetType="Border">
+                                                    <Setter Property="BorderBrush" Value="{DynamicResource GridLineBrush}"/>
+                                                    <Setter Property="BorderThickness" Value="0.5"/>
+                                                    <Setter Property="Padding" Value="3"/>
+                                                    <Setter Property="Background" Value="{DynamicResource FixedCellBackgroundBrush}"/>
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding Remaining2IsYellowBg}" Value="True">
+                                                            <Setter Property="Background" Value="{DynamicResource WarningCellBackgroundBrush}"/>
+                                                        </DataTrigger>
+                                                        <DataTrigger Binding="{Binding Remaining2IsCritical}" Value="True">
+                                                            <Setter Property="Background" Value="{DynamicResource CriticalCellBackgroundBrush}"/>
+                                                        </DataTrigger>
+                                                        <DataTrigger Binding="{Binding Remaining2IsNegative}" Value="True">
+                                                            <Setter Property="Background" Value="{DynamicResource CriticalCellBackgroundBrush}"/>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </Border.Style>
+
+                                            <TextBlock Text="{Binding Remaining2}">
+                                                <TextBlock.Style>
+                                                    <Style TargetType="TextBlock" BasedOn="{StaticResource RemainingText}">
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding Remaining2IsYellowBg}" Value="True">
+                                                                <Setter Property="Foreground" Value="{DynamicResource WarningCellForegroundBrush}"/>
+                                                                <Setter Property="FontWeight" Value="Bold"/>
+                                                            </DataTrigger>
+                                                            <DataTrigger Binding="{Binding Remaining2IsRedText}" Value="True">
+                                                                <Setter Property="Foreground" Value="{DynamicResource RedTextBrush}"/>
+                                                                <Setter Property="FontWeight" Value="Bold"/>
+                                                            </DataTrigger>
+                                                            <DataTrigger Binding="{Binding Remaining2IsCritical}" Value="True">
+                                                                <Setter Property="Foreground" Value="{DynamicResource CriticalCellForegroundBrush}"/>
+                                                                <Setter Property="FontWeight" Value="Bold"/>
+                                                            </DataTrigger>
+                                                            <DataTrigger Binding="{Binding Remaining2IsNegative}" Value="True">
+                                                                <Setter Property="Foreground" Value="{DynamicResource WarningCellForegroundBrush}"/>
+                                                                <Setter Property="FontWeight" Value="Bold"/>
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </TextBlock.Style>
+                                            </TextBlock>
+                                        </Border>
+
+                                        <Border Grid.Column="7" Style="{StaticResource DataCellStyle}">
+                                            <TextBox Text="{Binding InstalledAtSNE1, UpdateSourceTrigger=PropertyChanged}" 
+                                                     Style="{StaticResource InputTextBox}"
+                                                     helpers:TimeInputBehavior.IsEnabled="True"/>
+                                        </Border>
+
+                                        <Border Grid.Column="8" Style="{StaticResource DataCellStyle}">
+                                            <TextBox Text="{Binding InstalledAtSNE2, UpdateSourceTrigger=PropertyChanged}" 
+                                                     Style="{StaticResource InputTextBox}"
+                                                     helpers:TimeInputBehavior.IsEnabled="True"/>
+                                        </Border>
+
+                                        <Button Grid.Column="9"
+                                                Style="{StaticResource RemoveButtonStyle}"
+                                                Command="{Binding DataContext.RemoveResourceRecordCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                CommandParameter="{Binding}"
+                                                ToolTip="{DynamicResource Launch_Delete}"/>
+                                    </Grid>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+
+                        <Button Content="{DynamicResource Resursy_AddRow}"
+                                Command="{Binding AddResourceRecordCommand}"
+                                HorizontalAlignment="Left"
+                                Margin="0,5,0,0"
+                                Padding="10,5"/>
+                    </StackPanel>
+                </ScrollViewer>
+            </Grid>
+        </TabItem>
+
+        <!-- ============================================================ -->
+        <!-- ==================== ВКЛАДКА «МАСЛА» ======================= -->
+        <!-- ============================================================ -->
+        <TabItem Header="{DynamicResource Tab_Resources_Oils}">
+            <Grid Margin="5" Background="{DynamicResource WindowBackgroundBrush}" Grid.IsSharedSizeScope="True">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <Grid Grid.Row="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <ScrollViewer x:Name="OilsHeaderScroll"
+                                  Grid.Column="0"
+                                  Background="{DynamicResource WindowBackgroundBrush}"
+                                  HorizontalScrollBarVisibility="Hidden"
+                                  VerticalScrollBarVisibility="Disabled"
+                                  Focusable="False"
+                                  CanContentScroll="False"
+                                  PreviewMouseWheel="OilsHeaderScroll_PreviewMouseWheel">
+                    <StackPanel HorizontalAlignment="Left">
+
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" SharedSizeGroup="OilCol0" MinWidth="100"/>
+                                <ColumnDefinition Width="Auto" SharedSizeGroup="OilCol1" MinWidth="80"/>
+                                <ColumnDefinition Width="Auto" SharedSizeGroup="OilCol2" MinWidth="90"/>
+                                <ColumnDefinition Width="Auto" SharedSizeGroup="OilCol3" MinWidth="80"/>
+                                <ColumnDefinition Width="Auto" SharedSizeGroup="OilCol4" MinWidth="80"/>
+                                <ColumnDefinition Width="Auto" SharedSizeGroup="OilCol5" MinWidth="80"/>
+                                <ColumnDefinition Width="Auto" SharedSizeGroup="OilCol6" MinWidth="60"/>
+                                <ColumnDefinition Width="Auto" SharedSizeGroup="OilCol7" MinWidth="30"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Border Grid.Column="0" Grid.ColumnSpan="8"
+                                    Background="{DynamicResource ResourceHeaderBrush}"
+                                    Padding="8,4">
+                                <TextBlock Text="{DynamicResource Resursy_OilsTitle}"
+                                           FontSize="14"
+                                           FontWeight="Bold"
+                                           Foreground="{DynamicResource ResourceHeaderForegroundBrush}"
+                                           HorizontalAlignment="Center"
+                                           TextAlignment="Center"/>
+                            </Border>
+                        </Grid>
+
+                        <Grid MinHeight="60">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" SharedSizeGroup="OilCol0" MinWidth="100"/>
+                                <ColumnDefinition Width="Auto" SharedSizeGroup="OilCol1" MinWidth="80"/>
+                                <ColumnDefinition Width="Auto" SharedSizeGroup="OilCol2" MinWidth="90"/>
+                                <ColumnDefinition Width="Auto" SharedSizeGroup="OilCol3" MinWidth="80"/>
+                                <ColumnDefinition Width="Auto" SharedSizeGroup="OilCol4" MinWidth="80"/>
+                                <ColumnDefinition Width="Auto" SharedSizeGroup="OilCol5" MinWidth="80"/>
+                                <ColumnDefinition Width="Auto" SharedSizeGroup="OilCol6" MinWidth="60"/>
+                                <ColumnDefinition Width="Auto" SharedSizeGroup="OilCol7" MinWidth="30"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Border Grid.Column="0" Style="{StaticResource HeaderCellStyle}">
+                                <TextBlock Text="{DynamicResource Resursy_OilWhere}" Style="{StaticResource HorizontalText}"/>
+                            </Border>
+                            <Border Grid.Column="1" Style="{StaticResource HeaderCellStyle}">
+                                <TextBlock Style="{StaticResource HorizontalText}">
+                                    <Run x:Name="Run_Resursy_OilSNE1"/>
+                                    <Run x:Name="Run_Resursy_OilSNE2"/>
+                                </TextBlock>
+                            </Border>
+                            <Border Grid.Column="2" Style="{StaticResource HeaderCellStyle}">
+                                <TextBlock Style="{StaticResource HorizontalText}">
+                                    <Run x:Name="Run_Resursy_OilDate1"/>
+                                    <Run x:Name="Run_Resursy_OilDate2"/>
+                                </TextBlock>
+                            </Border>
+                            <Border Grid.Column="3" Style="{StaticResource HeaderCellStyle}">
+                                <TextBlock Style="{StaticResource HorizontalText}" TextAlignment="Center">
+                                    <Run x:Name="Run_Resursy_OilRem1"/><LineBreak/>
+                                    <Run x:Name="Run_Resursy_OilRem2"/>
+                                </TextBlock>
+                            </Border>
+                            <Border Grid.Column="4" Style="{StaticResource HeaderCellStyle}">
+                                <TextBlock Style="{StaticResource HorizontalText}" TextAlignment="Center">
+                                    <Run x:Name="Run_Resursy_OilRemDate1"/><LineBreak/>
+                                    <Run x:Name="Run_Resursy_OilRemDate2"/>
+                                </TextBlock>
+                            </Border>
+                            <Border Grid.Column="5" Style="{StaticResource HeaderCellStyle}">
+                                <TextBlock Style="{StaticResource HorizontalText}" TextAlignment="Center">
+                                    <Run x:Name="Run_Resursy_OilRes1"/><LineBreak/>
+                                    <Run x:Name="Run_Resursy_OilRes2"/>
+                                </TextBlock>
+                            </Border>
+                            <Border Grid.Column="6" Grid.ColumnSpan="2" Style="{StaticResource HeaderCellStyle}">
+                                <TextBlock Style="{StaticResource HorizontalText}" TextAlignment="Center">
+                                    <Run x:Name="Run_Resursy_OilResY1"/><LineBreak/>
+                                    <Run x:Name="Run_Resursy_OilResY2"/>
+                                </TextBlock>
+                            </Border>
+                        </Grid>
+                    </StackPanel>
+                </ScrollViewer>
+
+                    <!-- Заглушка над вертикальным скроллбаром таблицы -->
+                    <Border Grid.Column="1"
+                            Width="{x:Static SystemParameters.VerticalScrollBarWidth}"
+                            Style="{StaticResource HeaderCellStyle}"/>
+                </Grid>
+
+                <!-- Область данных -->
+                <ScrollViewer x:Name="OilsDataScroll"
+                              Grid.Row="1"
+                              Background="{DynamicResource WindowBackgroundBrush}"
+                              HorizontalScrollBarVisibility="Auto"
+                              VerticalScrollBarVisibility="Visible"
+                              CanContentScroll="False"
+                              ScrollChanged="OilsDataScroll_ScrollChanged"
+                              PreviewMouseWheel="OilsDataScroll_PreviewMouseWheel">
+                    <StackPanel HorizontalAlignment="Left">
+                        <ItemsControl ItemsSource="{Binding OilRecords}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid MinHeight="25">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto" SharedSizeGroup="OilCol0" MinWidth="100"/>
+                                            <ColumnDefinition Width="Auto" SharedSizeGroup="OilCol1" MinWidth="80"/>
+                                            <ColumnDefinition Width="Auto" SharedSizeGroup="OilCol2" MinWidth="90"/>
+                                            <ColumnDefinition Width="Auto" SharedSizeGroup="OilCol3" MinWidth="80"/>
+                                            <ColumnDefinition Width="Auto" SharedSizeGroup="OilCol4" MinWidth="80"/>
+                                            <ColumnDefinition Width="Auto" SharedSizeGroup="OilCol5" MinWidth="80"/>
+                                            <ColumnDefinition Width="Auto" SharedSizeGroup="OilCol6" MinWidth="60"/>
+                                            <ColumnDefinition Width="Auto" SharedSizeGroup="OilCol7" MinWidth="30"/>
+                                        </Grid.ColumnDefinitions>
+
+                                        <Border Grid.Column="0" Style="{StaticResource DataCellStyle}">
+                                            <TextBox Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" 
+                                                     Style="{StaticResource InputTextBox}"/>
+                                        </Border>
+
+                                        <Border Grid.Column="1" Style="{StaticResource DataCellStyle}">
+                                            <TextBox Text="{Binding ByHours, UpdateSourceTrigger=PropertyChanged}" 
+                                                     Style="{StaticResource InputTextBox}"
+                                                     helpers:TimeInputBehavior.IsEnabled="True"/>
+                                        </Border>
+
+                                        <Border Grid.Column="2" Style="{StaticResource DataCellStyle}">
+                                            <TextBox Text="{Binding ByYears, UpdateSourceTrigger=PropertyChanged}" 
+                                                     Style="{StaticResource InputTextBox}"
+                                                     helpers:DateInputBehavior.IsEnabled="True"/>
+                                        </Border>
+
+                                        <Border Grid.Column="3">
+                                            <Border.Style>
+                                                <Style TargetType="Border">
+                                                    <Setter Property="BorderBrush" Value="{DynamicResource GridLineBrush}"/>
+                                                    <Setter Property="BorderThickness" Value="0.5"/>
+                                                    <Setter Property="Padding" Value="3"/>
+                                                    <Setter Property="Background" Value="{DynamicResource OilCellBackgroundBrush}"/>
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding Remaining1IsCritical}" Value="True">
+                                                            <Setter Property="Background" Value="{DynamicResource CriticalCellBackgroundBrush}"/>
+                                                        </DataTrigger>
+                                                        <DataTrigger Binding="{Binding Remaining1IsNegative}" Value="True">
+                                                            <Setter Property="Background" Value="{DynamicResource CriticalCellBackgroundBrush}"/>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </Border.Style>
+
+                                            <TextBlock Text="{Binding Remaining1}">
+                                                <TextBlock.Style>
+                                                    <Style TargetType="TextBlock" BasedOn="{StaticResource RemainingText}">
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding Remaining1IsWarning}" Value="True">
+                                                                <Setter Property="Foreground" Value="{DynamicResource RedTextBrush}"/>
+                                                                <Setter Property="FontWeight" Value="Bold"/>
+                                                            </DataTrigger>
+                                                            <DataTrigger Binding="{Binding Remaining1IsCritical}" Value="True">
+                                                                <Setter Property="Foreground" Value="{DynamicResource CriticalCellForegroundBrush}"/>
+                                                                <Setter Property="FontWeight" Value="Bold"/>
+                                                            </DataTrigger>
+                                                            <DataTrigger Binding="{Binding Remaining1IsNegative}" Value="True">
+                                                                <Setter Property="Foreground" Value="{DynamicResource WarningCellForegroundBrush}"/>
+                                                                <Setter Property="FontWeight" Value="Bold"/>
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </TextBlock.Style>
+                                            </TextBlock>
+                                        </Border>
+
+                                        <Border Grid.Column="4">
+                                            <Border.Style>
+                                                <Style TargetType="Border">
+                                                    <Setter Property="BorderBrush" Value="{DynamicResource GridLineBrush}"/>
+                                                    <Setter Property="BorderThickness" Value="0.5"/>
+                                                    <Setter Property="Padding" Value="3"/>
+                                                    <Setter Property="Background" Value="{DynamicResource OilCellBackgroundBrush}"/>
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding Remaining2IsCritical}" Value="True">
+                                                            <Setter Property="Background" Value="{DynamicResource CriticalCellBackgroundBrush}"/>
+                                                        </DataTrigger>
+                                                        <DataTrigger Binding="{Binding Remaining2IsNegative}" Value="True">
+                                                            <Setter Property="Background" Value="{DynamicResource CriticalCellBackgroundBrush}"/>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </Border.Style>
+
+                                            <TextBlock Text="{Binding Remaining2}">
+                                                <TextBlock.Style>
+                                                    <Style TargetType="TextBlock" BasedOn="{StaticResource RemainingText}">
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding Remaining2IsWarning}" Value="True">
+                                                                <Setter Property="Foreground" Value="{DynamicResource RedTextBrush}"/>
+                                                                <Setter Property="FontWeight" Value="Bold"/>
+                                                            </DataTrigger>
+                                                            <DataTrigger Binding="{Binding Remaining2IsCritical}" Value="True">
+                                                                <Setter Property="Foreground" Value="{DynamicResource CriticalCellForegroundBrush}"/>
+                                                                <Setter Property="FontWeight" Value="Bold"/>
+                                                            </DataTrigger>
+                                                            <DataTrigger Binding="{Binding Remaining2IsNegative}" Value="True">
+                                                                <Setter Property="Foreground" Value="{DynamicResource WarningCellForegroundBrush}"/>
+                                                                <Setter Property="FontWeight" Value="Bold"/>
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </TextBlock.Style>
+                                            </TextBlock>
+                                        </Border>
+
+                                        <Border Grid.Column="5" Style="{StaticResource DataCellStyle}">
+                                            <TextBox Text="{Binding Coefficient, UpdateSourceTrigger=PropertyChanged}" 
+                                                     Style="{StaticResource InputTextBox}"
+                                                     helpers:TimeInputBehavior.IsEnabled="True"/>
+                                        </Border>
+
+                                        <Border Grid.Column="6" Style="{StaticResource DataCellStyle}">
+                                            <ComboBox SelectedItem="{Binding Term, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                                      ItemsSource="{Binding DataContext.TermOptions, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                      BorderThickness="0"
+                                                      Background="Transparent"
+                                                      Foreground="{DynamicResource CellForegroundBrush}"
+                                                      FontSize="{DynamicResource AppFontSizeSmall}"
+                                                      HorizontalContentAlignment="Center"
+                                                      VerticalContentAlignment="Center"
+                                                      Padding="0"/>
+                                        </Border>
+
+                                        <Button Grid.Column="7"
+                                                Style="{StaticResource RemoveButtonStyle}"
+                                                Command="{Binding DataContext.RemoveOilRecordCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                CommandParameter="{Binding}"
+                                                ToolTip="{DynamicResource Launch_Delete}"/>
+                                    </Grid>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+
+                        <Button Content="{DynamicResource Resursy_AddRow}"
+                                Command="{Binding AddOilRecordCommand}"
+                                HorizontalAlignment="Left"
+                                Margin="0,5,0,0"
+                                Padding="10,5"/>
+                    </StackPanel>
+                </ScrollViewer>
+            </Grid>
+        </TabItem>
+    </TabControl>
+</UserControl>

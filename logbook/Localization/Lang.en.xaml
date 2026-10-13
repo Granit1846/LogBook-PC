@@ -1,0 +1,762 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib">
+
+    <!-- ============================================================ -->
+    <!-- ==================== GENERAL ================================ -->
+    <!-- ============================================================ -->
+    <sys:String x:Key="App_Title">Logbook</sys:String>
+    <sys:String x:Key="Btn_OK">OK</sys:String>
+    <sys:String x:Key="Btn_Cancel">Cancel</sys:String>
+    <sys:String x:Key="Btn_Apply">Apply</sys:String>
+    <sys:String x:Key="Btn_Close">Close</sys:String>
+    <sys:String x:Key="Btn_Save">Save</sys:String>
+    <sys:String x:Key="Btn_Delete">Delete</sys:String>
+    <sys:String x:Key="Btn_Yes">Yes</sys:String>
+    <sys:String x:Key="Btn_No">No</sys:String>
+
+    <!-- ============================================================ -->
+    <!-- ==================== MAIN WINDOW ============================ -->
+    <!-- ============================================================ -->
+    <sys:String x:Key="Main_Tech">Aircraft:</sys:String>
+    <sys:String x:Key="Main_Date">Date:</sys:String>
+    <sys:String x:Key="Main_Crew">Crew:</sys:String>
+    <sys:String x:Key="Main_Mode_Flight">Flights</sys:String>
+    <sys:String x:Key="Main_Mode_SNK">HC</sys:String>
+    <sys:String x:Key="Main_AddLaunch">+ Add launch</sys:String>
+    <sys:String x:Key="Main_EndDay">End day</sys:String>
+    <sys:String x:Key="Main_History">History</sys:String>
+    <sys:String x:Key="Main_Totals">Day totals:</sys:String>
+    <sys:String x:Key="Main_VSU">APU:</sys:String>
+    <sys:String x:Key="Main_Ground">Ground:</sys:String>
+    <sys:String x:Key="Main_Air">Air:</sys:String>
+    <sys:String x:Key="Main_Minutes">min</sys:String>
+    <sys:String x:Key="Main_DaysInProfile">Days in profile:</sys:String>
+    <sys:String x:Key="Main_NoSaves">No saves</sys:String>
+    <sys:String x:Key="Main_Saved">Saved</sys:String>
+    <sys:String x:Key="Main_Notifications">Notifications</sys:String>
+    <sys:String x:Key="Main_Settings">Settings</sys:String>
+    <sys:String x:Key="Main_PrevDay">Previous day</sys:String>
+    <sys:String x:Key="Main_NextDay">Next day</sys:String>
+    <sys:String x:Key="Main_Sync">Synchronization</sys:String>
+    <sys:String x:Key="Main_ToggleLeftPanel">Collapse/expand panel</sys:String>
+    <sys:String x:Key="Main_NewAircraft">New aircraft</sys:String>
+    <sys:String x:Key="Total_For">Total for {0} {1}</sys:String>
+
+    <!-- Tabs -->
+    <sys:String x:Key="Tab_Maintenance">Maintenance</sys:String>
+    <sys:String x:Key="Tab_Chast1">Part 1</sys:String>
+    <sys:String x:Key="Tab_Vr80">VR-80</sys:String>
+    <sys:String x:Key="Tab_Ta14">Ta-14</sys:String>
+    <sys:String x:Key="Tab_Vk01">VK-2500-01</sys:String>
+    <sys:String x:Key="Tab_Vk02">VK-2500-02</sys:String>
+    <sys:String x:Key="Tab_Resources">Resources</sys:String>
+
+    <!-- ============================================================ -->
+    <!-- ==================== LAUNCH (left panel) ===================== -->
+    <!-- ============================================================ -->
+    <sys:String x:Key="Launch_Label">Launch</sys:String>
+    <sys:String x:Key="Launch_VSU">APU</sys:String>
+    <sys:String x:Key="Launch_Ground">Ground</sys:String>
+    <sys:String x:Key="Launch_Air">Air</sys:String>
+    <sys:String x:Key="Launch_Delete">Delete launch</sys:String>
+    <sys:String x:Key="Launch_TP">TP</sys:String>
+    <sys:String x:Key="Launch_SamoletLandings">Airpl.</sys:String>
+    <sys:String x:Key="Launch_Additional">Additional</sys:String>
+
+    <!-- ============================================================ -->
+    <!-- ==================== SETTINGS WINDOW ======================== -->
+    <!-- ============================================================ -->
+    <sys:String x:Key="Settings_Title">Settings</sys:String>
+    <sys:String x:Key="Settings_Interface">Interface</sys:String>
+    <sys:String x:Key="Settings_Actions">Actions</sys:String>
+    <sys:String x:Key="Settings_Advanced">Advanced</sys:String>
+    <sys:String x:Key="Settings_About">About</sys:String>
+    <sys:String x:Key="Settings_Browse">Browse folder</sys:String>
+
+    <!-- Interface -->
+    <sys:String x:Key="Settings_Language">Language:</sys:String>
+    <sys:String x:Key="Settings_Notifications">In-app notifications:</sys:String>
+    <sys:String x:Key="Settings_Theme">Theme:</sys:String>
+    <sys:String x:Key="Settings_FontSize">Text size:</sys:String>
+    <sys:String x:Key="Settings_FontFamily">Font:</sys:String>
+
+    <sys:String x:Key="Theme_Light">Light</sys:String>
+    <sys:String x:Key="Theme_Dark">Dark</sys:String>
+    <sys:String x:Key="Theme_Nexus">Nexus</sys:String>
+    <sys:String x:Key="Theme_System">System</sys:String>
+
+    <sys:String x:Key="FontSize_Small">Small</sys:String>
+    <sys:String x:Key="FontSize_Medium">Medium</sys:String>
+    <sys:String x:Key="FontSize_Large">Large</sys:String>
+    <sys:String x:Key="FontSize_VeryLarge">Very large</sys:String>
+
+    <!-- Actions -->
+    <sys:String x:Key="Action_CreateProfile">Create new profile</sys:String>
+    <sys:String x:Key="Action_DeleteProfile">Delete profile</sys:String>
+    <sys:String x:Key="Action_SaveAll">Save all</sys:String>
+    <sys:String x:Key="Action_CreateBackup">Create backup</sys:String>
+    <sys:String x:Key="Action_LoadBackup">Load from backup</sys:String>
+    <sys:String x:Key="Action_Print">Print</sys:String>
+    <sys:String x:Key="Btn_ExitWithoutSave">Exit without saving</sys:String>
+
+    <!-- Advanced -->
+    <sys:String x:Key="Settings_StartWithWindows">Start with Windows:</sys:String>
+    <sys:String x:Key="Settings_MinimizeToTray">Minimize to tray on close:</sys:String>
+    <sys:String x:Key="Settings_DataFolder">Data folder:</sys:String>
+    <sys:String x:Key="Settings_AutoSave">Auto-save:</sys:String>
+    <sys:String x:Key="Settings_AutoCheckUpdates">Check for updates automatically</sys:String>
+    <sys:String x:Key="Settings_UndoSize">Undo history size:</sys:String>
+    <sys:String x:Key="Update_Title">Update</sys:String>
+    <sys:String x:Key="Update_NoUpdatesTitle">No updates available</sys:String>
+    <sys:String x:Key="Update_NewVersionTitle">Update available</sys:String>
+    <sys:String x:Key="Update_Download">Download</sys:String>
+    <sys:String x:Key="Update_Later">Later</sys:String>
+
+    <!-- About -->
+    <sys:String x:Key="About_Help">Help</sys:String>
+    <sys:String x:Key="About_CheckUpdate">Check for updates</sys:String>
+    <sys:String x:Key="About_Version">Application version:</sys:String>
+
+    <!-- ============================================================ -->
+    <!-- ==================== PROFILE SELECT / ADD / DELETE ========== -->
+    <!-- ============================================================ -->
+    <sys:String x:Key="ProfileSelect_Title">Select aircraft</sys:String>
+    <sys:String x:Key="ProfileSelect_Header">Select aircraft:</sys:String>
+
+    <sys:String x:Key="AddProfile_Title">New profile</sys:String>
+    <sys:String x:Key="AddProfile_Name">Aircraft name:</sys:String>
+    <sys:String x:Key="AddProfile_Icon">Icon:</sys:String>
+
+    <sys:String x:Key="DeleteProfile_Title">Delete profile</sys:String>
+    <sys:String x:Key="DeleteProfile_Header">Select profile to delete:</sys:String>
+
+    <!-- ============================================================ -->
+    <!-- ==================== HISTORY ================================ -->
+    <!-- ============================================================ -->
+    <sys:String x:Key="History_Title">Flight history</sys:String>
+    <sys:String x:Key="History_NoDays">No saved days.</sys:String>
+    <sys:String x:Key="History_Flight">flight</sys:String>
+    <sys:String x:Key="History_Test">test</sys:String>
+    <sys:String x:Key="History_TP">td</sys:String>
+    <sys:String x:Key="History_Clear">Clear history</sys:String>
+    <sys:String x:Key="History_ClearConfirm">Clear flight history? All flight records will be deleted, current logbooks and operating hours will be preserved.</sys:String>
+
+    <!-- ============================================================ -->
+    <!-- ==================== RESTART / CLOSE ======================== -->
+    <!-- ============================================================ -->
+    <sys:String x:Key="Restart_Title">Attention</sys:String>
+    <sys:String x:Key="Restart_Message">Application restart required</sys:String>
+    <sys:String x:Key="Restart_Btn">Restart</sys:String>
+
+    <sys:String x:Key="ConfirmClose_Title">Attention</sys:String>
+    <sys:String x:Key="ConfirmClose_Message">Close without saving?</sys:String>
+
+    <!-- ============================================================ -->
+    <!-- ==================== NOTIFICATIONS ========================== -->
+    <!-- ============================================================ -->
+    <sys:String x:Key="Notifications_Title">Notifications</sys:String>
+    <sys:String x:Key="Notifications_Empty">No notifications</sys:String>
+
+    <sys:String x:Key="Alert_Title">Attention</sys:String>
+
+    <!-- Resources -->
+    <sys:String x:Key="Alert_ResourceExhausted">Resource {0} exhausted</sys:String>
+    <sys:String x:Key="Alert_ResourceRemaining">Resource {0} remaining</sys:String>
+    <sys:String x:Key="Alert_ResourceExtend">, resource extension or replacement of {0} required</sys:String>
+    <sys:String x:Key="Alert_ResourceReminder">, don't forget to extend the resource or replace {0}</sys:String>
+    <sys:String x:Key="Alert_ResourceAgo">ago</sys:String>
+
+    <!-- Oils -->
+    <sys:String x:Key="Alert_Oil_Has">{0} has left</sys:String>
+    <sys:String x:Key="Alert_Oil_In">{0} oil expires in</sys:String>
+    <sys:String x:Key="Alert_Oil_Replace">, oil replacement (analysis) required</sys:String>
+    <sys:String x:Key="Alert_Oil_Expires">, don't forget to replace (analyze)</sys:String>
+    <sys:String x:Key="Alert_Oil_Expired">{0} oil has expired, urgently replace it (analyze)</sys:String>
+    <sys:String x:Key="Alert_Oil_Word">oil</sys:String>
+
+    <!-- ============================================================ -->
+    <!-- ==================== PRINT ================================== -->
+    <!-- ============================================================ -->
+    <sys:String x:Key="Print_Title">Print</sys:String>
+    <sys:String x:Key="Print_WhatToPrint">What to print:</sys:String>
+    <sys:String x:Key="Print_CurrentTab">Current tab</sys:String>
+    <sys:String x:Key="Print_AllTabs">All tabs (sequentially)</sys:String>
+    <sys:String x:Key="Print_Orientation">Orientation: Landscape (A4)</sys:String>
+    <sys:String x:Key="Print_Pages">Pages:</sys:String>
+    <sys:String x:Key="Print_SelectAll">All</sys:String>
+    <sys:String x:Key="Print_SelectNone">None</sys:String>
+    <sys:String x:Key="Print_Page">p.</sys:String>
+    <sys:String x:Key="Print_JobName">Logbook</sys:String>
+    <sys:String x:Key="Print_Selected">Selected: 0</sys:String>
+    <sys:String x:Key="Print_TotalPages">Total pages: {0}. Header repeats on each page.</sys:String>
+    <sys:String x:Key="Print_SelectedCount">Selected: {0}</sys:String>
+    <sys:String x:Key="Print_NoPages">No pages selected.</sys:String>
+
+    <!-- ============================================================ -->
+    <!-- ==================== MESSAGES (C#) ========================== -->
+    <!-- ============================================================ -->
+    <sys:String x:Key="Msg_Error">Error</sys:String>
+    <sys:String x:Key="Msg_Info">Information</sys:String>
+    <sys:String x:Key="Msg_Warning">Warning</sys:String>
+    <sys:String x:Key="Msg_Save">Saving</sys:String>
+    <sys:String x:Key="Msg_Attention">Attention</sys:String>
+    <sys:String x:Key="Msg_ConfirmDeletion">Confirmation</sys:String>
+    <sys:String x:Key="Msg_Undo">Undo</sys:String>
+
+    <sys:String x:Key="Msg_FutureDate">Cannot select a future date</sys:String>
+    <sys:String x:Key="Msg_HistoryUnavailable">History is not available</sys:String>
+    <sys:String x:Key="Msg_DeleteRecord">Delete record from {0}?</sys:String>
+    <sys:String x:Key="Msg_DeleteTotal">Delete total row "{0}"?</sys:String>
+    <sys:String x:Key="Msg_DeleteTotalFull">Delete total row "{0}"?</sys:String>
+    <sys:String x:Key="Msg_DeleteTotalWarning">WARNING: after deletion, the totals for this month will disappear.
+Regular records for this month will remain.</sys:String>
+    <sys:String x:Key="Msg_DeleteAllFormulars">WARNING: this date will be deleted in ALL forms.</sys:String>
+    <sys:String x:Key="Msg_DeleteProfileConfirm">Are you sure you want to delete profile "{0}"?</sys:String>
+    <sys:String x:Key="Msg_DeleteProfileWarning">All data of this profile will be deleted without the possibility of recovery.</sys:String>
+    <sys:String x:Key="Msg_DeleteLastProfile">Cannot delete the last profile.</sys:String>
+    <sys:String x:Key="Msg_DeleteRow">Delete row "{0}"?</sys:String>
+    <sys:String x:Key="Msg_ProfileExists">Profile "{0}" already exists.</sys:String>
+    <sys:String x:Key="Msg_AllSaved">All data saved</sys:String>
+    <sys:String x:Key="Msg_SaveError">Save error:</sys:String>
+    <sys:String x:Key="Msg_NoUndo">No actions to undo.</sys:String>
+    <sys:String x:Key="Msg_NoProfileSelected">No profile selected for deletion.</sys:String>
+    <sys:String x:Key="Msg_SelectProfileToDelete">Select a profile to delete.</sys:String>
+    <sys:String x:Key="Msg_EnterAircraftName">Enter aircraft name</sys:String>
+    <sys:String x:Key="Msg_SelectIcon">Select an icon</sys:String>
+    <sys:String x:Key="Msg_SnkNotFilled">Not all SNK fields are filled. Continue?</sys:String>
+    <sys:String x:Key="Msg_EnterSnkOrStart">Enter starting values or SNK</sys:String>
+    <sys:String x:Key="Msg_SyncFuture">Will be available in a future version</sys:String>
+
+    <!-- Start records saved -->
+    <sys:String x:Key="Msg_StartSavedChast1">Part 1 initial data saved</sys:String>
+    <sys:String x:Key="Msg_StartSavedVr80">VR-80 initial data saved</sys:String>
+    <sys:String x:Key="Msg_StartSavedTa14">Ta-14 initial data saved</sys:String>
+    <sys:String x:Key="Msg_StartSavedVk01">VK-2500-01 initial data saved, data recalculated</sys:String>
+    <sys:String x:Key="Msg_StartSavedVk02">VK-2500-02 initial data saved, data recalculated</sys:String>
+    <sys:String x:Key="Msg_CoeffSavedVk01">VK-2500-01 coefficients saved, data recalculated</sys:String>
+    <sys:String x:Key="Msg_CoeffSavedVk02">VK-2500-02 coefficients saved, data recalculated</sys:String>
+
+    <!-- Backup -->
+    <sys:String x:Key="Msg_NoDataForBackup">No data for backup.</sys:String>
+    <sys:String x:Key="Msg_BackupCreated">Backup saved:</sys:String>
+    <sys:String x:Key="Msg_BackupRestoreConfirm">Current data will be completely replaced by backup data. Continue?</sys:String>
+    <sys:String x:Key="Msg_BackupTitle">Backup</sys:String>
+    <sys:String x:Key="Msg_SaveBackup">Save backup</sys:String>
+    <sys:String x:Key="Msg_LoadBackup">Load from backup</sys:String>
+    <sys:String x:Key="Msg_JsonFilter">JSON files (*.json)|*.json|All files (*.*)|*.*</sys:String>
+    <sys:String x:Key="Msg_Done">Done</sys:String>
+    <sys:String x:Key="Msg_BackupCreateError">Error creating backup</sys:String>
+    <sys:String x:Key="Msg_BackupLoadError">Error loading backup</sys:String>
+
+    <!-- Path change -->
+    <sys:String x:Key="Settings_SelectFolder">Select data folder</sys:String>
+    <sys:String x:Key="Msg_MoveDataConfirm">Move data to a new folder?
+
+Old: {0}
+New: {1}</sys:String>
+    <sys:String x:Key="Msg_ChangePath">Change path</sys:String>
+
+    <!-- Help / update -->
+    <sys:String x:Key="Msg_HelpFileNotFound">Help file not found:
+{0}</sys:String>
+    <sys:String x:Key="Msg_HelpOpenError">Error opening help</sys:String>
+    <sys:String x:Key="Msg_UpdateError">Error checking for updates</sys:String>
+
+    <!-- Update -->
+    <sys:String x:Key="Update_NewVersion">A new version is available!</sys:String>
+    <sys:String x:Key="Update_CurrentVersion">Current:</sys:String>
+    <sys:String x:Key="Update_NewVersionLabel">New:</sys:String>
+    <sys:String x:Key="Update_WhatNew">What's new:</sys:String>
+    <sys:String x:Key="Update_NoUrl">Download link not specified.</sys:String>
+    <sys:String x:Key="Update_OpenPage">Open download page?</sys:String>
+    <sys:String x:Key="Update_LatestVersion">You have the latest version.</sys:String>
+    <sys:String x:Key="Update_Version">Version:</sys:String>
+
+    <!-- Print errors -->
+    <sys:String x:Key="Msg_PageBuildError">Error building pages</sys:String>
+    <sys:String x:Key="Msg_PreviewError">Preview error</sys:String>
+    <sys:String x:Key="Msg_PrintError">Print error</sys:String>
+
+    <!-- ============================================================ -->
+    <!-- ==================== MONTHS ================================= -->
+    <!-- ============================================================ -->
+    <sys:String x:Key="Month_January">January</sys:String>
+    <sys:String x:Key="Month_February">February</sys:String>
+    <sys:String x:Key="Month_March">March</sys:String>
+    <sys:String x:Key="Month_April">April</sys:String>
+    <sys:String x:Key="Month_May">May</sys:String>
+    <sys:String x:Key="Month_June">June</sys:String>
+    <sys:String x:Key="Month_July">July</sys:String>
+    <sys:String x:Key="Month_August">August</sys:String>
+    <sys:String x:Key="Month_September">September</sys:String>
+    <sys:String x:Key="Month_October">October</sys:String>
+    <sys:String x:Key="Month_November">November</sys:String>
+    <sys:String x:Key="Month_December">December</sys:String>
+
+    <!-- ============================================================ -->
+    <!-- ==================== FORM HEADERS =========================== -->
+    <!-- ============================================================ -->
+
+    <!-- Common -->
+    <sys:String x:Key="Header_Date">Date</sys:String>
+    <sys:String x:Key="Header_FlightType">Flight type</sys:String>
+    <sys:String x:Key="Header_Signature">Signature of logbook keeper</sys:String>
+    <sys:String x:Key="Header_TotalHours">Total hours</sys:String>
+    <sys:String x:Key="Header_Surname">Surname</sys:String>
+    <sys:String x:Key="Header_ByFlight">by flight, hh.mm</sys:String>
+    <sys:String x:Key="Header_ByLandings">by landings</sys:String>
+    <sys:String x:Key="Header_Pilot">Pilot (Instructor)</sys:String>
+    <sys:String x:Key="Header_Mechanic">Technician (Mechanic)</sys:String>
+    <sys:String x:Key="Header_AfterRepair">After last repair</sys:String>
+    <sys:String x:Key="Header_SinceOp">Since start of operation</sys:String>
+    <sys:String x:Key="Header_Total">Total</sys:String>
+    <sys:String x:Key="Header_FixedWing">Fixed-wing</sys:String>
+    <sys:String x:Key="Header_Rotorcraft">Rotorcraft</sys:String>
+    <sys:String x:Key="Header_Ground">Ground</sys:String>
+    <sys:String x:Key="Header_Air">Air</sys:String>
+    <sys:String x:Key="Header_SNE">SOH</sys:String>
+    <sys:String x:Key="Header_Landings">Landings</sys:String>
+    <sys:String x:Key="Header_Landings2">Landings2</sys:String>
+    <sys:String x:Key="Header_PilotShort">Pilot</sys:String>
+    <sys:String x:Key="Header_MechanicShort">Tech</sys:String>
+
+    <!-- Part 1 -->
+    <sys:String x:Key="Header_Chast1_Ground1">Ground operating</sys:String>
+    <sys:String x:Key="Header_Chast1_Ground2">time incl. 20% of</sys:String>
+    <sys:String x:Key="Header_Chast1_Ground3">rotor system, hh.mm</sys:String>
+    <sys:String x:Key="Header_Chast1_Duration1">Flight</sys:String>
+    <sys:String x:Key="Header_Chast1_Duration2">duration, hh.mm</sys:String>
+    <sys:String x:Key="Header_Chast1_AfterRepair1">After last</sys:String>
+    <sys:String x:Key="Header_Chast1_AfterRepair2">repair</sys:String>
+    <sys:String x:Key="Header_Chast1_SinceOp1">Since start</sys:String>
+    <sys:String x:Key="Header_Chast1_SinceOp2">of operation</sys:String>
+
+    <!-- VR-80 -->
+    <sys:String x:Key="Header_StartCount">Start count</sys:String>
+    <sys:String x:Key="Header_Vr80_GroundWork1">Main gearbox ground</sys:String>
+    <sys:String x:Key="Header_Vr80_GroundWork2">operating time</sys:String>
+    <sys:String x:Key="Header_Vr80_AirWork1">Main gearbox in-flight</sys:String>
+    <sys:String x:Key="Header_Vr80_AirWork2">operating time</sys:String>
+    <sys:String x:Key="Header_Vr80_TotalEngine1">Total GB operation from engines</sys:String>
+    <sys:String x:Key="Header_Vr80_TotalEngine2">at all modes including 20%</sys:String>
+    <sys:String x:Key="Header_Vr80_TotalEngine3">on ground at lower mode</sys:String>
+    <sys:String x:Key="Header_Vr80_TotalTurbine1">Total operation of main</sys:String>
+    <sys:String x:Key="Header_Vr80_TotalTurbine2">gearbox from</sys:String>
+    <sys:String x:Key="Header_Vr80_TotalTurbine3">turbostarter</sys:String>
+    <sys:String x:Key="Header_Vr80_TwoEngines">From two engines</sys:String>
+    <sys:String x:Key="Header_Vr80_FromTurbine">From turbostarter</sys:String>
+    <sys:String x:Key="Header_Vr80_FullTime">Full time</sys:String>
+    <sys:String x:Key="Header_Vr80_OnModes">On modes</sys:String>
+    <sys:String x:Key="Header_Vr80_Nominal">Nominal</sys:String>
+    <sys:String x:Key="Header_Vr80_Takeoff">Takeoff</sys:String>
+
+    <!-- Ta-14 -->
+    <sys:String x:Key="Header_StartCountShort">Start count</sys:String>
+    <sys:String x:Key="Header_Ta14_Counter1">Counter readings of hours</sys:String>
+    <sys:String x:Key="Header_Ta14_Counter2">and starts,</sys:String>
+    <sys:String x:Key="Header_Ta14_Counter3">frequency/starts</sys:String>
+    <sys:String x:Key="Header_Ta14_GroundWork1">Engine operating</sys:String>
+    <sys:String x:Key="Header_Ta14_GroundWork2">on ground,</sys:String>
+    <sys:String x:Key="Header_Ta14_GroundWork3">hh.mm</sys:String>
+    <sys:String x:Key="Header_Ta14_AirWork1">Engine operating</sys:String>
+    <sys:String x:Key="Header_Ta14_AirWork2">in flight,</sys:String>
+    <sys:String x:Key="Header_Ta14_AirWork3">hh.mm</sys:String>
+    <sys:String x:Key="Header_Ta14_Total1">Total</sys:String>
+    <sys:String x:Key="Header_Ta14_Total2">engine hours,</sys:String>
+    <sys:String x:Key="Header_Ta14_Total3">hh.mm</sys:String>
+    <sys:String x:Key="Header_Ta14_Grand1">Total engine hours,</sys:String>
+    <sys:String x:Key="Header_Ta14_Grand2">hh.mm/starts</sys:String>
+    <sys:String x:Key="Header_Ta14_AfterCap1">after last</sys:String>
+    <sys:String x:Key="Header_Ta14_AfterCap2">overhaul</sys:String>
+    <sys:String x:Key="Header_Ta14_Since1">since start</sys:String>
+    <sys:String x:Key="Header_Ta14_Since2">of operation</sys:String>
+
+    <sys:String x:Key="Header_Starts">Starts</sys:String>
+    <sys:String x:Key="Header_Starts2">Starts2</sys:String>
+    <sys:String x:Key="Header_Time">Time</sys:String>
+    <sys:String x:Key="Header_SNE2">SOH2</sys:String>
+
+    <!-- VK-2500 -->
+    <sys:String x:Key="Header_Vk_StartCountI">Start count (I)</sys:String>
+    <sys:String x:Key="Header_Vk_EngineHours">Engine hours hh.mm</sys:String>
+    <sys:String x:Key="Header_Vk_Equivalent1">Equivalent</sys:String>
+    <sys:String x:Key="Header_Vk_Equivalent2">hours</sys:String>
+    <sys:String x:Key="Header_Vk_Equivalent3">(G)</sys:String>
+    <sys:String x:Key="Header_Vk_Total1">Total</sys:String>
+    <sys:String x:Key="Header_Vk_Total2">operating</sys:String>
+    <sys:String x:Key="Header_Vk_Total3">time</sys:String>
+    <sys:String x:Key="Header_Vk_TotalA1">Total</sys:String>
+    <sys:String x:Key="Header_Vk_TotalA2">(overall) hours</sys:String>
+    <sys:String x:Key="Header_Vk_TotalA3">(A)</sys:String>
+    <sys:String x:Key="Header_Vk_SinceOp1">Since start</sys:String>
+    <sys:String x:Key="Header_Vk_SinceOp2">of opera</sys:String>
+    <sys:String x:Key="Header_Vk_SinceOp3">tion</sys:String>
+    <sys:String x:Key="Header_Vk_AfterCap1">After last</sys:String>
+    <sys:String x:Key="Header_Vk_AfterCap2">overhaul</sys:String>
+    <sys:String x:Key="Header_Vk_TakeoffMode1">Takeoff mode</sys:String>
+    <sys:String x:Key="Header_Vk_TakeoffMode2">hours</sys:String>
+    <sys:String x:Key="Header_Vk_TakeoffMode3">(B)</sys:String>
+    <sys:String x:Key="Header_Vk_From6To15_1">From 6</sys:String>
+    <sys:String x:Key="Header_Vk_From6To15_2">to</sys:String>
+    <sys:String x:Key="Header_Vk_From6To15_3">15 min</sys:String>
+    <sys:String x:Key="Header_Vk_Total2_1">Total</sys:String>
+    <sys:String x:Key="Header_Vk_Total2_2">operating</sys:String>
+    <sys:String x:Key="Header_Vk_Total2_3">time</sys:String>
+    <sys:String x:Key="Header_Vk_MaxMode1">Maximum duration</sys:String>
+    <sys:String x:Key="Header_Vk_MaxMode2">mode</sys:String>
+    <sys:String x:Key="Header_Vk_MaxMode3">hours</sys:String>
+    <sys:String x:Key="Header_Vk_Total">Total</sys:String>
+    <sys:String x:Key="Header_Vk_OnGround">On ground</sys:String>
+    <sys:String x:Key="Header_Vk_InFlight">In flight</sys:String>
+    <sys:String x:Key="Header_Vk_HighTemp1">High temp</sys:String>
+    <sys:String x:Key="Header_Vk_HighTemp2">gas</sys:String>
+    <sys:String x:Key="Header_Vk_HighTemp3">hours (D)</sys:String>
+    <sys:String x:Key="Header_Vk_Total3_1">Total</sys:String>
+    <sys:String x:Key="Header_Vk_Total3_2">operating</sys:String>
+    <sys:String x:Key="Header_Vk_Total3_3">time</sys:String>
+    <sys:String x:Key="Header_Vk_BarkOff1">With BARK</sys:String>
+    <sys:String x:Key="Header_Vk_BarkOff2">disabled</sys:String>
+    <sys:String x:Key="Header_Vk_BarkOff3">hours (E)</sys:String>
+    <sys:String x:Key="Header_Vk_Total4_1">Total</sys:String>
+    <sys:String x:Key="Header_Vk_Total4_2">operating</sys:String>
+    <sys:String x:Key="Header_Vk_Total4_3">time</sys:String>
+    <sys:String x:Key="Header_Vk_Cyclic1">Cyclic</sys:String>
+    <sys:String x:Key="Header_Vk_Cyclic2">hours</sys:String>
+    <sys:String x:Key="Header_Vk_Cyclic3">(H)</sys:String>
+    <sys:String x:Key="Header_Vk_CyclicSince1">Since start</sys:String>
+    <sys:String x:Key="Header_Vk_CyclicSince2">of opera</sys:String>
+    <sys:String x:Key="Header_Vk_CyclicSince3">tion</sys:String>
+    <sys:String x:Key="Header_Vk_AfterCap2_1">After last</sys:String>
+    <sys:String x:Key="Header_Vk_AfterCap2_2">overhaul</sys:String>
+    <sys:String x:Key="Header_CoeffA">Coeff. A</sys:String>
+    <sys:String x:Key="Header_CoeffH">Coeff. H</sys:String>
+
+    <!-- ============================================================ -->
+    <!-- ==================== RESOURCES TAB ========================== -->
+    <!-- ============================================================ -->
+    <sys:String x:Key="Tab_Resources_OnBoard">Aggregates on Board</sys:String>
+    <sys:String x:Key="Tab_Resources_Aggregates">Aggregates</sys:String>
+    <sys:String x:Key="Tab_Resources_Oils">Oils</sys:String>
+
+    <!-- On Board -->
+    <sys:String x:Key="OnBoard_Title">Aggregates on Board</sys:String>
+    <sys:String x:Key="OnBoard_Replace">Replace</sys:String>
+    <sys:String x:Key="OnBoard_History">Replacement History</sys:String>
+    <sys:String x:Key="OnBoard_Setup">Setup Aggregates</sys:String>
+
+    <!-- Aggregates -->
+    <sys:String x:Key="Resursy_AggregatesTitle">Aggregate resource remaining</sys:String>
+    <sys:String x:Key="Resursy_AddRow">+ Add row</sys:String>
+    <sys:String x:Key="Resursy_ItemName1">Item</sys:String>
+    <sys:String x:Key="Resursy_ItemName2">name</sys:String>
+    <sys:String x:Key="Resursy_Assigned1">Assigned</sys:String>
+    <sys:String x:Key="Resursy_Assigned2">resource,</sys:String>
+    <sys:String x:Key="Resursy_Assigned3">hh:mm</sys:String>
+    <sys:String x:Key="Resursy_RemainingHh1">Remaining,</sys:String>
+    <sys:String x:Key="Resursy_RemainingHh2">hh:mm</sys:String>
+    <sys:String x:Key="Resursy_AssignedYears1">Assigned</sys:String>
+    <sys:String x:Key="Resursy_AssignedYears2">resource</sys:String>
+    <sys:String x:Key="Resursy_RemainingDate1">Remaining,</sys:String>
+    <sys:String x:Key="Resursy_RemainingDate2">dd.MM.yyyy</sys:String>
+    <sys:String x:Key="Resursy_YearsShort">y.</sys:String>
+    <sys:String x:Key="Resursy_MonthsShort">m.</sys:String>
+    <sys:String x:Key="Resursy_InstalledResource1">Resource at</sys:String>
+    <sys:String x:Key="Resursy_InstalledResource2">installation,</sys:String>
+    <sys:String x:Key="Resursy_InstalledResource3">hh:mm</sys:String>
+    <sys:String x:Key="Resursy_DaysShort">d.</sys:String>
+    <sys:String x:Key="Resursy_BeforeInstall1">Aggregate resource</sys:String>
+    <sys:String x:Key="Resursy_BeforeInstall2">before installation,</sys:String>
+    <sys:String x:Key="Resursy_BeforeInstall3">hh:mm</sys:String>
+    <sys:String x:Key="Resursy_NewItem">New item</sys:String>
+    <sys:String x:Key="Resursy_NotProvided">not provided</sys:String>
+    <sys:String x:Key="Header_IssueDate">Issue date</sys:String>
+
+    <!-- Oils -->
+    <sys:String x:Key="Resursy_OilsTitle">Oils</sys:String>
+    <sys:String x:Key="Resursy_OilWhere">Where filled</sys:String>
+    <sys:String x:Key="Resursy_OilSNE1">SOH</sys:String>
+    <sys:String x:Key="Resursy_OilSNE2">at filling</sys:String>
+    <sys:String x:Key="Resursy_OilDate1">Filling</sys:String>
+    <sys:String x:Key="Resursy_OilDate2">date</sys:String>
+    <sys:String x:Key="Resursy_OilRem1">Remaining,</sys:String>
+    <sys:String x:Key="Resursy_OilRem2">hh:mm</sys:String>
+    <sys:String x:Key="Resursy_OilRemDate1">Remaining,</sys:String>
+    <sys:String x:Key="Resursy_OilRemDate2">yy,mm</sys:String>
+    <sys:String x:Key="Resursy_OilRes1">Oil</sys:String>
+    <sys:String x:Key="Resursy_OilRes2">resource in hours</sys:String>
+    <sys:String x:Key="Resursy_OilResY1">Oil</sys:String>
+    <sys:String x:Key="Resursy_OilResY2">resource in years</sys:String>
+    <sys:String x:Key="Resursy_NewOil">New oil</sys:String>
+
+    <!-- ============================================================ -->
+    <!-- ==================== SYNC =================================== -->
+    <!-- ============================================================ -->
+    <sys:String x:Key="Sync_Title">Synchronization</sys:String>
+    <sys:String x:Key="Sync_Header">Choose synchronization method</sys:String>
+    <sys:String x:Key="Sync_ToServer">To server</sys:String>
+    <sys:String x:Key="Sync_FromServer">From server</sys:String>
+    <sys:String x:Key="Sync_Phone">Smartphone</sys:String>
+    <sys:String x:Key="Sync_Server">Server</sys:String>
+    <sys:String x:Key="Sync_Force">Force (local version wins)</sys:String>
+    <sys:String x:Key="Sync_ForceTooltip">On: local data overwrites server without asking.
+Off: prompts on conflict.</sys:String>
+    <sys:String x:Key="Sync_Notifications">Notify about duplicate aggregates</sys:String>
+    <sys:String x:Key="Sync_NotificationsTooltip">If enabled: prompt on conflict (aggregate with same number already exists).
+
+If disabled: overwrite without warnings.</sys:String>
+    <sys:String x:Key="Sync_NoCredentials">Configure Supabase URL and key in settings (Settings → Advanced).</sys:String>
+    <sys:String x:Key="Sync_NoAssignments">Enter aggregate serial numbers on the "Resources" tab</sys:String>
+    <sys:String x:Key="Sync_PhoneNotImplemented">Smartphone sync not yet implemented.</sys:String>
+    <sys:String x:Key="Sync_Error">Synchronization error</sys:String>
+    <sys:String x:Key="Sync_ConflictAggregate">Aggregate {0} exists both locally and on server. Which version wins?
+
+Yes — server.
+No — local.</sys:String>
+    <sys:String x:Key="Sync_ConflictBoard">Board {0} exists both locally and on server. Which version wins?
+
+Yes — server.
+No — local.</sys:String>
+    <sys:String x:Key="Sync_Complete">Synchronization complete.
+
+Sent: {0}
+Received: {1}</sys:String>
+    <sys:String x:Key="Sync_CompletePush">Sent: {0}. Skipped: {1}.</sys:String>
+    <sys:String x:Key="Sync_CompletePull">Received: {0}. Skipped: {1}.</sys:String>
+    <sys:String x:Key="Sync_ConflictBoardDate">Board {0}:
+Server: {1}
+Local: {2}
+
+Load from server?</sys:String>
+    <sys:String x:Key="Sync_ConflictAggregateDate">Aggregate {0}:
+Server: {1}
+Local: {2}
+
+Load on server?</sys:String>
+    <sys:String x:Key="Sync_ConflictResources">Resources for board {0} on server are newer ({1}) than local ({2}). Load from server?</sys:String>
+
+    <!-- ============================================================ -->
+    <!-- ==================== AGGREGATE SETUP ======================== -->
+    <!-- ============================================================ -->
+    <sys:String x:Key="SetupAgg_Title">Aggregate Setup</sys:String>
+    <sys:String x:Key="SetupAgg_Header">Enter aggregate and board numbers for synchronization</sys:String>
+    <sys:String x:Key="SetupAgg_EnterBoard">Enter aircraft serial number</sys:String>
+    <sys:String x:Key="SetupAgg_AggregatesHeader">Review and confirm aggregates</sys:String>
+    <sys:String x:Key="SetupAgg_Aircraft">Aircraft</sys:String>
+    <sys:String x:Key="SetupAgg_Item">Position</sys:String>
+    <sys:String x:Key="SetupAgg_Number">Number</sys:String>
+    <sys:String x:Key="SetupAgg_Status">Status</sys:String>
+    <sys:String x:Key="SetupAgg_Chast1">Part 1 (board)</sys:String>
+    <sys:String x:Key="SetupAgg_Vr80">VR-80</sys:String>
+    <sys:String x:Key="SetupAgg_Ta14">Ta-14</sys:String>
+    <sys:String x:Key="SetupAgg_Vk01">VK-2500-01</sys:String>
+    <sys:String x:Key="SetupAgg_Vk02">VK-2500-02</sys:String>
+    <sys:String x:Key="SetupAgg_Vk250001">VK-2500-01</sys:String>
+    <sys:String x:Key="SetupAgg_Vk250002">VK-2500-02</sys:String>
+    <sys:String x:Key="SetupAgg_Status_New">new</sys:String>
+    <sys:String x:Key="SetupAgg_Status_InCatalog">in catalog</sys:String>
+    <sys:String x:Key="SetupAgg_Status_InSync">in sync</sys:String>
+    <sys:String x:Key="SetupAgg_Skip">Skip</sys:String>
+    <sys:String x:Key="SetupAgg_Save">Save</sys:String>
+    <sys:String x:Key="SetupAgg_Sync">Synchronize</sys:String>
+    <sys:String x:Key="SetupAgg_Edit">Edit</sys:String>
+    <sys:String x:Key="SetupAgg_Confirm">Confirm</sys:String>
+    <sys:String x:Key="SetupAgg_LoadFromServer">Load from server</sys:String>
+    <sys:String x:Key="SetupAgg_EnterBoardNumber">Enter board number.</sys:String>
+    <sys:String x:Key="SetupAgg_BoardNotFound">Board "{0}" not found on server.</sys:String>
+    <sys:String x:Key="SetupAgg_BoardLoaded">Data loaded from server.</sys:String>
+    <sys:String x:Key="SetupAgg_LoadError">Load error</sys:String>
+    <sys:String x:Key="SetupAgg_Duplicate">Number(s) already assigned to another position: {0}</sys:String>
+    <sys:String x:Key="SetupAgg_AllRequired">Fill in all fields: {0}</sys:String>
+    <sys:String x:Key="SetupAgg_ConflictWarning">Some numbers are already installed in other profiles:
+{0}
+
+Continue? This may break synchronization.</sys:String>
+
+    <!-- ============================================================ -->
+    <!-- ==================== AGGREGATE HISTORY ====================== -->
+    <!-- ============================================================ -->
+    <sys:String x:Key="AggHist_Title">Aggregate Replacement History</sys:String>
+    <sys:String x:Key="AggHist_Current">current</sys:String>
+    <sys:String x:Key="AggHist_Close">Close</sys:String>
+    <sys:String x:Key="AggHist_Clear">Clear history</sys:String>
+    <sys:String x:Key="AggHist_ClearConfirm">Clear replacement history? Currently installed components and logbooks will be preserved.</sys:String>
+
+    <!-- ============================================================ -->
+    <!-- ==================== REPLACE AGGREGATE ====================== -->
+    <!-- ============================================================ -->
+    <sys:String x:Key="ReplaceAgg_Title">Replace Aggregate</sys:String>
+    <sys:String x:Key="ReplaceAgg_TitleFormat">Replace aggregate: {0}</sys:String>
+    <sys:String x:Key="ReplaceAgg_OldNumber">Current number</sys:String>
+    <sys:String x:Key="ReplaceAgg_NewNumber">New number</sys:String>
+    <sys:String x:Key="ReplaceAgg_Reason">Reason</sys:String>
+    <sys:String x:Key="ReplaceAgg_Confirm">Replace</sys:String>
+    <sys:String x:Key="ReplaceAgg_Cancel">Cancel</sys:String>
+    <sys:String x:Key="ReplaceAgg_NewNumberRequired">Enter a new number</sys:String>
+    <sys:String x:Key="ReplaceAgg_SameNumber">New number matches the current one</sys:String>
+    <sys:String x:Key="ReplaceAgg_ConflictWarning">The number is already installed in other profiles:
+{0}
+
+Continue? This may break synchronization.</sys:String>
+
+    <sys:String x:Key="About_Description">Five logbooks, flights, component and oil resources, replacement history, printing and PDF. Offline work and backups. Two-way exchange with Android over the internet or Wi-Fi using a QR code. A backup is made before replacing the book; conflicts are resolved by choosing a complete book version.</sys:String>
+    <sys:String x:Key="About_Website">Website and guide</sys:String>
+
+    <sys:String x:Key="Sync_5822fb7d95" xml:space="preserve">Synchronize now</sys:String>
+    <sys:String x:Key="Sync_8578367fc2" xml:space="preserve">Sign out</sys:String>
+    <sys:String x:Key="Sync_c08622028f" xml:space="preserve">PC / Android synchronization</sys:String>
+    <sys:String x:Key="Sync_9c3b0b5a94" xml:space="preserve">Manual exchange through Supabase</sys:String>
+    <sys:String x:Key="Sync_b583874a6c" xml:space="preserve">Sign in to the same account as on Android. The exchange includes all profiles, flights, logbooks, components and oils. If both devices have changes, you will choose a version. A backup is created before downloading.</sys:String>
+    <sys:String x:Key="Sync_6559f0e947" xml:space="preserve">Connect Android over Wi-Fi (QR code)</sys:String>
+    <sys:String x:Key="Sync_236ecb49e8" xml:space="preserve">Synchronization history</sys:String>
+    <sys:String x:Key="Sync_14f7c63cc1" xml:space="preserve">Password</sys:String>
+    <sys:String x:Key="Sync_939e95a11d" xml:space="preserve">Sign in</sys:String>
+    <sys:String x:Key="Sync_7224765e44" xml:space="preserve">Register</sys:String>
+    <sys:String x:Key="Sync_4eb58e1e56" xml:space="preserve">Sign in to your account</sys:String>
+    <sys:String x:Key="Sync_9c327e9ce5" xml:space="preserve">Synchronization cancelled. Both versions were preserved</sys:String>
+    <sys:String x:Key="Sync_60a6800444" xml:space="preserve">Internet</sys:String>
+    <sys:String x:Key="Sync_5ebee19fe9" xml:space="preserve">Cancelled</sys:String>
+    <sys:String x:Key="Sync_b571b20ab1" xml:space="preserve">Received</sys:String>
+    <sys:String x:Key="Sync_72aecd9ad8" xml:space="preserve">Error</sys:String>
+    <sys:String x:Key="Sync_e48c5d1ecf" xml:space="preserve">No connection. Exchange was not completed</sys:String>
+    <sys:String x:Key="Sync_8e4bf12752" xml:space="preserve">Signed out</sys:String>
+    <sys:String x:Key="Sync_4ae50d3073" xml:space="preserve">Close</sys:String>
+    <sys:String x:Key="Sync_c572544936" xml:space="preserve">Wait for the exchange to finish</sys:String>
+    <sys:String x:Key="Sync_3c9c951703" xml:space="preserve">Enter your email and password</sys:String>
+    <sys:String x:Key="Sync_0127d2d21d" xml:space="preserve">Signed in. You can synchronize now</sys:String>
+    <sys:String x:Key="Sync_a8592f662c" xml:space="preserve">Confirm your email using the message, then sign in</sys:String>
+    <sys:String x:Key="Sync_9674b15f97" xml:space="preserve">Please wait…</sys:String>
+    <sys:String x:Key="Sync_2818a93db8" xml:space="preserve">The server did not respond. Retry synchronization; the pending upload was preserved</sys:String>
+    <sys:String x:Key="Sync_515b79cbb5" xml:space="preserve">Not signed in</sys:String>
+    <sys:String x:Key="Sync_752d2f234f" xml:space="preserve">Account: </sys:String>
+    <sys:String x:Key="Sync_eff80d43ef" xml:space="preserve">
+Last exchange: </sys:String>
+    <sys:String x:Key="Sync_e7ad254ef4" xml:space="preserve">Synchronization conflict</sys:String>
+    <sys:String x:Key="Sync_4373777816" xml:space="preserve">Both versions have changes. Your choice applies to the entire book, including other profiles. Server revision: </sys:String>
+    <sys:String x:Key="Sync_8d70566571" xml:space="preserve">Keep PC version</sys:String>
+    <sys:String x:Key="Sync_646a0eecc4" xml:space="preserve">Download server version</sys:String>
+    <sys:String x:Key="Sync_0ec753be8d" xml:space="preserve">Cancel</sys:String>
+    <sys:String x:Key="Sync_a298fc2408" xml:space="preserve">Row counts: PC / server
+</sys:String>
+    <sys:String x:Key="Sync_b4bc7e1b0d" xml:space="preserve">
+Differences (PC → server):</sys:String>
+    <sys:String x:Key="Sync_1c5cd51ca0" xml:space="preserve">  Only on server</sys:String>
+    <sys:String x:Key="Sync_3e0d361136" xml:space="preserve">  Only on PC</sys:String>
+    <sys:String x:Key="Sync_429687917e" xml:space="preserve">More differences: </sys:String>
+    <sys:String x:Key="Sync_73773ab330" xml:space="preserve">Connect Android over Wi-Fi</sys:String>
+    <sys:String x:Key="Sync_98091a44e7" xml:space="preserve">Connect the PC and phone to the same Wi-Fi network or phone hotspot. Internet is not required. On Android, tap Scan PC QR code. The code is valid for 10 minutes while this window stays open.</sys:String>
+    <sys:String x:Key="Sync_79e3687abe" xml:space="preserve">PC address on the shared network</sys:String>
+    <sys:String x:Key="Sync_cc5cc60191" xml:space="preserve">If Windows requests network access, allow it for private networks. If connection fails, check the selected address and make sure device isolation is disabled on the router.</sys:String>
+    <sys:String x:Key="Sync_ea7c3568a6" xml:space="preserve">Close connection</sys:String>
+    <sys:String x:Key="Sync_b14aba19d6" xml:space="preserve">No local network address was found. Connect the PC to Wi-Fi and reopen this window.</sys:String>
+    <sys:String x:Key="Sync_9672a70242" xml:space="preserve">Waiting for Android…</sys:String>
+    <sys:String x:Key="Sync_9375d003e6" xml:space="preserve">No exchanges yet</sys:String>
+    <sys:String x:Key="Sync_b0166b7bcd" xml:space="preserve">Show backup</sys:String>
+    <sys:String x:Key="Sync_a080ef6c03" xml:space="preserve">The backup was moved or deleted</sys:String>
+    <sys:String x:Key="Sync_72f931bda2" xml:space="preserve">Backup</sys:String>
+    <sys:String x:Key="Sync_4c6944a7d0" xml:space="preserve">Could not read history: </sys:String>
+    <sys:String x:Key="Sync_a97d07b28b" xml:space="preserve">No changes</sys:String>
+    <sys:String x:Key="Sync_98ea53641a" xml:space="preserve">An HTTPS Supabase project address is required</sys:String>
+    <sys:String x:Key="Sync_ce08f48962" xml:space="preserve">A public Supabase key (publishable or anon) is required</sys:String>
+    <sys:String x:Key="Sync_ee43eced29" xml:space="preserve">Sign in again</sys:String>
+    <sys:String x:Key="Sync_0d75ab090e" xml:space="preserve">Check your email and password. Registration requires a password of at least 6 characters</sys:String>
+    <sys:String x:Key="Sync_322abe01b3" xml:space="preserve">No access to synchronization</sys:String>
+    <sys:String x:Key="Sync_bc957d5e09" xml:space="preserve">Server unavailable (HTTP {0}). Try again later</sys:String>
+    <sys:String x:Key="Sync_fd0c2a5560" xml:space="preserve">The packet exceeds 64 MB</sys:String>
+    <sys:String x:Key="Sync_2a2a9b53b3" xml:space="preserve">The server address changed. Sign in again</sys:String>
+    <sys:String x:Key="Sync_ddf52bbdea" xml:space="preserve">Invalid server revision</sys:String>
+    <sys:String x:Key="Sync_3ecf8d7332" xml:space="preserve">Invalid server response</sys:String>
+    <sys:String x:Key="Sync_1421293073" xml:space="preserve">The previous server version is missing. Upload was stopped</sys:String>
+    <sys:String x:Key="Sync_ed8e867c4b" xml:space="preserve">Data matches. Synchronization completed</sys:String>
+    <sys:String x:Key="Sync_7bb0f62d66" xml:space="preserve">Data downloaded. The previous book was saved in a backup</sys:String>
+    <sys:String x:Key="Sync_5cca551617" xml:space="preserve">Both devices have changes</sys:String>
+    <sys:String x:Key="Sync_dec2f83363" xml:space="preserve">Data uploaded. Synchronization completed</sys:String>
+    <sys:String x:Key="Sync_f4e0a06f87" xml:space="preserve">Version uploaded; new local edits will be sent during the next exchange</sys:String>
+    <sys:String x:Key="Sync_add0be7985" xml:space="preserve">Sent</sys:String>
+    <sys:String x:Key="Sync_0c2d195259" xml:space="preserve">The server version changed</sys:String>
+    <sys:String x:Key="Sync_93155fad6e" xml:space="preserve">PC data changed. Retry synchronization</sys:String>
+    <sys:String x:Key="Sync_5571c8ae40" xml:space="preserve">The server changed. Review the differences again</sys:String>
+    <sys:String x:Key="Sync_96523a886e" xml:space="preserve">Server version selected. The previous book was saved in a backup</sys:String>
+    <sys:String x:Key="Sync_45bb92dff9" xml:space="preserve">Invalid pairing code</sys:String>
+    <sys:String x:Key="Sync_ad845dddb0" xml:space="preserve">Session expired. Create a new QR code</sys:String>
+    <sys:String x:Key="Sync_175657aa48" xml:space="preserve">Choose version</sys:String>
+    <sys:String x:Key="Sync_29c99585f5" xml:space="preserve">Unknown result</sys:String>
+    <sys:String x:Key="Sync_b0faf1ec73" xml:space="preserve">Android confirmed downloading the PC book</sys:String>
+    <sys:String x:Key="Sync_9946eaf724" xml:space="preserve">PC and Android data matches</sys:String>
+    <sys:String x:Key="Sync_8858daa795" xml:space="preserve">Android is waiting for a version choice</sys:String>
+    <sys:String x:Key="Sync_e97ed54edb" xml:space="preserve">Version choice cancelled on Android</sys:String>
+    <sys:String x:Key="Sync_12c063ad9c" xml:space="preserve">Unknown command</sys:String>
+    <sys:String x:Key="Sync_f8961ae3fa" xml:space="preserve">Missing upload identifier</sys:String>
+    <sys:String x:Key="Sync_d0dd940c4c" xml:space="preserve">No data</sys:String>
+    <sys:String x:Key="Sync_daea37184f" xml:space="preserve">Upload identifier has already been used</sys:String>
+    <sys:String x:Key="Sync_dd0a661b52" xml:space="preserve">Book received from Android. Backup saved</sys:String>
+    <sys:String x:Key="Sync_06d584a626" xml:space="preserve">Data received from Android. Backup saved.</sys:String>
+    <sys:String x:Key="Sync_6a4a81b5eb" xml:space="preserve">Connection interrupted: </sys:String>
+    <sys:String x:Key="Sync_e651213c51" xml:space="preserve">Wi-Fi session closed. Create a new QR code for the next exchange.</sys:String>
+    <sys:String x:Key="Sync_4fe41a869f" xml:space="preserve">Missing exchange schema</sys:String>
+    <sys:String x:Key="Sync_a67811df08" xml:space="preserve">An integer is required: </sys:String>
+    <sys:String x:Key="Sync_b1fb76cfb1" xml:space="preserve">Invalid time: </sys:String>
+    <sys:String x:Key="Sync_9256336538" xml:space="preserve">Invalid date: </sys:String>
+    <sys:String x:Key="Sync_141dd8a756" xml:space="preserve">Unknown component: </sys:String>
+    <sys:String x:Key="Sync_40ce8953fa" xml:space="preserve">Incomplete or incompatible exchange packet</sys:String>
+    <sys:String x:Key="Sync_db2ef0cc2f" xml:space="preserve">Invalid table </sys:String>
+    <sys:String x:Key="Sync_eb15f0056e" xml:space="preserve">Incompatible fields in </sys:String>
+    <sys:String x:Key="Sync_8d6f15617c" xml:space="preserve">Invalid or duplicate UUID</sys:String>
+    <sys:String x:Key="Sync_102b915c5e" xml:space="preserve">Invalid reference</sys:String>
+    <sys:String x:Key="Sync_ee92f6be54" xml:space="preserve">An integer is required</sys:String>
+    <sys:String x:Key="Sync_2513b7838f" xml:space="preserve">Number out of range</sys:String>
+    <sys:String x:Key="Sync_66fe7b0d0d" xml:space="preserve">A decimal value must be a string</sys:String>
+    <sys:String x:Key="Sync_6f7f71e403" xml:space="preserve">A string is required</sys:String>
+    <sys:String x:Key="Sync_6e4e319830" xml:space="preserve">Invalid field </sys:String>
+    <sys:String x:Key="Sync_5b9518f041" xml:space="preserve">Parent record not found</sys:String>
+    <sys:String x:Key="Sync_ea10563791" xml:space="preserve">Duplicate in </sys:String>
+    <sys:String x:Key="Sync_b89b65f857" xml:space="preserve">Duplicate profile names</sys:String>
+    <sys:String x:Key="Sync_d6f710ef72" xml:space="preserve">On PC, component numbers of different types must be distinct</sys:String>
+    <sys:String x:Key="Sync_personal_space" xml:space="preserve">Personal space</sys:String>
+    <sys:String x:Key="Sync_shared_space" xml:space="preserve">Shared space</sys:String>
+    <sys:String x:Key="Sync_shared_warning" xml:space="preserve">Profiles are available to every registered user. Your profiles are published separately; only selected profiles are downloaded.</sys:String>
+    <sys:String x:Key="Sync_shared_one_profile" xml:space="preserve">A shared packet must contain exactly one profile.</sys:String>
+    <sys:String x:Key="Sync_shared_missing" xml:space="preserve">The selected profile is no longer available. Refresh the list.</sys:String>
+    <sys:String x:Key="Sync_shared_done" xml:space="preserve">Published profiles: {0}. Downloaded profiles: {1}.</sys:String>
+    <sys:String x:Key="Sync_shared_received" xml:space="preserve">Received</sys:String>
+    <sys:String x:Key="Sync_shared_choose" xml:space="preserve">Shared profiles</sys:String>
+    <sys:String x:Key="Sync_shared_select_help" xml:space="preserve">Select profiles to download. Other local profiles will remain unchanged.</sys:String>
+    <sys:String x:Key="Sync_shared_board" xml:space="preserve">aircraft {0}</sys:String>
+    <sys:String x:Key="Sync_shared_empty" xml:space="preserve">There are no profiles in the shared space yet.</sys:String>
+    <sys:String x:Key="Sync_shared_download" xml:space="preserve">Download selected</sys:String>
+    <sys:String x:Key="Sync_shared_downloaded_only" xml:space="preserve">Downloaded profiles: {0}.</sys:String>
+    <sys:String x:Key="Sync_SharedButtonAction" xml:space="preserve">Synchronize</sys:String>
+
+    <!-- ==================== MAINTENANCE JOURNAL ==================== -->
+    <sys:String x:Key="Journal_Title">Maintenance Journal</sys:String>
+    <sys:String x:Key="Journal_AddWork">Add Work</sys:String>
+    <sys:String x:Key="Journal_AddDefect">Add Defect</sys:String>
+    <sys:String x:Key="Journal_Works">Completed Works</sys:String>
+    <sys:String x:Key="Journal_Defects">Defects</sys:String>
+    <sys:String x:Key="Journal_History">History</sys:String>
+    <sys:String x:Key="Journal_ScheduledWorks">Scheduled Works</sys:String>
+    <sys:String x:Key="Journal_CompletedDefects">Completed Defects</sys:String>
+    <sys:String x:Key="Journal_EmptyHistory">No entries yet</sys:String>
+    <sys:String x:Key="Journal_Close">Close</sys:String>
+    <sys:String x:Key="Journal_Add">Add</sys:String>
+    <sys:String x:Key="Journal_NoBaselineTriplet">—–—–— (no baseline)</sys:String>
+    <sys:String x:Key="Journal_ChooseWork">Select Work</sys:String>
+    <sys:String x:Key="Journal_EmptyWorks">No work entries yet</sys:String>
+    <sys:String x:Key="Journal_EmptyDefects">No open defects</sys:String>
+    <sys:String x:Key="Journal_Kind">Work Type</sys:String>
+    <sys:String x:Key="Journal_Date">Date</sys:String>
+    <sys:String x:Key="Journal_Counter">Counter at work (h:mm)</sys:String>
+    <sys:String x:Key="Journal_Description">Description</sys:String>
+    <sys:String x:Key="Journal_Save">Save</sys:String>
+    <sys:String x:Key="Journal_Cancel">Cancel</sys:String>
+    <sys:String x:Key="Journal_InvalidInput">Select work and enter counter as h:mm</sys:String>
+    <sys:String x:Key="Journal_Periodic">Periodic Inspection</sys:String>
+    <sys:String x:Key="Journal_50">50-hour Work</sys:String>
+    <sys:String x:Key="Journal_100">100-hour Work</sys:String>
+    <sys:String x:Key="Journal_300">300-hour Work</sys:String>
+    <sys:String x:Key="Journal_12">12-Month Scheduled Work</sys:String>
+    <sys:String x:Key="Journal_24">24-Month Scheduled Work</sys:String>
+    <sys:String x:Key="Journal_Other">Other Work</sys:String>
+    <sys:String x:Key="Journal_ClearHistoryConfirm">Are you sure you want to clear journal history? Active baseline works will be preserved.</sys:String>
+
+</ResourceDictionary>

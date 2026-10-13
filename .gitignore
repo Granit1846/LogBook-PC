@@ -1,0 +1,10 @@
+## Visual Studio / .NET
+.vs/
+[Bb]in/
+[Oo]bj/
+Output/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+work_data.json

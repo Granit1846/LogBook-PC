@@ -1,0 +1,85 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<OutputType>WinExe</OutputType>
+		<TargetFramework>net10.0-windows</TargetFramework>
+		<Nullable>enable</Nullable>
+		<ImplicitUsings>disable</ImplicitUsings>
+		<UseWPF>true</UseWPF>
+		<UseWindowsForms>true</UseWindowsForms>
+		<Version>1.1.13</Version>
+		<FileVersion>1.1.13.0</FileVersion>
+		<AssemblyVersion>1.0.0.0</AssemblyVersion>
+		<ApplicationIcon>Resources\Icons\logbook.ico</ApplicationIcon>
+		<AssemblyName>Logbook</AssemblyName>
+		<Product>Logbook</Product>
+		<Company>Skeorz_Lab</Company>
+		<Copyright>© 2026 Skeorz_Lab</Copyright>
+		<PublishSingleFile>true</PublishSingleFile>
+		<IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
+		<EnableCompressionInSingleFile>true</EnableCompressionInSingleFile>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<None Remove="Resources\Icons\1.ico" />
+		<None Remove="Resources\Icons\2.ico" />
+		<None Remove="Resources\Icons\3.ico" />
+		<None Remove="Resources\Icons\4.ico" />
+		<None Remove="Resources\Icons\5.ico" />
+		<None Remove="Resources\Icons\6.ico" />
+		<None Remove="Resources\Icons\logbook.ico" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Page Remove="Localization\Lang.en.xaml" />
+		<Page Remove="Localization\Lang.ru.xaml" />
+	</ItemGroup>
+
+	
+
+	<ItemGroup>
+		<EmbeddedResource Include="ExchangeSchema.json" LogicalName="logbook.ExchangeSchema.json" />
+		<PackageReference Include="QRCoder" Version="1.8.0" />
+        <PackageReference Include="Supabase" Version="1.0.0" />
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Resource Include="Localization\Lang.en.xaml">
+			<Generator></Generator>
+		</Resource>
+		<Resource Include="Localization\Lang.ru.xaml">
+			<Generator></Generator>
+		</Resource>
+		<Resource Include="Resources\Icons\1.ico" />
+		<Resource Include="Resources\Icons\2.ico" />
+		<Resource Include="Resources\Icons\3.ico" />
+		<Resource Include="Resources\Icons\4.ico" />
+		<Resource Include="Resources\Icons\5.ico" />
+		<Resource Include="Resources\Icons\6.ico" />
+		<Resource Include="Resources\Icons\logbook.ico">
+		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</Resource>
+	</ItemGroup>
+
+	<ItemGroup>
+		<Content Include="Help\help.html">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Help\help.en.html">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+	</ItemGroup>
+
+	<ItemGroup>
+		<Folder Include="Help\" />
+	</ItemGroup>
+
+  <Target Name="CreateReleaseManifest" AfterTargets="Publish" Condition="'$(Configuration)' == 'Release'">
+    <PropertyGroup>
+      <ReleaseUrlArgument Condition="'$(ReleaseDownloadUrl)' != ''">-DownloadUrl "$(ReleaseDownloadUrl)"</ReleaseUrlArgument>
+    </PropertyGroup>
+    <Exec WorkingDirectory="$(MSBuildProjectDirectory)" Command="powershell.exe -NoProfile -ExecutionPolicy Bypass -File &quot;$(MSBuildProjectDirectory)\CreateReleaseManifest.ps1&quot; -Executable &quot;$(PublishDir)$(AssemblyName).exe&quot; -NotesFile &quot;$(MSBuildProjectDirectory)\release-notes.json&quot; $(ReleaseUrlArgument)" />
+  </Target>
+</Project>
+

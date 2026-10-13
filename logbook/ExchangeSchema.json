@@ -1,0 +1,994 @@
+{
+  "aggregate_archives": {
+    "id": {
+      "type": "INTEGER",
+      "default": 0
+    },
+    "type": {
+      "type": "TEXT",
+      "default": ""
+    },
+    "number": {
+      "type": "TEXT",
+      "default": ""
+    },
+    "formularJson": {
+      "type": "TEXT",
+      "default": ""
+    },
+    "savedAt": {
+      "type": "INTEGER",
+      "default": 0
+    }
+  },
+  "chast1_records": {
+    "id": {
+      "type": "INTEGER",
+      "default": 0
+    },
+    "profileId": {
+      "type": "INTEGER",
+      "default": 0
+    },
+    "date": {
+      "type": "TEXT",
+      "default": ""
+    },
+    "sortOrder": {
+      "type": "INTEGER",
+      "default": 0
+    },
+    "flightType": {
+      "type": "TEXT",
+      "default": ""
+    },
+    "groundHours": {
+      "type": "INTEGER",
+      "default": 0
+    },
+    "flightDuration": {
+      "type": "INTEGER",
+      "default": 0
+    },
+    "col5": {
+      "type": "INTEGER",
+      "default": 0
+    },
+    "colSNE": {
+      "type": "INTEGER",
+      "default": 0
+    },
+    "col7": {
+      "type": "INTEGER",
+      "default": 0
+    },
+    "col8": {
+      "type": "INTEGER",
+      "default": 0
+    },
+    "col9": {
+      "type": "INTEGER",
+      "default": 0
+    },
+    "landings": {
+      "type": "INTEGER",
+      "default": 0
+    },
+    "col11": {
+      "type": "INTEGER",
+      "default": 0
+    },
+    "landings2": {
+      "type": "INTEGER",
+      "default": 0
+    },
+    "pilot": {
+      "type": "TEXT",
+      "default": ""
+    },
+    "mechanic": {
+      "type": "TEXT",
+      "default": ""
+    },
+    "isTotal": {
+      "type": "INTEGER",
+      "default": 0
+    },
+    "totalMonth": {
+      "type": "TEXT",
+      "default": ""
+    },
+    "needsManualRecalc": {
+      "type": "INTEGER",
+      "default": 0
+    }
+  },
+  "chast1_start": {
+    "id": {
+      "type": "INTEGER",
+      "default": 0
+    },
+    "profileId": {
+      "type": "INTEGER",
+      "default": 0
+    },
+    "date": {
+      "type": "TEXT",
+      "default": ""
+    },
+    "flightType": {
+      "type": "TEXT",
+      "default": ""
+    },
+    "groundHours": {
+      "type": "INTEGER",
+      "default": 0
+    },
+    "flightDuration": {
+      "type": "INTEGER",
+      "default": 0
+    },
+    "col5": {
+      "type": "INTEGER",
+      "default": 0
+    },
+    "colSNE": {
+      "type": "INTEGER",
+      "default": 0
+    },
+    "col7": {
+      "type": "INTEGER",
+      "default": 0
+    },
+    "col8": {
+      "type": "INTEGER",
+      "default": 0
+    },
+    "col9": {
+      "type": "INTEGER",
+      "default": 0
+    },
+    "landings": {
+      "type": "INTEGER",
+      "default": 0
+    },
+    "col11": {
+      "type": "INTEGER",
+      "default": 0
+    },
+    "landings2": {
+      "type": "INTEGER",
+      "default": 0
+    },
+    "pilot": {
+      "type": "TEXT",
+      "default": ""
+    },
+    "mechanic": {
+      "type": "TEXT",
+      "default": ""
+    }
+  },
+  "days": {
+    "id": {
+      "type": "INTEGER",
+      "default": 0
+    },
+    "profileId": {
+      "type": "INTEGER",
+      "default": 0
+    },
+    "date": {
+      "type": "TEXT",
+      "default": ""
+    },
+    "crew": {
+      "type": "TEXT",
+      "default": ""
+    },
+    "isClosed": {
+      "type": "INTEGER",
+      "default": 0
+    },
+    "createdAt": {
+      "type": "INTEGER",
+      "default": 0
+    }
+  },
+  "desktop_imports": {
+    "id": {
+      "type": "INTEGER",
+      "default": 0
+    },
+    "profileId": {
+      "type": "INTEGER",
+      "default": 0
+    },
+    "sourceKey": {
+      "type": "TEXT",
+      "default": ""
+    },
+    "sharedId": {
+      "type": "TEXT",
+      "default": ""
+    },
+    "sourceHash": {
+      "type": "TEXT",
+      "default": ""
+    },
+    "originalJson": {
+      "type": "TEXT",
+      "default": ""
+    },
+    "importedAt": {
+      "type": "INTEGER",
+      "default": 0
+    }
+  },
+  "launches": {
+    "id": {
+      "type": "INTEGER",
+      "default": 0
+    },
+    "dayId": {
+      "type": "INTEGER",
+      "default": 0
+    },
+    "order": {
+      "type": "INTEGER",
+      "default": 0
+    },
+    "vsu": {
+      "type": "INTEGER",
+      "default": 0
+    },
+    "zemlya": {
+      "type": "INTEGER",
+      "default": 0
+    },
+    "vozduh": {
+      "type": "INTEGER",
+      "default": 0
+    },
+    "tp": {
+      "type": "INTEGER",
+      "default": 0
+    },
+    "samolet": {
+      "type": "INTEGER",
+      "default": 0
+    },
+    "zapravkaLiters": {
+      "type": "INTEGER",
+      "default": 0
+    },
+    "zapravkaDensity": {
+      "type": "REAL",
+      "default": "0.0"
+    },
+    "zapravkaKg": {
+      "type": "REAL",
+      "default": "0.0"
+    },
+    "vedCek": {
+      "type": "TEXT",
+      "default": ""
+    }
+  },
+  "profiles": {
+    "id": {
+      "type": "INTEGER",
+      "default": 0
+    },
+    "name": {
+      "type": "TEXT",
+      "default": ""
+    },
+    "boardNumber": {
+      "type": "TEXT",
+      "default": ""
+    },
+    "aggregateAssignmentsJson": {
+      "type": "TEXT",
+      "default": "{}"
+    },
+    "resourcesJson": {
+      "type": "TEXT",
+      "default": "[]"
+    },
+    "oilsJson": {
+      "type": "TEXT",
+      "default": "[]"
+    },
+    "aggregateHistoryJson": {
+      "type": "TEXT",
+      "default": "[]"
+    },
+    "aggregateInstalledAtJson": {
+      "type": "TEXT",
+      "default": "{}"
+    },
+    "maintenanceWorksJson": {
+      "type": "TEXT",
+      "default": "[]"
+    },
+    "defectTasksJson": {
+      "type": "TEXT",
+      "default": "[]"
+    },
+    "aggregateGroupsJson": {
+      "type": "TEXT",
+      "default": "[]"
+    },
+    "oilGroupsJson": {
+      "type": "TEXT",
+      "default": "[]"
+    },
+    "resourcesUpdatedAt": {
+      "type": "INTEGER",
+      "default": 0
+    },
+    "fuselageSne": {
+      "type": "INTEGER",
+      "default": 0
+    }
+  },
+  "snk_values": {
+    "id": {
+      "type": "INTEGER",
+      "default": 0
+    },
+    "dayId": {
+      "type": "INTEGER",
+      "default": 0
+    },
+    "aLeft": {
+      "type": "REAL",
+      "default": "0.0"
+    },
+    "bLeft": {
+      "type": "REAL",
+      "default": "0.0"
+    },
+    "eLeft": {
+      "type": "REAL",
+      "default": "0.0"
+    },
+    "gLeft": {
+      "type": "REAL",
+      "default": "0.0"
+    },
+    "hLeft": {
+      "type": "REAL",
+      "default": "0.0"
+    },
+    "iLeft": {
+      "type": "REAL",
+      "default": "0.0"
+    },
+    "aRight": {
+      "type": "REAL",
+      "default": "0.0"
+    },
+    "bRight": {
+      "type": "REAL",
+      "default": "0.0"
+    },
+    "eRight": {
+      "type": "REAL",
+      "default": "0.0"
+    },
+    "gRight": {
+      "type": "REAL",
+      "default": "0.0"
+    },
+    "hRight": {
+      "type": "REAL",
+      "default": "0.0"
+    },
+    "iRight": {
+      "type": "REAL",
+      "default": "0.0"
+    }
+  },
+  "ta14_records": {
+    "id": {
+      "type": "INTEGER",
+      "default": 0
+    },
+    "profileId": {
+      "type": "INTEGER",
+      "default": 0
+    },
+    "isHistorical": {
+      "type": "INTEGER",
+      "default": 0
+    },
+    "date": {
+      "type": "TEXT",
+      "default": ""
+    },
+    "sortOrder": {
+      "type": "INTEGER",
+      "default": 0
+    },
+    "launchCount": {
+      "type": "INTEGER",
+      "default": 0
+    },
+    "col3": {
+      "type": "INTEGER",
+      "default": 0
+    },
+    "colVremya": {
+      "type": "INTEGER",
+      "default": 0
+    },
+    "col5": {
+      "type": "INTEGER",
+      "default": 0
+    },
+    "colSNE": {
+      "type": "INTEGER",
+      "default": 0
+    },
+    "col7": {
+      "type": "INTEGER",
+      "default": 0
+    },
+    "col8": {
+      "type": "INTEGER",
+      "default": 0
+    },
+    "colSNE2": {
+      "type": "INTEGER",
+      "default": 0
+    },
+    "launchCount2": {
+      "type": "INTEGER",
+      "default": 0
+    },
+    "col11": {
+      "type": "INTEGER",
+      "default": 0
+    },
+    "isTotal": {
+      "type": "INTEGER",
+      "default": 0
+    },
+    "totalMonth": {
+      "type": "TEXT",
+      "default": ""
+    },
+    "needsManualRecalc": {
+      "type": "INTEGER",
+      "default": 0
+    }
+  },
+  "ta14_start": {
+    "id": {
+      "type": "INTEGER",
+      "default": 0
+    },
+    "profileId": {
+      "type": "INTEGER",
+      "default": 0
+    },
+    "date": {
+      "type": "TEXT",
+      "default": ""
+    },
+    "launchCount": {
+      "type": "INTEGER",
+      "default": 0
+    },
+    "col3": {
+      "type": "INTEGER",
+      "default": 0
+    },
+    "colVremya": {
+      "type": "INTEGER",
+      "default": 0
+    },
+    "col5": {
+      "type": "INTEGER",
+      "default": 0
+    },
+    "colSNE": {
+      "type": "INTEGER",
+      "default": 0
+    },
+    "col7": {
+      "type": "INTEGER",
+      "default": 0
+    },
+    "col8": {
+      "type": "INTEGER",
+      "default": 0
+    },
+    "colSNE2": {
+      "type": "INTEGER",
+      "default": 0
+    },
+    "launchCount2": {
+      "type": "INTEGER",
+      "default": 0
+    },
+    "col11": {
+      "type": "INTEGER",
+      "default": 0
+    }
+  },
+  "vk250001_records": {
+    "id": {
+      "type": "INTEGER",
+      "default": 0
+    },
+    "profileId": {
+      "type": "INTEGER",
+      "default": 0
+    },
+    "isHistorical": {
+      "type": "INTEGER",
+      "default": 0
+    },
+    "date": {
+      "type": "TEXT",
+      "default": ""
+    },
+    "sortOrder": {
+      "type": "INTEGER",
+      "default": 0
+    },
+    "i": {
+      "type": "INTEGER",
+      "default": 0
+    },
+    "g": {
+      "type": "REAL",
+      "default": "0.0"
+    },
+    "colSNE": {
+      "type": "INTEGER",
+      "default": 0
+    },
+    "pprA": {
+      "type": "INTEGER",
+      "default": 0
+    },
+    "col8": {
+      "type": "REAL",
+      "default": "0.0"
+    },
+    "b": {
+      "type": "REAL",
+      "default": "0.0"
+    },
+    "col10": {
+      "type": "REAL",
+      "default": "0.0"
+    },
+    "col11": {
+      "type": "REAL",
+      "default": "0.0"
+    },
+    "col12": {
+      "type": "REAL",
+      "default": "0.0"
+    },
+    "d": {
+      "type": "REAL",
+      "default": "0.0"
+    },
+    "e": {
+      "type": "REAL",
+      "default": "0.0"
+    },
+    "h": {
+      "type": "REAL",
+      "default": "0.0"
+    },
+    "pprH": {
+      "type": "REAL",
+      "default": "0.0"
+    },
+    "isTotal": {
+      "type": "INTEGER",
+      "default": 0
+    },
+    "totalMonth": {
+      "type": "TEXT",
+      "default": ""
+    },
+    "needsManualRecalc": {
+      "type": "INTEGER",
+      "default": 0
+    }
+  },
+  "vk250001_start": {
+    "id": {
+      "type": "INTEGER",
+      "default": 0
+    },
+    "profileId": {
+      "type": "INTEGER",
+      "default": 0
+    },
+    "date": {
+      "type": "TEXT",
+      "default": ""
+    },
+    "i": {
+      "type": "INTEGER",
+      "default": 0
+    },
+    "g": {
+      "type": "REAL",
+      "default": "0.0"
+    },
+    "colSNE": {
+      "type": "INTEGER",
+      "default": 0
+    },
+    "pprA": {
+      "type": "INTEGER",
+      "default": 0
+    },
+    "col8": {
+      "type": "REAL",
+      "default": "0.0"
+    },
+    "b": {
+      "type": "REAL",
+      "default": "0.0"
+    },
+    "col10": {
+      "type": "REAL",
+      "default": "0.0"
+    },
+    "col11": {
+      "type": "REAL",
+      "default": "0.0"
+    },
+    "col12": {
+      "type": "REAL",
+      "default": "0.0"
+    },
+    "d": {
+      "type": "REAL",
+      "default": "0.0"
+    },
+    "e": {
+      "type": "REAL",
+      "default": "0.0"
+    },
+    "h": {
+      "type": "REAL",
+      "default": "0.0"
+    },
+    "pprH": {
+      "type": "REAL",
+      "default": "0.0"
+    },
+    "coeffA": {
+      "type": "REAL",
+      "default": "0.0"
+    },
+    "coeffH": {
+      "type": "REAL",
+      "default": "0.0"
+    }
+  },
+  "vk250002_records": {
+    "id": {
+      "type": "INTEGER",
+      "default": 0
+    },
+    "profileId": {
+      "type": "INTEGER",
+      "default": 0
+    },
+    "isHistorical": {
+      "type": "INTEGER",
+      "default": 0
+    },
+    "date": {
+      "type": "TEXT",
+      "default": ""
+    },
+    "sortOrder": {
+      "type": "INTEGER",
+      "default": 0
+    },
+    "i": {
+      "type": "INTEGER",
+      "default": 0
+    },
+    "g": {
+      "type": "REAL",
+      "default": "0.0"
+    },
+    "colSNE": {
+      "type": "INTEGER",
+      "default": 0
+    },
+    "pprA": {
+      "type": "INTEGER",
+      "default": 0
+    },
+    "col8": {
+      "type": "REAL",
+      "default": "0.0"
+    },
+    "b": {
+      "type": "REAL",
+      "default": "0.0"
+    },
+    "col10": {
+      "type": "REAL",
+      "default": "0.0"
+    },
+    "col11": {
+      "type": "REAL",
+      "default": "0.0"
+    },
+    "col12": {
+      "type": "REAL",
+      "default": "0.0"
+    },
+    "d": {
+      "type": "REAL",
+      "default": "0.0"
+    },
+    "e": {
+      "type": "REAL",
+      "default": "0.0"
+    },
+    "h": {
+      "type": "REAL",
+      "default": "0.0"
+    },
+    "pprH": {
+      "type": "REAL",
+      "default": "0.0"
+    },
+    "isTotal": {
+      "type": "INTEGER",
+      "default": 0
+    },
+    "totalMonth": {
+      "type": "TEXT",
+      "default": ""
+    },
+    "needsManualRecalc": {
+      "type": "INTEGER",
+      "default": 0
+    }
+  },
+  "vk250002_start": {
+    "id": {
+      "type": "INTEGER",
+      "default": 0
+    },
+    "profileId": {
+      "type": "INTEGER",
+      "default": 0
+    },
+    "date": {
+      "type": "TEXT",
+      "default": ""
+    },
+    "i": {
+      "type": "INTEGER",
+      "default": 0
+    },
+    "g": {
+      "type": "REAL",
+      "default": "0.0"
+    },
+    "colSNE": {
+      "type": "INTEGER",
+      "default": 0
+    },
+    "pprA": {
+      "type": "INTEGER",
+      "default": 0
+    },
+    "col8": {
+      "type": "REAL",
+      "default": "0.0"
+    },
+    "b": {
+      "type": "REAL",
+      "default": "0.0"
+    },
+    "col10": {
+      "type": "REAL",
+      "default": "0.0"
+    },
+    "col11": {
+      "type": "REAL",
+      "default": "0.0"
+    },
+    "col12": {
+      "type": "REAL",
+      "default": "0.0"
+    },
+    "d": {
+      "type": "REAL",
+      "default": "0.0"
+    },
+    "e": {
+      "type": "REAL",
+      "default": "0.0"
+    },
+    "h": {
+      "type": "REAL",
+      "default": "0.0"
+    },
+    "pprH": {
+      "type": "REAL",
+      "default": "0.0"
+    },
+    "coeffA": {
+      "type": "REAL",
+      "default": "0.0"
+    },
+    "coeffH": {
+      "type": "REAL",
+      "default": "0.0"
+    }
+  },
+  "vr80_records": {
+    "id": {
+      "type": "INTEGER",
+      "default": 0
+    },
+    "profileId": {
+      "type": "INTEGER",
+      "default": 0
+    },
+    "isHistorical": {
+      "type": "INTEGER",
+      "default": 0
+    },
+    "date": {
+      "type": "TEXT",
+      "default": ""
+    },
+    "sortOrder": {
+      "type": "INTEGER",
+      "default": 0
+    },
+    "launchCount": {
+      "type": "INTEGER",
+      "default": 0
+    },
+    "groundHours": {
+      "type": "INTEGER",
+      "default": 0
+    },
+    "col4": {
+      "type": "INTEGER",
+      "default": 0
+    },
+    "col5": {
+      "type": "INTEGER",
+      "default": 0
+    },
+    "col6": {
+      "type": "INTEGER",
+      "default": 0
+    },
+    "col7": {
+      "type": "INTEGER",
+      "default": 0
+    },
+    "col8": {
+      "type": "INTEGER",
+      "default": 0
+    },
+    "col9": {
+      "type": "INTEGER",
+      "default": 0
+    },
+    "col24": {
+      "type": "INTEGER",
+      "default": 0
+    },
+    "colSNE": {
+      "type": "INTEGER",
+      "default": 0
+    },
+    "col26": {
+      "type": "INTEGER",
+      "default": 0
+    },
+    "col27": {
+      "type": "INTEGER",
+      "default": 0
+    },
+    "col28": {
+      "type": "TEXT",
+      "default": ""
+    },
+    "isTotal": {
+      "type": "INTEGER",
+      "default": 0
+    },
+    "totalMonth": {
+      "type": "TEXT",
+      "default": ""
+    },
+    "needsManualRecalc": {
+      "type": "INTEGER",
+      "default": 0
+    }
+  },
+  "vr80_start": {
+    "id": {
+      "type": "INTEGER",
+      "default": 0
+    },
+    "profileId": {
+      "type": "INTEGER",
+      "default": 0
+    },
+    "date": {
+      "type": "TEXT",
+      "default": ""
+    },
+    "launchCount": {
+      "type": "INTEGER",
+      "default": 0
+    },
+    "groundHours": {
+      "type": "INTEGER",
+      "default": 0
+    },
+    "col4": {
+      "type": "INTEGER",
+      "default": 0
+    },
+    "col5": {
+      "type": "INTEGER",
+      "default": 0
+    },
+    "col6": {
+      "type": "INTEGER",
+      "default": 0
+    },
+    "col7": {
+      "type": "INTEGER",
+      "default": 0
+    },
+    "col8": {
+      "type": "INTEGER",
+      "default": 0
+    },
+    "col9": {
+      "type": "INTEGER",
+      "default": 0
+    },
+    "col24": {
+      "type": "INTEGER",
+      "default": 0
+    },
+    "colSNE": {
+      "type": "INTEGER",
+      "default": 0
+    },
+    "col26": {
+      "type": "INTEGER",
+      "default": 0
+    },
+    "col27": {
+      "type": "INTEGER",
+      "default": 0
+    },
+    "col28": {
+      "type": "TEXT",
+      "default": ""
+    }
+  }
+}

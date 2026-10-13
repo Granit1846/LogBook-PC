@@ -1,0 +1,771 @@
+<Window x:Class="logbook.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="clr-namespace:logbook.ViewModels"
+        xmlns:conv="clr-namespace:logbook.Converters"
+        xmlns:helpers="clr-namespace:logbook.Helpers"
+        xmlns:views="clr-namespace:logbook.Views.Tabs"
+        Title="{DynamicResource App_Title}" Height="600" Width="1200" MinWidth="1220" MinHeight="550"
+        Icon="pack://application:,,,/Resources/Icons/logbook.ico"
+        WindowStartupLocation="CenterScreen"
+        Background="{DynamicResource WindowBackgroundBrush}"
+        Foreground="{DynamicResource WindowForegroundBrush}"
+        Closing="MainWindow_Closing">
+
+    <Window.DataContext>
+        <vm:MainViewModel/>
+    </Window.DataContext>
+
+    <Window.InputBindings>
+        <KeyBinding Key="S"
+                    Modifiers="Control"
+                    Command="{Binding SaveAllCommand}"/>
+        <KeyBinding Key="Z"
+                    Modifiers="Control"
+                    Command="{Binding UndoCommand}"/>
+    </Window.InputBindings>
+
+    <Window.Resources>
+        <conv:MinutesToHoursMinutesConverter x:Key="MinToHmConverter"/>
+        <conv:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+        <conv:ZeroToEmptyConverter x:Key="ZeroToEmptyConverter"/>
+        <conv:BoolToGridLengthConverter x:Key="BoolToGridLengthConverter"/>
+
+        <Style TargetType="Button">
+            <Setter Property="Padding" Value="10,5"/>
+            <Setter Property="Margin" Value="3"/>
+            <Setter Property="FontFamily" Value="{DynamicResource AppFontFamily}"/>
+            <Setter Property="FontSize" Value="{DynamicResource AppFontSize}"/>
+        </Style>
+
+        <Style TargetType="TextBox">
+            <Setter Property="Padding" Value="5"/>
+            <Setter Property="FontFamily" Value="{DynamicResource AppFontFamily}"/>
+            <Setter Property="FontSize" Value="{DynamicResource AppFontSize}"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Background" Value="{DynamicResource CellBackgroundBrush}"/>
+            <Setter Property="Foreground" Value="{DynamicResource CellForegroundBrush}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource BorderBrush}"/>
+            <Setter Property="CaretBrush" Value="{DynamicResource CaretBrush}"/>
+            <Setter Property="helpers:SelectAllOnFocusBehavior.IsEnabled" Value="True"/>
+        </Style>
+
+        <Style TargetType="TextBlock">
+            <Setter Property="FontFamily" Value="{DynamicResource AppFontFamily}"/>
+            <Setter Property="FontSize" Value="{DynamicResource AppFontSize}"/>
+            <Setter Property="Foreground" Value="{DynamicResource WindowForegroundBrush}"/>
+        </Style>
+
+        <Style x:Key="ComboBoxToggleButton" TargetType="ToggleButton">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ToggleButton">
+                        <Border x:Name="Bd"
+                        Background="{DynamicResource CellBackgroundBrush}"
+                        BorderBrush="{DynamicResource BorderBrush}"
+                        BorderThickness="1"
+                        CornerRadius="3">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="20"/>
+                                </Grid.ColumnDefinitions>
+                                <Path Grid.Column="1"
+                              HorizontalAlignment="Center"
+                              VerticalAlignment="Center"
+                              Data="M 0 0 L 4 4 L 8 0 Z"
+                              Fill="{DynamicResource CellForegroundBrush}"/>
+                            </Grid>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Bd" Property="Background" Value="{DynamicResource AccentBackgroundBrush}"/>
+                            </Trigger>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter TargetName="Bd" Property="Background" Value="{DynamicResource AccentBackgroundBrush}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style TargetType="ComboBox">
+            <Setter Property="FontFamily" Value="{DynamicResource AppFontFamily}"/>
+            <Setter Property="FontSize" Value="{DynamicResource AppFontSize}"/>
+            <Setter Property="Foreground" Value="{DynamicResource CellForegroundBrush}"/>
+            <Setter Property="Background" Value="{DynamicResource CellBackgroundBrush}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource BorderBrush}"/>
+            <Setter Property="Padding" Value="5,3"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ComboBox">
+                        <Grid>
+                            <ToggleButton x:Name="ToggleButton"
+                                  Style="{StaticResource ComboBoxToggleButton}"
+                                  Focusable="False"
+                                  ClickMode="Press"
+                                  IsChecked="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"/>
+
+                            <ContentPresenter x:Name="ContentSite"
+                                      Margin="{TemplateBinding Padding}"
+                                      Content="{TemplateBinding SelectionBoxItem}"
+                                      ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}"
+                                      ContentStringFormat="{TemplateBinding SelectionBoxItemStringFormat}"
+                                      IsHitTestVisible="False"
+                                      HorizontalAlignment="Left"
+                                      VerticalAlignment="Center"
+                                      TextElement.Foreground="{TemplateBinding Foreground}"/>
+
+                            <Popup x:Name="PART_Popup"
+                           Placement="Bottom"
+                           IsOpen="{TemplateBinding IsDropDownOpen}"
+                           AllowsTransparency="True"
+                           Focusable="False"
+                           PopupAnimation="Slide">
+                                <Border x:Name="DropDownBorder"
+                                Background="{DynamicResource CellBackgroundBrush}"
+                                BorderBrush="{DynamicResource BorderBrush}"
+                                BorderThickness="1"
+                                CornerRadius="3"
+                                MinWidth="{Binding ActualWidth, ElementName=ToggleButton}"
+                                MaxHeight="{TemplateBinding MaxDropDownHeight}">
+                                    <ScrollViewer SnapsToDevicePixels="True">
+                                        <StackPanel IsItemsHost="True"
+                                            KeyboardNavigation.DirectionalNavigation="Contained"/>
+                                    </ScrollViewer>
+                                </Border>
+                            </Popup>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="HasItems" Value="False">
+                                <Setter TargetName="DropDownBorder" Property="MinHeight" Value="30"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style TargetType="ComboBoxItem">
+            <Setter Property="Foreground" Value="{DynamicResource CellForegroundBrush}"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Padding" Value="8,4"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ComboBoxItem">
+                        <Border x:Name="Bd"
+                        Background="{TemplateBinding Background}"
+                        Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Left"
+                                      VerticalAlignment="Center"
+                                      TextElement.Foreground="{TemplateBinding Foreground}"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Bd" Property="Background" Value="{DynamicResource AccentBackgroundBrush}"/>
+                            </Trigger>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter TargetName="Bd" Property="Background" Value="{DynamicResource AccentBackgroundBrush}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style TargetType="CheckBox">
+            <Setter Property="FontFamily" Value="{DynamicResource AppFontFamily}"/>
+            <Setter Property="FontSize" Value="{DynamicResource AppFontSize}"/>
+            <Setter Property="Foreground" Value="{DynamicResource WindowForegroundBrush}"/>
+        </Style>
+
+        <Style TargetType="DatePicker">
+            <Setter Property="FontFamily" Value="{DynamicResource AppFontFamily}"/>
+            <Setter Property="FontSize" Value="{DynamicResource AppFontSize}"/>
+        </Style>
+
+        <Style TargetType="TabControl">
+            <Setter Property="Background" Value="{DynamicResource WindowBackgroundBrush}"/>
+            <Setter Property="Foreground" Value="{DynamicResource WindowForegroundBrush}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource BorderBrush}"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TabControl">
+                        <Grid Background="{TemplateBinding Background}">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+
+                            <TabPanel Grid.Row="0"
+                                      IsItemsHost="True"
+                                      Background="Transparent"
+                                      Margin="2,2,2,0"/>
+
+                            <Border Grid.Row="1"
+                                    Background="{DynamicResource WindowBackgroundBrush}"
+                                    BorderBrush="{TemplateBinding BorderBrush}"
+                                    BorderThickness="0">
+                                <ContentPresenter ContentSource="SelectedContent"/>
+                            </Border>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style TargetType="TabItem">
+            <Setter Property="Foreground" Value="{DynamicResource WindowForegroundBrush}"/>
+            <Setter Property="Background" Value="{DynamicResource AccentBackgroundBrush}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource BorderBrush}"/>
+            <Setter Property="Padding" Value="10,5"/>
+            <Setter Property="Margin" Value="2,0,0,0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TabItem">
+                        <Border x:Name="Bd"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="1,1,1,0"
+                                CornerRadius="4,4,0,0"
+                                Padding="{TemplateBinding Padding}">
+                            <ContentPresenter ContentSource="Header"
+                                              HorizontalAlignment="Center"
+                                              VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter TargetName="Bd" Property="Background" Value="{DynamicResource CellBackgroundBrush}"/>
+                                <Setter Property="Foreground" Value="{DynamicResource CellForegroundBrush}"/>
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Bd" Property="Background" Value="{DynamicResource WarningBackgroundBrush}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="SettingsButtonStyle" TargetType="Button">
+            <Setter Property="Width" Value="28"/>
+            <Setter Property="Height" Value="28"/>
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="Margin" Value="0"/>
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="FontFamily" Value="Segoe UI Symbol"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Foreground" Value="{DynamicResource WindowForegroundBrush}"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="ToolTip" Value="{DynamicResource Main_Settings}"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="Bd"
+                                Background="{TemplateBinding Background}"
+                                CornerRadius="3">
+                            <ContentPresenter HorizontalAlignment="Center"
+                                              VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Bd" Property="Background" Value="{DynamicResource AccentBackgroundBrush}"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="Bd" Property="Background" Value="{DynamicResource HeaderCellBackgroundBrush}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="CollapseButtonStyle" TargetType="Button">
+            <Setter Property="Width" Value="16"/>
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="Margin" Value="0"/>
+            <Setter Property="FontSize" Value="10"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Background" Value="{DynamicResource HeaderCellBackgroundBrush}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource BorderBrush}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Foreground" Value="{DynamicResource WindowForegroundBrush}"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="ToolTip" Value="{DynamicResource Main_ToggleLeftPanel}"/>
+            <Setter Property="VerticalAlignment" Value="Stretch"/>
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+        </Style>
+    </Window.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- ================= ВЕРХНЯЯ ПОЛОСА С КНОПКОЙ НАСТРОЕК ================= -->
+        <Grid Grid.Row="0" Background="Transparent">
+            <Button Grid.Column="1"
+                    Content="⚙"
+                    Command="{Binding OpenSettingsCommand}"
+                    Style="{StaticResource SettingsButtonStyle}"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Center"
+                    Margin="0,0,5,0"/>
+        </Grid>
+
+        <!-- ================= ОСНОВНОЙ КОНТЕНТ ================= -->
+        <Grid Grid.Row="1" Margin="10,0,10,10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="{Binding IsLeftPanelCollapsed, Converter={StaticResource BoolToGridLengthConverter}, ConverterParameter=400}"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- === ЛЕВАЯ ЧАСТЬ === -->
+            <Grid Grid.Column="0" Margin="0,0,5,0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <!-- Шапка -->
+                <Border Grid.Row="0"
+                        BorderBrush="{DynamicResource BorderBrush}"
+                        BorderThickness="1"
+                        CornerRadius="5"
+                        Padding="10"
+                        Margin="0,0,0,10"
+                        Background="{DynamicResource WindowBackgroundBrush}">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="70"/>
+                            <ColumnDefinition Width="160"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+
+                        <!-- Профиль -->
+                        <TextBlock Grid.Row="0" Grid.Column="0"
+                                   Text="{DynamicResource Main_Tech}" FontSize="13" FontWeight="Bold"
+                                   VerticalAlignment="Center" Margin="0,0,0,8"/>
+                        <ComboBox Grid.Row="0" Grid.Column="1"
+                                  ItemsSource="{Binding Profiles}"
+                                  SelectedItem="{Binding SelectedProfile}"
+                                  FontSize="13" Padding="5" Margin="0,0,0,8"/>
+                        <StackPanel Grid.Row="0" Grid.Column="2"
+                                    Orientation="Horizontal" Margin="5,0,0,8">
+                            <Button Content="+" Command="{Binding AddProfileCommand}"
+                                    Width="30" Height="26" Padding="0" Margin="0,0,3,0"
+                                    FontWeight="Bold" ToolTip="{DynamicResource Action_CreateProfile}"/>
+                            <Button Content="−" Command="{Binding DeleteProfileCommand}"
+                                    Width="30" Height="26" Padding="0" Margin="0"
+                                    FontWeight="Bold" Foreground="Red" ToolTip="{DynamicResource Action_DeleteProfile}"/>
+                        </StackPanel>
+
+                        <!-- Дата -->
+                        <TextBlock Grid.Row="1" Grid.Column="0"
+                                   Text="{DynamicResource Main_Date}" FontSize="13" FontWeight="Bold"
+                                   VerticalAlignment="Center" Margin="0,0,0,8"/>
+                        <DatePicker Grid.Row="1" Grid.Column="1"
+                                    SelectedDate="{Binding SelectedDate}"
+                                    FontSize="13" Margin="0,0,0,8"/>
+                        <StackPanel Grid.Row="1" Grid.Column="2"
+                                    Orientation="Horizontal" Margin="5,0,0,8">
+                            <Button Content="◀" Command="{Binding PrevDayCommand}"
+                                    Width="30" Height="26" Padding="0" Margin="0,0,3,0"
+                                    FontWeight="Bold" ToolTip="{DynamicResource Main_PrevDay}"/>
+                            <Button Content="▶" Command="{Binding NextDayCommand}"
+                                    Width="30" Height="26" Padding="0" Margin="0"
+                                    FontWeight="Bold" ToolTip="{DynamicResource Main_NextDay}"/>
+                        </StackPanel>
+
+                        <!-- Экипаж -->
+                        <TextBlock Grid.Row="2" Grid.Column="0"
+                                   Text="{DynamicResource Main_Crew}" FontSize="13" FontWeight="Bold"
+                                   VerticalAlignment="Center"/>
+                        <TextBox Grid.Row="2" Grid.Column="1"
+                                 Text="{Binding Crew, UpdateSourceTrigger=PropertyChanged}"/>
+                        <StackPanel Grid.Row="2" Grid.Column="2"
+                                    Orientation="Horizontal" Margin="5,0,0,0">
+                            <Button Content="{DynamicResource Main_Mode_Flight}" Command="{Binding ShowFlightModeCommand}"
+                                    Width="70" Height="26" Padding="0" Margin="0,0,3,0"/>
+                            <Button Content="{DynamicResource Main_Mode_SNK}" Command="{Binding ShowSnkModeCommand}"
+                                    Width="60" Height="26" Padding="0" Margin="0"/>
+                        </StackPanel>
+                    </Grid>
+                </Border>
+
+                <!-- Список запусков / СНК -->
+                <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+                    <Grid>
+                        <!-- Режим ПОЛЁТЫ -->
+                        <ItemsControl ItemsSource="{Binding Launches}"
+                                      Visibility="{Binding IsFlightMode, Converter={StaticResource BoolToVisibilityConverter}}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Border BorderBrush="{DynamicResource BorderBrush}"
+                                            BorderThickness="1"
+                                            CornerRadius="5"
+                                            Padding="8"
+                                            Margin="0,0,0,8"
+                                            Background="{DynamicResource CellBackgroundBrush}">
+                                        <StackPanel Orientation="Vertical">
+                                            <!-- Основная строка: Запуск | ВСУ/Земля/Воздух | ✕ -->
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="60"/>
+                                                    <ColumnDefinition Width="*"/>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                </Grid.ColumnDefinitions>
+
+                                                <TextBlock Grid.Column="0"
+                                                           Text="{DynamicResource Launch_Label}"
+                                                           FontSize="13"
+                                                           VerticalAlignment="Center"
+                                                           FontWeight="Bold"/>
+
+                                                <StackPanel Grid.Column="1"
+                                                            Orientation="Horizontal"
+                                                            HorizontalAlignment="Center">
+                                                    <StackPanel Margin="5,0">
+                                                        <TextBlock Text="{DynamicResource Launch_VSU}"
+                                                                   HorizontalAlignment="Center"
+                                                                   FontSize="11"
+                                                                   Foreground="Gray"/>
+                                                        <TextBox Width="60"
+                                                                 Text="{Binding Vsu, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource ZeroToEmptyConverter}}"
+                                                                 HorizontalAlignment="Center"
+                                                                 helpers:NumericOnlyBehavior.IsNumericOnly="True"/>
+                                                    </StackPanel>
+                                                    <StackPanel Margin="5,0">
+                                                        <TextBlock Text="{DynamicResource Launch_Ground}"
+                                                                   HorizontalAlignment="Center"
+                                                                   FontSize="11"
+                                                                   Foreground="Gray"/>
+                                                        <TextBox Width="60"
+                                                                 Text="{Binding Zemlya, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource ZeroToEmptyConverter}}"
+                                                                 HorizontalAlignment="Center"
+                                                                 helpers:NumericOnlyBehavior.IsNumericOnly="True"/>
+                                                    </StackPanel>
+                                                    <StackPanel Margin="5,0">
+                                                        <TextBlock Text="{DynamicResource Launch_Air}"
+                                                                   HorizontalAlignment="Center"
+                                                                   FontSize="11"
+                                                                   Foreground="Gray"/>
+                                                        <TextBox Width="60"
+                                                                 Text="{Binding Vozduh, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource ZeroToEmptyConverter}}"
+                                                                 HorizontalAlignment="Center"
+                                                                 helpers:NumericOnlyBehavior.IsNumericOnly="True"/>
+                                                    </StackPanel>
+                                                </StackPanel>
+
+                                                <Button Grid.Column="2"
+                                                        Content="✕"
+                                                        FontSize="16"
+                                                        FontWeight="Bold"
+                                                        Foreground="Red"
+                                                        Command="{Binding DataContext.RemoveLaunchCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+                                                        CommandParameter="{Binding}"
+                                                        Width="30"
+                                                        Height="30"
+                                                        VerticalAlignment="Center"
+                                                        HorizontalAlignment="Center"
+                                                        FontFamily="Segoe UI Symbol"
+                                                        ToolTip="{DynamicResource Launch_Delete}"
+                                                        KeyboardNavigation.IsTabStop="False"
+                                                        Padding="0"/>
+                                            </Grid>
+
+                                            <!-- Раскрывающаяся секция "Дополнительно" -->
+                                            <Expander Header="{DynamicResource Launch_Additional}"
+                                                      Margin="0,6,0,0"
+                                                      FontSize="11"
+                                                      Foreground="Gray"
+                                                      HorizontalAlignment="Left">
+                                                <StackPanel Orientation="Horizontal" Margin="12,6,0,0">
+                                                    <StackPanel Margin="5,0">
+                                                        <TextBlock Text="{DynamicResource Launch_TP}"
+                                                                   HorizontalAlignment="Center"
+                                                                   FontSize="11"
+                                                                   Foreground="Gray"/>
+                                                        <TextBox Width="60"
+                                                                 Text="{Binding TP, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource ZeroToEmptyConverter}}"
+                                                                 HorizontalAlignment="Center"
+                                                                 helpers:NumericOnlyBehavior.IsNumericOnly="True"/>
+                                                    </StackPanel>
+                                                    <StackPanel Margin="5,0">
+                                                        <TextBlock Text="{DynamicResource Launch_SamoletLandings}"
+                                                                   HorizontalAlignment="Center"
+                                                                   FontSize="11"
+                                                                   Foreground="Gray"/>
+                                                        <TextBox Width="60"
+                                                                 Text="{Binding SamoletLandings, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource ZeroToEmptyConverter}}"
+                                                                 HorizontalAlignment="Center"
+                                                                 helpers:NumericOnlyBehavior.IsNumericOnly="True"/>
+                                                    </StackPanel>
+                                                </StackPanel>
+                                            </Expander>
+                                        </StackPanel>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+
+                        <!-- Режим СНК -->
+                        <ItemsControl ItemsSource="{Binding SnkRecords}"
+                                      Visibility="{Binding IsSnkMode, Converter={StaticResource BoolToVisibilityConverter}}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Border BorderBrush="{DynamicResource BorderBrush}"
+                                            BorderThickness="1"
+                                            CornerRadius="5"
+                                            Padding="6"
+                                            Margin="0,0,0,6"
+                                            Background="{DynamicResource AccentBackgroundBrush}">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
+
+                                            <StackPanel Grid.Column="0" Orientation="Horizontal" HorizontalAlignment="Center">
+                                                <TextBlock Text="{Binding Label}" FontSize="13" FontWeight="Bold" VerticalAlignment="Center" Width="20"/>
+                                                <TextBox Text="{Binding LeftValue, UpdateSourceTrigger=PropertyChanged}" Width="60" HorizontalAlignment="Center" helpers:DecimalSeparatorBehavior.IsEnabled="True"/>
+                                            </StackPanel>
+
+                                            <TextBlock Grid.Column="1" Text="|" FontSize="14" Foreground="Gray" VerticalAlignment="Center" Margin="8,0"/>
+
+                                            <StackPanel Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Center">
+                                                <TextBlock Text="{Binding Label}" FontSize="13" FontWeight="Bold" VerticalAlignment="Center" Width="20"/>
+                                                <TextBox Text="{Binding RightValue, UpdateSourceTrigger=PropertyChanged}" Width="60" HorizontalAlignment="Center" helpers:DecimalSeparatorBehavior.IsEnabled="True"/>
+                                            </StackPanel>
+                                        </Grid>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </Grid>
+                </ScrollViewer>
+
+                <!-- Кнопки под списком -->
+                <Grid Grid.Row="2" Margin="0,5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="122"/>
+                        <ColumnDefinition Width="80"/>
+                        <ColumnDefinition Width="46"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Button Grid.Column="0" Content="{DynamicResource Main_AddLaunch}" Command="{Binding AddLaunchCommand}" Margin="0,0,3,0"/>
+                    <Button Grid.Column="1" Content="{DynamicResource Main_EndDay}" Command="{Binding EndDayCommand}" Background="{DynamicResource WarningBackgroundBrush}" Margin="0,0,3,0"/>
+                    <Button Grid.Column="2" Content="{DynamicResource Main_History}" Command="{Binding HistoryCommand}" Background="{DynamicResource AccentBackgroundBrush}" Margin="0,0,3,0"/>
+                    <Button Grid.Column="3" Content="🔄" Command="{Binding SyncCommand}" Height="30" FontSize="14" ToolTip="{DynamicResource Main_Sync}" Margin="0,0,3,0"/>
+                </Grid>
+
+                <!-- Итоги за день -->
+                <Border Grid.Row="3"
+                        BorderBrush="{DynamicResource BorderBrush}"
+                        BorderThickness="1"
+                        CornerRadius="5"
+                        Padding="10"
+                        Margin="0,5"
+                        Background="{DynamicResource AccentBackgroundBrush}">
+                    <StackPanel>
+                        <TextBlock Text="{DynamicResource Main_Totals}" FontSize="14" FontWeight="Bold" Margin="0,0,0,5"/>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <StackPanel Grid.Column="0">
+                                <TextBlock Text="{DynamicResource Main_VSU}" FontSize="11" Foreground="Gray"/>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="{Binding TotalVsu}" FontSize="13"/>
+                                    <TextBlock Text="{DynamicResource Main_Minutes}" FontSize="13" Margin="3,0,0,0"/>
+                                </StackPanel>
+                                <TextBlock Text="{Binding TotalVsu, Converter={StaticResource MinToHmConverter}}" FontSize="13" FontWeight="Bold" Foreground="Green"/>
+                            </StackPanel>
+
+                            <StackPanel Grid.Column="1">
+                                <TextBlock Text="{DynamicResource Main_Ground}" FontSize="11" Foreground="Gray"/>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="{Binding TotalZemlya}" FontSize="13"/>
+                                    <TextBlock Text="{DynamicResource Main_Minutes}" FontSize="13" Margin="3,0,0,0"/>
+                                </StackPanel>
+                                <TextBlock Text="{Binding TotalZemlya, Converter={StaticResource MinToHmConverter}}" FontSize="13" FontWeight="Bold" Foreground="Green"/>
+                            </StackPanel>
+
+                            <StackPanel Grid.Column="2">
+                                <TextBlock Text="{DynamicResource Main_Air}" FontSize="11" Foreground="Gray"/>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="{Binding TotalVozduh}" FontSize="13"/>
+                                    <TextBlock Text="{DynamicResource Main_Minutes}" FontSize="13" Margin="3,0,0,0"/>
+                                </StackPanel>
+                                <TextBlock Text="{Binding TotalVozduh, Converter={StaticResource MinToHmConverter}}" FontSize="13" FontWeight="Bold" Foreground="Green"/>
+                            </StackPanel>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+            </Grid>
+
+            <!-- === КНОПКА СВОРАЧИВАНИЯ === -->
+            <Button Grid.Column="1"
+                    Command="{Binding ToggleLeftPanelCommand}"
+                    Style="{StaticResource CollapseButtonStyle}">
+                <Button.Content>
+                    <TextBlock>
+                        <TextBlock.Style>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="Text" Value="◀"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsLeftPanelCollapsed}" Value="True">
+                                        <Setter Property="Text" Value="▶"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBlock.Style>
+                    </TextBlock>
+                </Button.Content>
+            </Button>
+
+            <!-- === ВКЛАДКИ === -->
+            <TabControl Grid.Column="2"
+                        Margin="5"
+                        SelectedIndex="{Binding SelectedTabIndex, Mode=TwoWay}">
+
+                <TabItem Header="{DynamicResource Tab_Maintenance}">
+                    <views:MaintenanceTab/>
+                </TabItem>
+
+                <TabItem Header="{DynamicResource Tab_Chast1}">
+                    <ScrollViewer HorizontalScrollBarVisibility="Disabled"
+                                  VerticalScrollBarVisibility="Disabled"
+                                  helpers:ZoomBehavior.IsEnabled="True">
+                        <views:Chast1Tab/>
+                    </ScrollViewer>
+                </TabItem>
+
+                <TabItem Header="{DynamicResource Tab_Vr80}">
+                    <ScrollViewer HorizontalScrollBarVisibility="Disabled"
+                                  VerticalScrollBarVisibility="Disabled"
+                                  helpers:ZoomBehavior.IsEnabled="True">
+                        <views:Vr80Tab/>
+                    </ScrollViewer>
+                </TabItem>
+
+                <TabItem Header="{DynamicResource Tab_Ta14}">
+                    <ScrollViewer HorizontalScrollBarVisibility="Disabled"
+                                  VerticalScrollBarVisibility="Disabled"
+                                  helpers:ZoomBehavior.IsEnabled="True">
+                        <views:Ta14Tab/>
+                    </ScrollViewer>
+                </TabItem>
+
+                <TabItem Header="{DynamicResource Tab_Vk01}">
+                    <ScrollViewer HorizontalScrollBarVisibility="Disabled"
+                                  VerticalScrollBarVisibility="Disabled"
+                                  helpers:ZoomBehavior.IsEnabled="True">
+                        <views:Vk250001Tab/>
+                    </ScrollViewer>
+                </TabItem>
+
+                <TabItem Header="{DynamicResource Tab_Vk02}">
+                    <ScrollViewer HorizontalScrollBarVisibility="Disabled"
+                                  VerticalScrollBarVisibility="Disabled"
+                                  helpers:ZoomBehavior.IsEnabled="True">
+                        <views:Vk250002Tab/>
+                    </ScrollViewer>
+                </TabItem>
+
+                <TabItem Header="{DynamicResource Tab_Resources}">
+                    <ScrollViewer HorizontalScrollBarVisibility="Disabled"
+                                  VerticalScrollBarVisibility="Disabled"
+                                  helpers:ZoomBehavior.IsEnabled="True">
+                        <views:ResursyTab/>
+                    </ScrollViewer>
+                </TabItem>
+
+            </TabControl>
+        </Grid>
+
+        <!-- ================= СТАТУС-СТРОКА ================= -->
+        <Border Grid.Row="2"
+                BorderBrush="{DynamicResource BorderBrush}"
+                BorderThickness="0,1,0,0"
+                Background="{DynamicResource WindowBackgroundBrush}"
+                Padding="10,4">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Grid.Column="0"
+                           VerticalAlignment="Center"
+                           Foreground="{DynamicResource WindowForegroundBrush}">
+                    <Run Text="{DynamicResource Main_DaysInProfile}"/>
+                    <Run Text="{Binding DaysInProfile, Mode=OneWay}" FontWeight="Bold"/>
+                </TextBlock>
+
+                <StackPanel Grid.Column="1" Orientation="Horizontal">
+                    <TextBlock VerticalAlignment="Center"
+                               Margin="0,0,12,0"
+                               Foreground="{DynamicResource WindowForegroundBrush}">
+                        <Run Text="{Binding LastSaveStatus, Mode=OneWay}"/>
+                    </TextBlock>
+
+                    <Button Command="{Binding OpenNotificationsCommand}"
+                            Cursor="Hand"
+                            Width="28" Height="28"
+                            Background="Transparent"
+                            BorderThickness="0"
+                            Padding="0"
+                            ToolTip="{DynamicResource Main_Notifications}">
+                        <Grid>
+                            <TextBlock Text="🔔"
+                                       FontSize="16"
+                                       FontFamily="Segoe UI Symbol"
+                                       HorizontalAlignment="Center"
+                                       VerticalAlignment="Center"/>
+                            <Ellipse Width="10" Height="10"
+                                     HorizontalAlignment="Right"
+                                     VerticalAlignment="Top"
+                                     Margin="0,2,2,0">
+                                <Ellipse.Style>
+                                    <Style TargetType="Ellipse">
+                                        <Setter Property="Fill" Value="Transparent"/>
+                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding NotificationLevel}" Value="1">
+                                                <Setter Property="Fill" Value="Gold"/>
+                                                <Setter Property="Visibility" Value="Visible"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding NotificationLevel}" Value="2">
+                                                <Setter Property="Fill" Value="Red"/>
+                                                <Setter Property="Visibility" Value="Visible"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Ellipse.Style>
+                            </Ellipse>
+                        </Grid>
+                    </Button>
+                </StackPanel>
+            </Grid>
+        </Border>
+    </Grid>
+</Window>

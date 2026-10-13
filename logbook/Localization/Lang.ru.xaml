@@ -1,0 +1,762 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib">
+
+    <!-- ============================================================ -->
+    <!-- ==================== ОБЩИЕ ================================== -->
+    <!-- ============================================================ -->
+    <sys:String x:Key="App_Title">Наработка</sys:String>
+    <sys:String x:Key="Btn_OK">OK</sys:String>
+    <sys:String x:Key="Btn_Cancel">Отмена</sys:String>
+    <sys:String x:Key="Btn_Apply">Применить</sys:String>
+    <sys:String x:Key="Btn_Close">Закрыть</sys:String>
+    <sys:String x:Key="Btn_Save">Сохранить</sys:String>
+    <sys:String x:Key="Btn_Delete">Удалить</sys:String>
+    <sys:String x:Key="Btn_Yes">Да</sys:String>
+    <sys:String x:Key="Btn_No">Нет</sys:String>
+
+    <!-- ============================================================ -->
+    <!-- ==================== ГЛАВНОЕ ОКНО =========================== -->
+    <!-- ============================================================ -->
+    <sys:String x:Key="Main_Tech">Техника:</sys:String>
+    <sys:String x:Key="Main_Date">Дата:</sys:String>
+    <sys:String x:Key="Main_Crew">Экипаж:</sys:String>
+    <sys:String x:Key="Main_Mode_Flight">Полёты</sys:String>
+    <sys:String x:Key="Main_Mode_SNK">СНК</sys:String>
+    <sys:String x:Key="Main_AddLaunch">+ Добавить запуск</sys:String>
+    <sys:String x:Key="Main_EndDay">Закончить день</sys:String>
+    <sys:String x:Key="Main_History">История</sys:String>
+    <sys:String x:Key="Main_Totals">Итого за день:</sys:String>
+    <sys:String x:Key="Main_VSU">ВСУ:</sys:String>
+    <sys:String x:Key="Main_Ground">Земля:</sys:String>
+    <sys:String x:Key="Main_Air">Воздух:</sys:String>
+    <sys:String x:Key="Main_Minutes">мин</sys:String>
+    <sys:String x:Key="Main_DaysInProfile">Дней в профиле:</sys:String>
+    <sys:String x:Key="Main_NoSaves">Нет сохранений</sys:String>
+    <sys:String x:Key="Main_Saved">Сохранено</sys:String>
+    <sys:String x:Key="Main_Notifications">Уведомления</sys:String>
+    <sys:String x:Key="Main_Settings">Настройки</sys:String>
+    <sys:String x:Key="Main_PrevDay">Предыдущий день</sys:String>
+    <sys:String x:Key="Main_NextDay">Следующий день</sys:String>
+    <sys:String x:Key="Main_Sync">Синхронизация</sys:String>
+    <sys:String x:Key="Main_ToggleLeftPanel">Свернуть/развернуть панель</sys:String>
+    <sys:String x:Key="Main_NewAircraft">Новая техника</sys:String>
+    <sys:String x:Key="Total_For">Итого за {0} {1}</sys:String>
+
+    <!-- Вкладки главного окна -->
+    <sys:String x:Key="Tab_Maintenance">Журнал ТО</sys:String>
+    <sys:String x:Key="Tab_Chast1">Часть 1</sys:String>
+    <sys:String x:Key="Tab_Vr80">ВР-80</sys:String>
+    <sys:String x:Key="Tab_Ta14">Та-14</sys:String>
+    <sys:String x:Key="Tab_Vk01">Вк-2500-01</sys:String>
+    <sys:String x:Key="Tab_Vk02">Вк-2500-02</sys:String>
+    <sys:String x:Key="Tab_Resources">Ресурсы</sys:String>
+
+    <!-- ============================================================ -->
+    <!-- ==================== ЗАПУСК (левая панель) =================== -->
+    <!-- ============================================================ -->
+    <sys:String x:Key="Launch_Label">Запуск</sys:String>
+    <sys:String x:Key="Launch_VSU">ВСУ</sys:String>
+    <sys:String x:Key="Launch_Ground">Земля</sys:String>
+    <sys:String x:Key="Launch_Air">Воздух</sys:String>
+    <sys:String x:Key="Launch_Delete">Удалить запуск</sys:String>
+    <sys:String x:Key="Launch_TP">ТП</sys:String>
+    <sys:String x:Key="Launch_SamoletLandings">Сам.</sys:String>
+    <sys:String x:Key="Launch_Additional">Дополнительно</sys:String>
+
+    <!-- ============================================================ -->
+    <!-- ==================== ОКНО НАСТРОЕК ========================== -->
+    <!-- ============================================================ -->
+    <sys:String x:Key="Settings_Title">Настройки</sys:String>
+    <sys:String x:Key="Settings_Interface">Интерфейс</sys:String>
+    <sys:String x:Key="Settings_Actions">Действия</sys:String>
+    <sys:String x:Key="Settings_Advanced">Дополнительно</sys:String>
+    <sys:String x:Key="Settings_About">О программе</sys:String>
+    <sys:String x:Key="Settings_Browse">Выбрать папку</sys:String>
+
+    <!-- Интерфейс -->
+    <sys:String x:Key="Settings_Language">Язык:</sys:String>
+    <sys:String x:Key="Settings_Notifications">Уведомления в приложении:</sys:String>
+    <sys:String x:Key="Settings_Theme">Тема:</sys:String>
+    <sys:String x:Key="Settings_FontSize">Размер текста:</sys:String>
+    <sys:String x:Key="Settings_FontFamily">Шрифт:</sys:String>
+
+    <sys:String x:Key="Theme_Light">Светлая</sys:String>
+    <sys:String x:Key="Theme_Dark">Тёмная</sys:String>
+    <sys:String x:Key="Theme_Nexus">Nexus</sys:String>
+    <sys:String x:Key="Theme_System">Системная</sys:String>
+
+    <sys:String x:Key="FontSize_Small">Маленький</sys:String>
+    <sys:String x:Key="FontSize_Medium">Средний</sys:String>
+    <sys:String x:Key="FontSize_Large">Большой</sys:String>
+    <sys:String x:Key="FontSize_VeryLarge">Очень большой</sys:String>
+
+    <!-- Действия -->
+    <sys:String x:Key="Action_CreateProfile">Создать новый профиль</sys:String>
+    <sys:String x:Key="Action_DeleteProfile">Удалить профиль</sys:String>
+    <sys:String x:Key="Action_SaveAll">Сохранить все</sys:String>
+    <sys:String x:Key="Action_CreateBackup">Создать резервную копию</sys:String>
+    <sys:String x:Key="Action_LoadBackup">Загрузить из резервной копии</sys:String>
+    <sys:String x:Key="Action_Print">Распечатать</sys:String>
+    <sys:String x:Key="Btn_ExitWithoutSave">Выйти без сохранения</sys:String>
+
+    <!-- Дополнительно -->
+    <sys:String x:Key="Settings_StartWithWindows">Автозапуск:</sys:String>
+    <sys:String x:Key="Settings_MinimizeToTray">Сворачивать при закрытии в трей:</sys:String>
+    <sys:String x:Key="Settings_DataFolder">Путь к данным:</sys:String>
+    <sys:String x:Key="Settings_AutoSave">Автосохранение:</sys:String>
+    <sys:String x:Key="Settings_AutoCheckUpdates">Проверять обновления автоматически</sys:String>
+    <sys:String x:Key="Settings_UndoSize">Размер истории Undo:</sys:String>
+    <sys:String x:Key="Update_Title">Обновление</sys:String>
+    <sys:String x:Key="Update_NoUpdatesTitle">Обновлений нет</sys:String>
+    <sys:String x:Key="Update_NewVersionTitle">Доступно обновление</sys:String>
+    <sys:String x:Key="Update_Download">Скачать</sys:String>
+    <sys:String x:Key="Update_Later">Позже</sys:String>
+
+    <!-- О программе -->
+    <sys:String x:Key="About_Help">Помощь</sys:String>
+    <sys:String x:Key="About_CheckUpdate">Проверить обновление</sys:String>
+    <sys:String x:Key="About_Version">Версия приложения:</sys:String>
+
+    <!-- ============================================================ -->
+    <!-- ==================== ВЫБОР / ДОБАВЛЕНИЕ / УДАЛЕНИЕ ПРОФИЛЯ == -->
+    <!-- ============================================================ -->
+    <sys:String x:Key="ProfileSelect_Title">Выбор техники</sys:String>
+    <sys:String x:Key="ProfileSelect_Header">Выберите технику:</sys:String>
+
+    <sys:String x:Key="AddProfile_Title">Новый профиль</sys:String>
+    <sys:String x:Key="AddProfile_Name">Название техники:</sys:String>
+    <sys:String x:Key="AddProfile_Icon">Иконка:</sys:String>
+
+    <sys:String x:Key="DeleteProfile_Title">Удаление профиля</sys:String>
+    <sys:String x:Key="DeleteProfile_Header">Выберите профиль для удаления:</sys:String>
+
+    <!-- ============================================================ -->
+    <!-- ==================== ИСТОРИЯ ПОЛЁТОВ ======================== -->
+    <!-- ============================================================ -->
+    <sys:String x:Key="History_Title">История полетов</sys:String>
+    <sys:String x:Key="History_NoDays">Нет сохранённых дней.</sys:String>
+    <sys:String x:Key="History_Flight">полет</sys:String>
+    <sys:String x:Key="History_Test">проба</sys:String>
+    <sys:String x:Key="History_TP">тп</sys:String>
+    <sys:String x:Key="History_Clear">Очистить историю</sys:String>
+    <sys:String x:Key="History_ClearConfirm">Очистить историю полётов? Записи полётов будут удалены, текущие формуляры и наработки сохранятся.</sys:String>
+
+    <!-- ============================================================ -->
+    <!-- ==================== ПЕРЕЗАПУСК / ЗАКРЫТИЕ ================== -->
+    <!-- ============================================================ -->
+    <sys:String x:Key="Restart_Title">Внимание</sys:String>
+    <sys:String x:Key="Restart_Message">Необходим перезапуск приложения</sys:String>
+    <sys:String x:Key="Restart_Btn">Перезапустить</sys:String>
+
+    <sys:String x:Key="ConfirmClose_Title">Внимание</sys:String>
+    <sys:String x:Key="ConfirmClose_Message">Закрыть без сохранения?</sys:String>
+
+    <!-- ============================================================ -->
+    <!-- ==================== УВЕДОМЛЕНИЯ =========================== -->
+    <!-- ============================================================ -->
+    <sys:String x:Key="Notifications_Title">Уведомления</sys:String>
+    <sys:String x:Key="Notifications_Empty">Уведомлений нет</sys:String>
+
+    <sys:String x:Key="Alert_Title">Внимание</sys:String>
+
+    <!-- Ресурсы -->
+    <sys:String x:Key="Alert_ResourceExhausted">Ресурс {0} исчерпан</sys:String>
+    <sys:String x:Key="Alert_ResourceRemaining">Остаток ресурса {0}</sys:String>
+    <sys:String x:Key="Alert_ResourceExtend">, необходимо продление ресурса или замена {0}</sys:String>
+    <sys:String x:Key="Alert_ResourceReminder">, не забудьте оформить продление ресурса или заменить {0}</sys:String>
+    <sys:String x:Key="Alert_ResourceAgo">назад</sys:String>
+
+    <!-- Масла -->
+    <sys:String x:Key="Alert_Oil_Has">У {0} осталось</sys:String>
+    <sys:String x:Key="Alert_Oil_In">В {0} через</sys:String>
+    <sys:String x:Key="Alert_Oil_Replace">, необходима замена (анализ) масла</sys:String>
+    <sys:String x:Key="Alert_Oil_Expires">выходит масло, не забудьте заменить (сделать анализ)</sys:String>
+    <sys:String x:Key="Alert_Oil_Expired">В {0} вышло масло (анализ), срочно замените его (сделайте анализ)</sys:String>
+    <sys:String x:Key="Alert_Oil_Word">масло</sys:String>
+
+    <!-- ============================================================ -->
+    <!-- ==================== ПЕЧАТЬ ================================= -->
+    <!-- ============================================================ -->
+    <sys:String x:Key="Print_Title">Печать</sys:String>
+    <sys:String x:Key="Print_WhatToPrint">Что печатать:</sys:String>
+    <sys:String x:Key="Print_CurrentTab">Текущая вкладка</sys:String>
+    <sys:String x:Key="Print_AllTabs">Все вкладки (последовательно)</sys:String>
+    <sys:String x:Key="Print_Orientation">Ориентация: Горизонтальная (A4 Landscape)</sys:String>
+    <sys:String x:Key="Print_Pages">Страницы:</sys:String>
+    <sys:String x:Key="Print_SelectAll">Все</sys:String>
+    <sys:String x:Key="Print_SelectNone">Ничего</sys:String>
+    <sys:String x:Key="Print_Page">стр.</sys:String>
+    <sys:String x:Key="Print_JobName">Формуляр</sys:String>
+    <sys:String x:Key="Print_Selected">Выбрано: 0</sys:String>
+    <sys:String x:Key="Print_TotalPages">Всего страниц: {0}. Шапка повторяется на каждой.</sys:String>
+    <sys:String x:Key="Print_SelectedCount">Выбрано: {0}</sys:String>
+    <sys:String x:Key="Print_NoPages">Не выбрано ни одной страницы.</sys:String>
+
+    <!-- ============================================================ -->
+    <!-- ==================== СООБЩЕНИЯ (C#) ========================= -->
+    <!-- ============================================================ -->
+    <sys:String x:Key="Msg_Error">Ошибка</sys:String>
+    <sys:String x:Key="Msg_Info">Информация</sys:String>
+    <sys:String x:Key="Msg_Warning">Предупреждение</sys:String>
+    <sys:String x:Key="Msg_Save">Сохранение</sys:String>
+    <sys:String x:Key="Msg_Attention">Внимание</sys:String>
+    <sys:String x:Key="Msg_ConfirmDeletion">Подтверждение</sys:String>
+    <sys:String x:Key="Msg_Undo">Отмена</sys:String>
+
+    <sys:String x:Key="Msg_FutureDate">Нельзя выбрать дату в будущем</sys:String>
+    <sys:String x:Key="Msg_HistoryUnavailable">История недоступна</sys:String>
+    <sys:String x:Key="Msg_DeleteRecord">Удалить запись от {0}?</sys:String>
+    <sys:String x:Key="Msg_DeleteTotal">Удалить итоговую строку "{0}"?</sys:String>
+    <sys:String x:Key="Msg_DeleteTotalFull">Удалить итоговую строку "{0}"?</sys:String>
+    <sys:String x:Key="Msg_DeleteTotalWarning">ВНИМАНИЕ: после удаления итоговые значения за этот месяц исчезнут.
+Обычные записи за этот месяц останутся.</sys:String>
+    <sys:String x:Key="Msg_DeleteAllFormulars">ВНИМАНИЕ: эта дата будет удалена ВО ВСЕХ формулярах.</sys:String>
+    <sys:String x:Key="Msg_DeleteProfileConfirm">Вы действительно хотите удалить профиль "{0}"?</sys:String>
+    <sys:String x:Key="Msg_DeleteProfileWarning">Все данные этого профиля будут удалены без возможности восстановления.</sys:String>
+    <sys:String x:Key="Msg_DeleteLastProfile">Нельзя удалить последний профиль.</sys:String>
+    <sys:String x:Key="Msg_DeleteRow">Удалить строку "{0}"?</sys:String>
+    <sys:String x:Key="Msg_ProfileExists">Профиль "{0}" уже существует.</sys:String>
+    <sys:String x:Key="Msg_AllSaved">Все данные сохранены</sys:String>
+    <sys:String x:Key="Msg_SaveError">Ошибка сохранения:</sys:String>
+    <sys:String x:Key="Msg_NoUndo">Нет действий для отмены.</sys:String>
+    <sys:String x:Key="Msg_NoProfileSelected">Не выбран профиль для удаления.</sys:String>
+    <sys:String x:Key="Msg_SelectProfileToDelete">Выберите профиль для удаления.</sys:String>
+    <sys:String x:Key="Msg_EnterAircraftName">Введите название техники</sys:String>
+    <sys:String x:Key="Msg_SelectIcon">Выберите иконку</sys:String>
+    <sys:String x:Key="Msg_SnkNotFilled">Не все поля СНК заполнены. Продолжить?</sys:String>
+    <sys:String x:Key="Msg_EnterSnkOrStart">Введите стартовые значения или СНК</sys:String>
+    <sys:String x:Key="Msg_SyncFuture">Будет доступно в будущей версии приложения</sys:String>
+
+    <!-- Стартовые строки сохранены -->
+    <sys:String x:Key="Msg_StartSavedChast1">Начальные данные Части 1 сохранены</sys:String>
+    <sys:String x:Key="Msg_StartSavedVr80">Начальные данные ВР-80 сохранены</sys:String>
+    <sys:String x:Key="Msg_StartSavedTa14">Начальные данные Та-14 сохранены</sys:String>
+    <sys:String x:Key="Msg_StartSavedVk01">Начальные данные ВК-2500-01 сохранены, данные пересчитаны</sys:String>
+    <sys:String x:Key="Msg_StartSavedVk02">Начальные данные ВК-2500-02 сохранены, данные пересчитаны</sys:String>
+    <sys:String x:Key="Msg_CoeffSavedVk01">Коэффициенты ВК-2500-01 сохранены, данные пересчитаны</sys:String>
+    <sys:String x:Key="Msg_CoeffSavedVk02">Коэффициенты ВК-2500-02 сохранены, данные пересчитаны</sys:String>
+
+    <!-- Резервное копирование -->
+    <sys:String x:Key="Msg_NoDataForBackup">Нет данных для резервного копирования.</sys:String>
+    <sys:String x:Key="Msg_BackupCreated">Резервная копия сохранена:</sys:String>
+    <sys:String x:Key="Msg_BackupRestoreConfirm">Текущие данные будут полностью заменены данными из резервной копии. Продолжить?</sys:String>
+    <sys:String x:Key="Msg_BackupTitle">Резервная копия</sys:String>
+    <sys:String x:Key="Msg_SaveBackup">Сохранить резервную копию</sys:String>
+    <sys:String x:Key="Msg_LoadBackup">Загрузить из резервной копии</sys:String>
+    <sys:String x:Key="Msg_JsonFilter">JSON файлы (*.json)|*.json|Все файлы (*.*)|*.*</sys:String>
+    <sys:String x:Key="Msg_Done">Готово</sys:String>
+    <sys:String x:Key="Msg_BackupCreateError">Ошибка создания копии</sys:String>
+    <sys:String x:Key="Msg_BackupLoadError">Ошибка загрузки копии</sys:String>
+
+    <!-- Смена пути -->
+    <sys:String x:Key="Settings_SelectFolder">Выберите папку для данных</sys:String>
+    <sys:String x:Key="Msg_MoveDataConfirm">Перенести данные в новую папку?
+
+Старая: {0}
+Новая: {1}</sys:String>
+    <sys:String x:Key="Msg_ChangePath">Смена пути</sys:String>
+
+    <!-- Помощь / обновление -->
+    <sys:String x:Key="Msg_HelpFileNotFound">Файл справки не найден:
+{0}</sys:String>
+    <sys:String x:Key="Msg_HelpOpenError">Ошибка открытия справки</sys:String>
+    <sys:String x:Key="Msg_UpdateError">Ошибка проверки обновлений</sys:String>
+
+    <!-- Update -->
+    <sys:String x:Key="Update_NewVersion">Доступна новая версия!</sys:String>
+    <sys:String x:Key="Update_CurrentVersion">Текущая:</sys:String>
+    <sys:String x:Key="Update_NewVersionLabel">Новая:</sys:String>
+    <sys:String x:Key="Update_WhatNew">Что нового:</sys:String>
+    <sys:String x:Key="Update_NoUrl">Ссылка для скачивания не указана.</sys:String>
+    <sys:String x:Key="Update_OpenPage">Открыть страницу загрузки?</sys:String>
+    <sys:String x:Key="Update_LatestVersion">У вас последняя версия приложения.</sys:String>
+    <sys:String x:Key="Update_Version">Версия:</sys:String>
+
+    <!-- Печать — ошибки -->
+    <sys:String x:Key="Msg_PageBuildError">Ошибка построения страниц</sys:String>
+    <sys:String x:Key="Msg_PreviewError">Ошибка предпросмотра</sys:String>
+    <sys:String x:Key="Msg_PrintError">Ошибка печати</sys:String>
+
+    <!-- ============================================================ -->
+    <!-- ==================== МЕСЯЦЫ ================================= -->
+    <!-- ============================================================ -->
+    <sys:String x:Key="Month_January">январь</sys:String>
+    <sys:String x:Key="Month_February">февраль</sys:String>
+    <sys:String x:Key="Month_March">март</sys:String>
+    <sys:String x:Key="Month_April">апрель</sys:String>
+    <sys:String x:Key="Month_May">май</sys:String>
+    <sys:String x:Key="Month_June">июнь</sys:String>
+    <sys:String x:Key="Month_July">июль</sys:String>
+    <sys:String x:Key="Month_August">август</sys:String>
+    <sys:String x:Key="Month_September">сентябрь</sys:String>
+    <sys:String x:Key="Month_October">октябрь</sys:String>
+    <sys:String x:Key="Month_November">ноябрь</sys:String>
+    <sys:String x:Key="Month_December">декабрь</sys:String>
+
+    <!-- ============================================================ -->
+    <!-- ==================== ЗАГОЛОВКИ ФОРМУЛЯРОВ =================== -->
+    <!-- ============================================================ -->
+
+    <!-- Общие -->
+    <sys:String x:Key="Header_Date">Дата</sys:String>
+    <sys:String x:Key="Header_FlightType">Вид полета</sys:String>
+    <sys:String x:Key="Header_Signature">Подпись ведущего формуляр</sys:String>
+    <sys:String x:Key="Header_TotalHours">Суммарная наработка</sys:String>
+    <sys:String x:Key="Header_Surname">Фамилия</sys:String>
+    <sys:String x:Key="Header_ByFlight">по налету, ч.мин</sys:String>
+    <sys:String x:Key="Header_ByLandings">по посадкам</sys:String>
+    <sys:String x:Key="Header_Pilot">Лётчика (Инструктора)</sys:String>
+    <sys:String x:Key="Header_Mechanic">Техника (Механика)</sys:String>
+    <sys:String x:Key="Header_AfterRepair">После последнего ремонта</sys:String>
+    <sys:String x:Key="Header_SinceOp">С начала эксплуатации</sys:String>
+    <sys:String x:Key="Header_Total">Всего</sys:String>
+    <sys:String x:Key="Header_FixedWing">По самолетному</sys:String>
+    <sys:String x:Key="Header_Rotorcraft">По вертолетному</sys:String>
+    <sys:String x:Key="Header_Ground">Земля</sys:String>
+    <sys:String x:Key="Header_Air">Возд</sys:String>
+    <sys:String x:Key="Header_SNE">СНЭ</sys:String>
+    <sys:String x:Key="Header_Landings">Посад</sys:String>
+    <sys:String x:Key="Header_Landings2">Посад2</sys:String>
+    <sys:String x:Key="Header_PilotShort">Летчик</sys:String>
+    <sys:String x:Key="Header_MechanicShort">Техник</sys:String>
+
+    <!-- Часть 1 -->
+    <sys:String x:Key="Header_Chast1_Ground1">Наработка на земл</sys:String>
+    <sys:String x:Key="Header_Chast1_Ground2">е с учетом 20% работ</sys:String>
+    <sys:String x:Key="Header_Chast1_Ground3">ы несущей системы, ч.мин</sys:String>
+    <sys:String x:Key="Header_Chast1_Duration1">Продолжительность</sys:String>
+    <sys:String x:Key="Header_Chast1_Duration2">полета, ч.мин</sys:String>
+    <sys:String x:Key="Header_Chast1_AfterRepair1">После последнег</sys:String>
+    <sys:String x:Key="Header_Chast1_AfterRepair2">о ремонта</sys:String>
+    <sys:String x:Key="Header_Chast1_SinceOp1">С начал</sys:String>
+    <sys:String x:Key="Header_Chast1_SinceOp2">а эксплуатации</sys:String>
+
+    <!-- ВР-80 -->
+    <sys:String x:Key="Header_StartCount">Количество запусков</sys:String>
+    <sys:String x:Key="Header_Vr80_GroundWork1">Продолжительность работы</sys:String>
+    <sys:String x:Key="Header_Vr80_GroundWork2">главного редуктора на земле</sys:String>
+    <sys:String x:Key="Header_Vr80_AirWork1">Продолжительность работы</sys:String>
+    <sys:String x:Key="Header_Vr80_AirWork2">главного редуктора в полете</sys:String>
+    <sys:String x:Key="Header_Vr80_TotalEngine1">Сумма работы ГР с приводом</sys:String>
+    <sys:String x:Key="Header_Vr80_TotalEngine2">от двигателей на всех режимах</sys:String>
+    <sys:String x:Key="Header_Vr80_TotalEngine3">с учетом 20% на земле</sys:String>
+    <sys:String x:Key="Header_Vr80_TotalTurbine1">Сумма работы главного</sys:String>
+    <sys:String x:Key="Header_Vr80_TotalTurbine2">редуктора с приводом</sys:String>
+    <sys:String x:Key="Header_Vr80_TotalTurbine3">от турбопривода</sys:String>
+    <sys:String x:Key="Header_Vr80_TwoEngines">С приводом от двух двигателей</sys:String>
+    <sys:String x:Key="Header_Vr80_FromTurbine">От турбопривода</sys:String>
+    <sys:String x:Key="Header_Vr80_FullTime">Полное время</sys:String>
+    <sys:String x:Key="Header_Vr80_OnModes">На режимах</sys:String>
+    <sys:String x:Key="Header_Vr80_Nominal">Номинальный</sys:String>
+    <sys:String x:Key="Header_Vr80_Takeoff">Взлетный</sys:String>
+
+    <!-- Та-14 -->
+    <sys:String x:Key="Header_StartCountShort">Количество запусков</sys:String>
+    <sys:String x:Key="Header_Ta14_Counter1">Показания счетчико</sys:String>
+    <sys:String x:Key="Header_Ta14_Counter2">в наработки и запусков,</sys:String>
+    <sys:String x:Key="Header_Ta14_Counter3">частота/запуски</sys:String>
+    <sys:String x:Key="Header_Ta14_GroundWork1">Наработка двигателя</sys:String>
+    <sys:String x:Key="Header_Ta14_GroundWork2">на земле,</sys:String>
+    <sys:String x:Key="Header_Ta14_GroundWork3">ч.мин</sys:String>
+    <sys:String x:Key="Header_Ta14_AirWork1">Наработка двигателя</sys:String>
+    <sys:String x:Key="Header_Ta14_AirWork2">в полете,</sys:String>
+    <sys:String x:Key="Header_Ta14_AirWork3">ч.мин</sys:String>
+    <sys:String x:Key="Header_Ta14_Total1">Суммарная</sys:String>
+    <sys:String x:Key="Header_Ta14_Total2">наработка двигателя,</sys:String>
+    <sys:String x:Key="Header_Ta14_Total3">ч.мин</sys:String>
+    <sys:String x:Key="Header_Ta14_Grand1">Суммарная наработка двигателя,</sys:String>
+    <sys:String x:Key="Header_Ta14_Grand2">ч.мин/запуски</sys:String>
+    <sys:String x:Key="Header_Ta14_AfterCap1">после последнего</sys:String>
+    <sys:String x:Key="Header_Ta14_AfterCap2">капитального ремонта</sys:String>
+    <sys:String x:Key="Header_Ta14_Since1">с начала</sys:String>
+    <sys:String x:Key="Header_Ta14_Since2">эксплуатации</sys:String>
+
+    <sys:String x:Key="Header_Starts">Запуски</sys:String>
+    <sys:String x:Key="Header_Starts2">Запуски2</sys:String>
+    <sys:String x:Key="Header_Time">Время</sys:String>
+    <sys:String x:Key="Header_SNE2">СНЭ2</sys:String>
+
+    <!-- ВК-2500 -->
+    <sys:String x:Key="Header_Vk_StartCountI">Количество запусков (I)</sys:String>
+    <sys:String x:Key="Header_Vk_EngineHours">Наработка двигателя ч,мин</sys:String>
+    <sys:String x:Key="Header_Vk_Equivalent1">Эквивалентная</sys:String>
+    <sys:String x:Key="Header_Vk_Equivalent2">наработка</sys:String>
+    <sys:String x:Key="Header_Vk_Equivalent3">(G)</sys:String>
+    <sys:String x:Key="Header_Vk_Total1">Сумарное</sys:String>
+    <sys:String x:Key="Header_Vk_Total2">время</sys:String>
+    <sys:String x:Key="Header_Vk_Total3">работы</sys:String>
+    <sys:String x:Key="Header_Vk_TotalA1">Суммарная</sys:String>
+    <sys:String x:Key="Header_Vk_TotalA2">(общая) наработка</sys:String>
+    <sys:String x:Key="Header_Vk_TotalA3">(А)</sys:String>
+    <sys:String x:Key="Header_Vk_SinceOp1">С начала</sys:String>
+    <sys:String x:Key="Header_Vk_SinceOp2">эксплуата</sys:String>
+    <sys:String x:Key="Header_Vk_SinceOp3">ции</sys:String>
+    <sys:String x:Key="Header_Vk_AfterCap1">После последнего</sys:String>
+    <sys:String x:Key="Header_Vk_AfterCap2">кап. ремонта</sys:String>
+    <sys:String x:Key="Header_Vk_TakeoffMode1">Наработка на</sys:String>
+    <sys:String x:Key="Header_Vk_TakeoffMode2">взлетном режиме</sys:String>
+    <sys:String x:Key="Header_Vk_TakeoffMode3">(В)</sys:String>
+    <sys:String x:Key="Header_Vk_From6To15_1">От 6</sys:String>
+    <sys:String x:Key="Header_Vk_From6To15_2">до</sys:String>
+    <sys:String x:Key="Header_Vk_From6To15_3">15 мин</sys:String>
+    <sys:String x:Key="Header_Vk_Total2_1">Сумарное</sys:String>
+    <sys:String x:Key="Header_Vk_Total2_2">время</sys:String>
+    <sys:String x:Key="Header_Vk_Total2_3">работы</sys:String>
+    <sys:String x:Key="Header_Vk_MaxMode1">Наработка на</sys:String>
+    <sys:String x:Key="Header_Vk_MaxMode2">максимально продолжительном</sys:String>
+    <sys:String x:Key="Header_Vk_MaxMode3">режиме</sys:String>
+    <sys:String x:Key="Header_Vk_Total">Общая</sys:String>
+    <sys:String x:Key="Header_Vk_OnGround">На земле</sys:String>
+    <sys:String x:Key="Header_Vk_InFlight">В полете</sys:String>
+    <sys:String x:Key="Header_Vk_HighTemp1">Наработка при</sys:String>
+    <sys:String x:Key="Header_Vk_HighTemp2">повышенной</sys:String>
+    <sys:String x:Key="Header_Vk_HighTemp3">температуре газов (D)</sys:String>
+    <sys:String x:Key="Header_Vk_Total3_1">Сумарное</sys:String>
+    <sys:String x:Key="Header_Vk_Total3_2">время</sys:String>
+    <sys:String x:Key="Header_Vk_Total3_3">работы</sys:String>
+    <sys:String x:Key="Header_Vk_BarkOff1">Наработка при</sys:String>
+    <sys:String x:Key="Header_Vk_BarkOff2">отключенном</sys:String>
+    <sys:String x:Key="Header_Vk_BarkOff3">БАРК (Е)</sys:String>
+    <sys:String x:Key="Header_Vk_Total4_1">Сумарное</sys:String>
+    <sys:String x:Key="Header_Vk_Total4_2">время</sys:String>
+    <sys:String x:Key="Header_Vk_Total4_3">работы</sys:String>
+    <sys:String x:Key="Header_Vk_Cyclic1">Циклическая</sys:String>
+    <sys:String x:Key="Header_Vk_Cyclic2">наработка</sys:String>
+    <sys:String x:Key="Header_Vk_Cyclic3">(Н)</sys:String>
+    <sys:String x:Key="Header_Vk_CyclicSince1">С начала</sys:String>
+    <sys:String x:Key="Header_Vk_CyclicSince2">эксплуата</sys:String>
+    <sys:String x:Key="Header_Vk_CyclicSince3">ции</sys:String>
+    <sys:String x:Key="Header_Vk_AfterCap2_1">После последнего</sys:String>
+    <sys:String x:Key="Header_Vk_AfterCap2_2">кап. ремонта</sys:String>
+    <sys:String x:Key="Header_CoeffA">Коэф. A</sys:String>
+    <sys:String x:Key="Header_CoeffH">Коэф. H</sys:String>
+
+    <!-- ============================================================ -->
+    <!-- ==================== ВКЛАДКА «РЕСУРСЫ» ====================== -->
+    <!-- ============================================================ -->
+    <sys:String x:Key="Tab_Resources_OnBoard">Агрегаты на борту</sys:String>
+    <sys:String x:Key="Tab_Resources_Aggregates">Агрегаты</sys:String>
+    <sys:String x:Key="Tab_Resources_Oils">Масла</sys:String>
+
+    <!-- Вкладка «Агрегаты на борту» -->
+    <sys:String x:Key="OnBoard_Title">Агрегаты на борту</sys:String>
+    <sys:String x:Key="OnBoard_Replace">Заменить</sys:String>
+    <sys:String x:Key="OnBoard_History">История замен</sys:String>
+    <sys:String x:Key="OnBoard_Setup">Настроить агрегаты</sys:String>
+
+    <!-- Вкладка «Агрегаты» -->
+    <sys:String x:Key="Resursy_AggregatesTitle">Остаток ресурса на агрегатах</sys:String>
+    <sys:String x:Key="Resursy_AddRow">+ Добавить строку</sys:String>
+    <sys:String x:Key="Resursy_ItemName1">Наименование</sys:String>
+    <sys:String x:Key="Resursy_ItemName2">изделия</sys:String>
+    <sys:String x:Key="Resursy_Assigned1">Назначенный</sys:String>
+    <sys:String x:Key="Resursy_Assigned2">ресурс,</sys:String>
+    <sys:String x:Key="Resursy_Assigned3">чч:мм</sys:String>
+    <sys:String x:Key="Resursy_RemainingHh1">Остаток,</sys:String>
+    <sys:String x:Key="Resursy_RemainingHh2">чч:мм</sys:String>
+    <sys:String x:Key="Resursy_AssignedYears1">Назначенный</sys:String>
+    <sys:String x:Key="Resursy_AssignedYears2">ресурс</sys:String>
+    <sys:String x:Key="Resursy_RemainingDate1">Остаток,</sys:String>
+    <sys:String x:Key="Resursy_RemainingDate2">дд.мм.гггг</sys:String>
+    <sys:String x:Key="Resursy_YearsShort">г.</sys:String>
+    <sys:String x:Key="Resursy_MonthsShort">мес.</sys:String>
+    <sys:String x:Key="Resursy_InstalledResource1">Ресурс при</sys:String>
+    <sys:String x:Key="Resursy_InstalledResource2">установке,</sys:String>
+    <sys:String x:Key="Resursy_InstalledResource3">чч:мм</sys:String>
+    <sys:String x:Key="Resursy_DaysShort">дн.</sys:String>
+    <sys:String x:Key="Resursy_BeforeInstall1">Ресурс агрегата</sys:String>
+    <sys:String x:Key="Resursy_BeforeInstall2">перед установкой,</sys:String>
+    <sys:String x:Key="Resursy_BeforeInstall3">чч:мм</sys:String>
+    <sys:String x:Key="Resursy_NewItem">Новое изделие</sys:String>
+    <sys:String x:Key="Resursy_NotProvided">не предусмотрено</sys:String>
+    <sys:String x:Key="Header_IssueDate">Дата выпуска</sys:String>
+
+    <!-- Вкладка «Масла» -->
+    <sys:String x:Key="Resursy_OilsTitle">Масла</sys:String>
+    <sys:String x:Key="Resursy_OilWhere">Где залито</sys:String>
+    <sys:String x:Key="Resursy_OilSNE1">СНЭ</sys:String>
+    <sys:String x:Key="Resursy_OilSNE2">при заливки</sys:String>
+    <sys:String x:Key="Resursy_OilDate1">Дата</sys:String>
+    <sys:String x:Key="Resursy_OilDate2">заливки</sys:String>
+    <sys:String x:Key="Resursy_OilRem1">Остаток,</sys:String>
+    <sys:String x:Key="Resursy_OilRem2">чч:мм</sys:String>
+    <sys:String x:Key="Resursy_OilRemDate1">Остаток,</sys:String>
+    <sys:String x:Key="Resursy_OilRemDate2">гг,мм</sys:String>
+    <sys:String x:Key="Resursy_OilRes1">Ресурс масла</sys:String>
+    <sys:String x:Key="Resursy_OilRes2">в часах</sys:String>
+    <sys:String x:Key="Resursy_OilResY1">Ресурс масла</sys:String>
+    <sys:String x:Key="Resursy_OilResY2">в годах</sys:String>
+    <sys:String x:Key="Resursy_NewOil">Новое масло</sys:String>
+
+    <!-- ============================================================ -->
+    <!-- ==================== СИНХРОНИЗАЦИЯ ========================== -->
+    <!-- ============================================================ -->
+    <sys:String x:Key="Sync_Title">Синхронизация</sys:String>
+    <sys:String x:Key="Sync_Header">Выберите способ синхронизации</sys:String>
+    <sys:String x:Key="Sync_ToServer">На сервер</sys:String>
+    <sys:String x:Key="Sync_FromServer">С сервера</sys:String>
+    <sys:String x:Key="Sync_Phone">Смартфон</sys:String>
+    <sys:String x:Key="Sync_Server">Сервер</sys:String>
+    <sys:String x:Key="Sync_Force">Принудительная (локальная версия главнее)</sys:String>
+    <sys:String x:Key="Sync_ForceTooltip">Включено: локальные данные перезаписывают серверные без вопросов.
+Выключено: при конфликте будет задан вопрос.</sys:String>
+    <sys:String x:Key="Sync_Notifications">Уведомления о повторяющихся агрегатах</sys:String>
+    <sys:String x:Key="Sync_NotificationsTooltip">Если включено: при конфликте (агрегат с тем же номером уже есть) будет задан вопрос.
+
+Если выключено: данные перезаписываются без предупреждений.</sys:String>
+    <sys:String x:Key="Sync_NoCredentials">Настройте Supabase URL и ключ в настройках (Настройки → Дополнительно).</sys:String>
+    <sys:String x:Key="Sync_NoAssignments">Введите серийные номера агрегатов на вкладке "Ресурсы"</sys:String>
+    <sys:String x:Key="Sync_PhoneNotImplemented">Синхронизация со смартфоном пока не реализована.</sys:String>
+    <sys:String x:Key="Sync_Error">Ошибка синхронизации</sys:String>
+    <sys:String x:Key="Sync_ConflictAggregate">Агрегат {0} есть и локально, и на сервере. Какая версия главнее?
+
+Да — серверная.
+Нет — локальная.</sys:String>
+    <sys:String x:Key="Sync_ConflictBoard">Борт {0} есть и локально, и на сервере. Какая версия главнее?
+
+Да — серверная.
+Нет — локальная.</sys:String>
+    <sys:String x:Key="Sync_Complete">Синхронизация завершена.
+
+Отправлено: {0}
+Получено: {1}</sys:String>
+    <sys:String x:Key="Sync_CompletePush">Отправлено: {0}. Пропущено: {1}.</sys:String>
+    <sys:String x:Key="Sync_CompletePull">Получено: {0}. Пропущено: {1}.</sys:String>
+    <sys:String x:Key="Sync_ConflictBoardDate">Борт {0}:
+Сервер: {1}
+Локально: {2}
+
+Загрузить с сервера?</sys:String>
+    <sys:String x:Key="Sync_ConflictAggregateDate">Агрегат {0}:
+Сервер: {1}
+Локально: {2}
+
+Загрузить на сервер?</sys:String>
+    <sys:String x:Key="Sync_ConflictResources">Ресурсы борта {0} на сервере новее ({1}), чем локальные ({2}). Загрузить с сервера?</sys:String>
+
+    <!-- ============================================================ -->
+    <!-- ==================== НАСТРОЙКА АГРЕГАТОВ ==================== -->
+    <!-- ============================================================ -->
+    <sys:String x:Key="SetupAgg_Title">Настройка агрегатов</sys:String>
+    <sys:String x:Key="SetupAgg_Header">Введите номера агрегатов и борта для синхронизации</sys:String>
+    <sys:String x:Key="SetupAgg_EnterBoard">Введите серийный номер вертолёта</sys:String>
+    <sys:String x:Key="SetupAgg_AggregatesHeader">Проверьте и подтвердите агрегаты</sys:String>
+    <sys:String x:Key="SetupAgg_Aircraft">Вертолёт</sys:String>
+    <sys:String x:Key="SetupAgg_Item">Позиция</sys:String>
+    <sys:String x:Key="SetupAgg_Number">Номер</sys:String>
+    <sys:String x:Key="SetupAgg_Status">Статус</sys:String>
+    <sys:String x:Key="SetupAgg_Chast1">Часть 1 (борт)</sys:String>
+    <sys:String x:Key="SetupAgg_Vr80">ВР-80</sys:String>
+    <sys:String x:Key="SetupAgg_Ta14">Та-14</sys:String>
+    <sys:String x:Key="SetupAgg_Vk01">ВК-2500-01</sys:String>
+    <sys:String x:Key="SetupAgg_Vk02">ВК-2500-02</sys:String>
+    <sys:String x:Key="SetupAgg_Vk250001">ВК-2500-01</sys:String>
+    <sys:String x:Key="SetupAgg_Vk250002">ВК-2500-02</sys:String>
+    <sys:String x:Key="SetupAgg_Status_New">новый</sys:String>
+    <sys:String x:Key="SetupAgg_Status_InCatalog">в каталоге</sys:String>
+    <sys:String x:Key="SetupAgg_Status_InSync">в синхронизации</sys:String>
+    <sys:String x:Key="SetupAgg_Skip">Пропустить</sys:String>
+    <sys:String x:Key="SetupAgg_Save">Сохранить</sys:String>
+    <sys:String x:Key="SetupAgg_Sync">Синхронизация</sys:String>
+    <sys:String x:Key="SetupAgg_Edit">Редактировать</sys:String>
+    <sys:String x:Key="SetupAgg_Confirm">Подтвердить</sys:String>
+    <sys:String x:Key="SetupAgg_LoadFromServer">Загрузить с сервера</sys:String>
+    <sys:String x:Key="SetupAgg_EnterBoardNumber">Введите номер борта.</sys:String>
+    <sys:String x:Key="SetupAgg_BoardNotFound">Борт "{0}" не найден на сервере.</sys:String>
+    <sys:String x:Key="SetupAgg_BoardLoaded">Данные загружены с сервера.</sys:String>
+    <sys:String x:Key="SetupAgg_LoadError">Ошибка загрузки</sys:String>
+    <sys:String x:Key="SetupAgg_Duplicate">Номер(а) уже привязаны к другой позиции: {0}</sys:String>
+    <sys:String x:Key="SetupAgg_AllRequired">Заполните все поля: {0}</sys:String>
+    <sys:String x:Key="SetupAgg_ConflictWarning">Некоторые номера уже установлены в других профилях:
+{0}
+
+Продолжить? Это может нарушить синхронизацию.</sys:String>
+
+    <!-- ============================================================ -->
+    <!-- ==================== ИСТОРИЯ ЗАМЕН АГРЕГАТОВ ================ -->
+    <!-- ============================================================ -->
+    <sys:String x:Key="AggHist_Title">История замен агрегатов</sys:String>
+    <sys:String x:Key="AggHist_Current">сейчас</sys:String>
+    <sys:String x:Key="AggHist_Close">Закрыть</sys:String>
+    <sys:String x:Key="AggHist_Clear">Очистить историю</sys:String>
+    <sys:String x:Key="AggHist_ClearConfirm">Очистить историю замен агрегатов? Данные текущих установленных агрегатов и формуляров сохранятся.</sys:String>
+
+    <!-- ============================================================ -->
+    <!-- ==================== ЗАМЕНА АГРЕГАТА ======================== -->
+    <!-- ============================================================ -->
+    <sys:String x:Key="ReplaceAgg_Title">Замена агрегата</sys:String>
+    <sys:String x:Key="ReplaceAgg_TitleFormat">Замена агрегата: {0}</sys:String>
+    <sys:String x:Key="ReplaceAgg_OldNumber">Текущий номер</sys:String>
+    <sys:String x:Key="ReplaceAgg_NewNumber">Новый номер</sys:String>
+    <sys:String x:Key="ReplaceAgg_Reason">Причина</sys:String>
+    <sys:String x:Key="ReplaceAgg_Confirm">Заменить</sys:String>
+    <sys:String x:Key="ReplaceAgg_Cancel">Отмена</sys:String>
+    <sys:String x:Key="ReplaceAgg_NewNumberRequired">Введите новый номер</sys:String>
+    <sys:String x:Key="ReplaceAgg_SameNumber">Новый номер совпадает с текущим</sys:String>
+    <sys:String x:Key="ReplaceAgg_ConflictWarning">Номер уже установлен в других профилях:
+{0}
+
+Продолжить? Это может нарушить синхронизацию.</sys:String>
+
+    <sys:String x:Key="About_Description">Пять формуляров, полёты, ресурсы агрегатов и масел, история замен, печать и PDF. Работа без интернета и резервные копии. Обмен с Android в обе стороны: через интернет или по Wi-Fi с QR-кодом. Перед заменой книги сохраняется копия; при конфликте выбирается версия книги целиком.</sys:String>
+    <sys:String x:Key="About_Website">Сайт и руководство</sys:String>
+
+    <sys:String x:Key="Sync_5822fb7d95" xml:space="preserve">Синхронизация</sys:String>
+    <sys:String x:Key="Sync_shared_downloaded_only" xml:space="preserve">Загружено профилей: {0}.</sys:String>
+    <sys:String x:Key="Sync_SharedButtonAction" xml:space="preserve">Синхронизировать</sys:String>
+    <sys:String x:Key="Sync_8578367fc2" xml:space="preserve">Выйти из учётной записи</sys:String>
+    <sys:String x:Key="Sync_c08622028f" xml:space="preserve">Синхронизация ПК / Android</sys:String>
+    <sys:String x:Key="Sync_9c3b0b5a94" xml:space="preserve">Ручной обмен через Supabase</sys:String>
+    <sys:String x:Key="Sync_b583874a6c" xml:space="preserve">Войдите в ту же учётную запись, что и на Android. Обмен включает все профили, полёты, формуляры, агрегаты и масла. При разных правках появится выбор версии. Перед загрузкой создаётся резервная копия.</sys:String>
+    <sys:String x:Key="Sync_6559f0e947" xml:space="preserve">Подключить Android по Wi-Fi (QR-код)</sys:String>
+    <sys:String x:Key="Sync_236ecb49e8" xml:space="preserve">История синхронизаций</sys:String>
+    <sys:String x:Key="Sync_14f7c63cc1" xml:space="preserve">Пароль</sys:String>
+    <sys:String x:Key="Sync_939e95a11d" xml:space="preserve">Войти</sys:String>
+    <sys:String x:Key="Sync_7224765e44" xml:space="preserve">Регистрация</sys:String>
+    <sys:String x:Key="Sync_4eb58e1e56" xml:space="preserve">Войдите в учётную запись</sys:String>
+    <sys:String x:Key="Sync_9c327e9ce5" xml:space="preserve">Синхронизация отменена. Обе версии сохранены</sys:String>
+    <sys:String x:Key="Sync_60a6800444" xml:space="preserve">Интернет</sys:String>
+    <sys:String x:Key="Sync_5ebee19fe9" xml:space="preserve">Отменено</sys:String>
+    <sys:String x:Key="Sync_b571b20ab1" xml:space="preserve">Получено</sys:String>
+    <sys:String x:Key="Sync_72aecd9ad8" xml:space="preserve">Ошибка</sys:String>
+    <sys:String x:Key="Sync_e48c5d1ecf" xml:space="preserve">Нет связи. Обмен не завершён</sys:String>
+    <sys:String x:Key="Sync_8e4bf12752" xml:space="preserve">Вы вышли из учётной записи</sys:String>
+    <sys:String x:Key="Sync_4ae50d3073" xml:space="preserve">Закрыть</sys:String>
+    <sys:String x:Key="Sync_c572544936" xml:space="preserve">Дождитесь окончания обмена</sys:String>
+    <sys:String x:Key="Sync_3c9c951703" xml:space="preserve">Заполните email и пароль</sys:String>
+    <sys:String x:Key="Sync_0127d2d21d" xml:space="preserve">Вход выполнен. Можно синхронизировать</sys:String>
+    <sys:String x:Key="Sync_a8592f662c" xml:space="preserve">Подтвердите email по письму, затем войдите</sys:String>
+    <sys:String x:Key="Sync_9674b15f97" xml:space="preserve">Подождите…</sys:String>
+    <sys:String x:Key="Sync_2818a93db8" xml:space="preserve">Сервер не ответил. Повторите синхронизацию; ожидающая отправка сохранена</sys:String>
+    <sys:String x:Key="Sync_515b79cbb5" xml:space="preserve">Вход не выполнен</sys:String>
+    <sys:String x:Key="Sync_752d2f234f" xml:space="preserve">Учётная запись: </sys:String>
+    <sys:String x:Key="Sync_eff80d43ef" xml:space="preserve">
+Последний обмен: </sys:String>
+    <sys:String x:Key="Sync_e7ad254ef4" xml:space="preserve">Конфликт синхронизации</sys:String>
+    <sys:String x:Key="Sync_4373777816" xml:space="preserve">Изменения есть в обеих версиях. Выбор применяется ко всей книге, включая другие профили. Серверная версия: </sys:String>
+    <sys:String x:Key="Sync_8d70566571" xml:space="preserve">Оставить ПК</sys:String>
+    <sys:String x:Key="Sync_646a0eecc4" xml:space="preserve">Загрузить серверную</sys:String>
+    <sys:String x:Key="Sync_0ec753be8d" xml:space="preserve">Отмена</sys:String>
+    <sys:String x:Key="Sync_a298fc2408" xml:space="preserve">Количество строк: ПК / сервер
+</sys:String>
+    <sys:String x:Key="Sync_b4bc7e1b0d" xml:space="preserve">
+Различия (ПК → сервер):</sys:String>
+    <sys:String x:Key="Sync_1c5cd51ca0" xml:space="preserve">  Только на сервере</sys:String>
+    <sys:String x:Key="Sync_3e0d361136" xml:space="preserve">  Только на ПК</sys:String>
+    <sys:String x:Key="Sync_429687917e" xml:space="preserve">Ещё различий: </sys:String>
+    <sys:String x:Key="Sync_73773ab330" xml:space="preserve">Подключить Android по Wi-Fi</sys:String>
+    <sys:String x:Key="Sync_98091a44e7" xml:space="preserve">Подключите ПК и телефон к одной Wi-Fi сети или точке доступа телефона. Интернет не нужен. В Android нажмите «Сканировать QR-код ПК». Код действует 10 минут, пока это окно открыто.</sys:String>
+    <sys:String x:Key="Sync_79e3687abe" xml:space="preserve">Адрес ПК в общей сети</sys:String>
+    <sys:String x:Key="Sync_cc5cc60191" xml:space="preserve">Если Windows запросит доступ к сети, разрешите его для частной сети. Если соединение не проходит, проверьте выбранный адрес и отсутствие изоляции устройств на роутере.</sys:String>
+    <sys:String x:Key="Sync_ea7c3568a6" xml:space="preserve">Закрыть подключение</sys:String>
+    <sys:String x:Key="Sync_b14aba19d6" xml:space="preserve">Не найден адрес локальной сети. Подключите ПК к Wi-Fi и откройте окно снова.</sys:String>
+    <sys:String x:Key="Sync_9672a70242" xml:space="preserve">Ожидание Android…</sys:String>
+    <sys:String x:Key="Sync_9375d003e6" xml:space="preserve">Обменов пока нет</sys:String>
+    <sys:String x:Key="Sync_b0166b7bcd" xml:space="preserve">Показать резервную копию</sys:String>
+    <sys:String x:Key="Sync_a080ef6c03" xml:space="preserve">Копия перемещена или удалена</sys:String>
+    <sys:String x:Key="Sync_72f931bda2" xml:space="preserve">Резервная копия</sys:String>
+    <sys:String x:Key="Sync_4c6944a7d0" xml:space="preserve">Не удалось прочитать историю: </sys:String>
+    <sys:String x:Key="Sync_a97d07b28b" xml:space="preserve">Без изменений</sys:String>
+    <sys:String x:Key="Sync_98ea53641a" xml:space="preserve">Нужен HTTPS адрес проекта Supabase</sys:String>
+    <sys:String x:Key="Sync_ce08f48962" xml:space="preserve">Нужен публичный ключ Supabase (publishable или anon)</sys:String>
+    <sys:String x:Key="Sync_ee43eced29" xml:space="preserve">Войдите в учётную запись повторно</sys:String>
+    <sys:String x:Key="Sync_0d75ab090e" xml:space="preserve">Проверьте email и пароль. При регистрации пароль должен быть не короче 6 символов</sys:String>
+    <sys:String x:Key="Sync_322abe01b3" xml:space="preserve">Нет доступа к синхронизации</sys:String>
+    <sys:String x:Key="Sync_bc957d5e09" xml:space="preserve">Сервер недоступен (HTTP {0}). Повторите позже</sys:String>
+    <sys:String x:Key="Sync_fd0c2a5560" xml:space="preserve">Пакет превышает 64 МБ</sys:String>
+    <sys:String x:Key="Sync_2a2a9b53b3" xml:space="preserve">Адрес сервера изменён. Войдите повторно</sys:String>
+    <sys:String x:Key="Sync_ddf52bbdea" xml:space="preserve">Некорректная версия сервера</sys:String>
+    <sys:String x:Key="Sync_3ecf8d7332" xml:space="preserve">Некорректный ответ сервера</sys:String>
+    <sys:String x:Key="Sync_1421293073" xml:space="preserve">Прежняя версия на сервере отсутствует. Отправка остановлена</sys:String>
+    <sys:String x:Key="Sync_ed8e867c4b" xml:space="preserve">Данные совпадают. Синхронизация завершена</sys:String>
+    <sys:String x:Key="Sync_7bb0f62d66" xml:space="preserve">Данные загружены. Прежняя книга сохранена в резервной копии</sys:String>
+    <sys:String x:Key="Sync_5cca551617" xml:space="preserve">Изменения есть на обоих устройствах</sys:String>
+    <sys:String x:Key="Sync_dec2f83363" xml:space="preserve">Данные отправлены. Синхронизация завершена</sys:String>
+    <sys:String x:Key="Sync_f4e0a06f87" xml:space="preserve">Версия отправлена; новые локальные правки отправятся при следующем обмене</sys:String>
+    <sys:String x:Key="Sync_add0be7985" xml:space="preserve">Отправлено</sys:String>
+    <sys:String x:Key="Sync_0c2d195259" xml:space="preserve">Серверная версия изменилась</sys:String>
+    <sys:String x:Key="Sync_93155fad6e" xml:space="preserve">Данные ПК изменились. Повторите синхронизацию</sys:String>
+    <sys:String x:Key="Sync_5571c8ae40" xml:space="preserve">Сервер изменился. Проверьте различия повторно</sys:String>
+    <sys:String x:Key="Sync_96523a886e" xml:space="preserve">Выбрана серверная версия. Прежняя книга сохранена в резервной копии</sys:String>
+    <sys:String x:Key="Sync_45bb92dff9" xml:space="preserve">Код подключения недействителен</sys:String>
+    <sys:String x:Key="Sync_ad845dddb0" xml:space="preserve">Сеанс истёк. Создайте новый QR-код</sys:String>
+    <sys:String x:Key="Sync_175657aa48" xml:space="preserve">Выбор версии</sys:String>
+    <sys:String x:Key="Sync_29c99585f5" xml:space="preserve">Неизвестный результат</sys:String>
+    <sys:String x:Key="Sync_b0faf1ec73" xml:space="preserve">Android подтвердил загрузку книги с ПК</sys:String>
+    <sys:String x:Key="Sync_9946eaf724" xml:space="preserve">Данные ПК и Android совпадают</sys:String>
+    <sys:String x:Key="Sync_8858daa795" xml:space="preserve">Android ожидает выбора версии</sys:String>
+    <sys:String x:Key="Sync_e97ed54edb" xml:space="preserve">Выбор версии отменён на Android</sys:String>
+    <sys:String x:Key="Sync_12c063ad9c" xml:space="preserve">Неизвестная команда</sys:String>
+    <sys:String x:Key="Sync_f8961ae3fa" xml:space="preserve">Нет идентификатора отправки</sys:String>
+    <sys:String x:Key="Sync_d0dd940c4c" xml:space="preserve">Нет данных</sys:String>
+    <sys:String x:Key="Sync_daea37184f" xml:space="preserve">Идентификатор отправки уже использован</sys:String>
+    <sys:String x:Key="Sync_dd0a661b52" xml:space="preserve">Книга получена с Android. Резервная копия сохранена</sys:String>
+    <sys:String x:Key="Sync_06d584a626" xml:space="preserve">Данные получены с Android. Резервная копия сохранена.</sys:String>
+    <sys:String x:Key="Sync_6a4a81b5eb" xml:space="preserve">Подключение прервано: </sys:String>
+    <sys:String x:Key="Sync_e651213c51" xml:space="preserve">Сеанс Wi-Fi закрыт. Для следующего обмена создайте новый QR-код.</sys:String>
+    <sys:String x:Key="Sync_4fe41a869f" xml:space="preserve">Нет схемы обмена</sys:String>
+    <sys:String x:Key="Sync_a67811df08" xml:space="preserve">Требуется целое число: </sys:String>
+    <sys:String x:Key="Sync_b1fb76cfb1" xml:space="preserve">Некорректное время: </sys:String>
+    <sys:String x:Key="Sync_9256336538" xml:space="preserve">Некорректная дата: </sys:String>
+    <sys:String x:Key="Sync_141dd8a756" xml:space="preserve">Неизвестный агрегат: </sys:String>
+    <sys:String x:Key="Sync_40ce8953fa" xml:space="preserve">Неполный или несовместимый пакет обмена</sys:String>
+    <sys:String x:Key="Sync_db2ef0cc2f" xml:space="preserve">Некорректная таблица </sys:String>
+    <sys:String x:Key="Sync_eb15f0056e" xml:space="preserve">Несовместимые поля </sys:String>
+    <sys:String x:Key="Sync_8d6f15617c" xml:space="preserve">Некорректный или повторный UUID</sys:String>
+    <sys:String x:Key="Sync_102b915c5e" xml:space="preserve">Некорректная ссылка</sys:String>
+    <sys:String x:Key="Sync_ee92f6be54" xml:space="preserve">Требуется целое число</sys:String>
+    <sys:String x:Key="Sync_2513b7838f" xml:space="preserve">Число вне диапазона</sys:String>
+    <sys:String x:Key="Sync_66fe7b0d0d" xml:space="preserve">Дробное значение должно быть строкой</sys:String>
+    <sys:String x:Key="Sync_6f7f71e403" xml:space="preserve">Требуется строка</sys:String>
+    <sys:String x:Key="Sync_6e4e319830" xml:space="preserve">Некорректное поле </sys:String>
+    <sys:String x:Key="Sync_5b9518f041" xml:space="preserve">Родительская запись не найдена</sys:String>
+    <sys:String x:Key="Sync_ea10563791" xml:space="preserve">Дубликат в </sys:String>
+    <sys:String x:Key="Sync_b89b65f857" xml:space="preserve">Повтор имён профилей</sys:String>
+    <sys:String x:Key="Sync_d6f710ef72" xml:space="preserve">В ПК номера агрегатов разных типов должны различаться</sys:String>
+    <sys:String x:Key="Sync_personal_space" xml:space="preserve">Личное пространство</sys:String>
+    <sys:String x:Key="Sync_shared_space" xml:space="preserve">Общее пространство</sys:String>
+    <sys:String x:Key="Sync_shared_warning" xml:space="preserve">Профили доступны всем зарегистрированным пользователям. Ваши профили публикуются отдельно; загружаются только выбранные.</sys:String>
+    <sys:String x:Key="Sync_shared_one_profile" xml:space="preserve">Пакет общего пространства должен содержать ровно один профиль.</sys:String>
+    <sys:String x:Key="Sync_shared_missing" xml:space="preserve">Выбранный профиль больше не доступен. Обновите список.</sys:String>
+    <sys:String x:Key="Sync_shared_done" xml:space="preserve">Опубликовано профилей: {0}. Загружено профилей: {1}.</sys:String>
+    <sys:String x:Key="Sync_shared_received" xml:space="preserve">Получено</sys:String>
+    <sys:String x:Key="Sync_shared_choose" xml:space="preserve">Профили общего пространства</sys:String>
+    <sys:String x:Key="Sync_shared_select_help" xml:space="preserve">Отметьте профили для загрузки. Остальные локальные профили останутся без изменений.</sys:String>
+    <sys:String x:Key="Sync_shared_board" xml:space="preserve">борт {0}</sys:String>
+    <sys:String x:Key="Sync_shared_empty" xml:space="preserve">В общем пространстве пока нет профилей.</sys:String>
+    <sys:String x:Key="Sync_shared_download" xml:space="preserve">Загрузить выбранные</sys:String>
+
+    <!-- ==================== ЖУРНАЛ ТО ============================== -->
+    <sys:String x:Key="Journal_Title">Журнал ТО</sys:String>
+    <sys:String x:Key="Journal_AddWork">Добавить работу</sys:String>
+    <sys:String x:Key="Journal_AddDefect">Добавить неисправность</sys:String>
+    <sys:String x:Key="Journal_Works">Выполненные работы</sys:String>
+    <sys:String x:Key="Journal_Defects">Неисправности</sys:String>
+    <sys:String x:Key="Journal_History">История</sys:String>
+    <sys:String x:Key="Journal_ScheduledWorks">Работы</sys:String>
+    <sys:String x:Key="Journal_CompletedDefects">Выполненные неисправности</sys:String>
+    <sys:String x:Key="Journal_EmptyHistory">Записей пока нет</sys:String>
+    <sys:String x:Key="Journal_Close">Закрыть</sys:String>
+    <sys:String x:Key="Journal_Add">Добавить</sys:String>
+    <sys:String x:Key="Journal_NoBaselineTriplet">—–—–— (нет отметки)</sys:String>
+    <sys:String x:Key="Journal_ChooseWork">Укажите работы</sys:String>
+    <sys:String x:Key="Journal_EmptyWorks">Работ пока нет</sys:String>
+    <sys:String x:Key="Journal_EmptyDefects">Открытых неисправностей нет</sys:String>
+    <sys:String x:Key="Journal_Kind">Вид работ</sys:String>
+    <sys:String x:Key="Journal_Date">Дата</sys:String>
+    <sys:String x:Key="Journal_Counter">СНЭ на момент работы (ч:мм)</sys:String>
+    <sys:String x:Key="Journal_Description">Описание</sys:String>
+    <sys:String x:Key="Journal_Save">Сохранить</sys:String>
+    <sys:String x:Key="Journal_Cancel">Отмена</sys:String>
+    <sys:String x:Key="Journal_InvalidInput">Укажите вид работ и наработку в формате ч:мм</sys:String>
+    <sys:String x:Key="Journal_Periodic">Периодический осмотр</sys:String>
+    <sys:String x:Key="Journal_50">50-часовые работы</sys:String>
+    <sys:String x:Key="Journal_100">100-часовые работы</sys:String>
+    <sys:String x:Key="Journal_300">300-часовые работы</sys:String>
+    <sys:String x:Key="Journal_12">Регламент 12 месяцев</sys:String>
+    <sys:String x:Key="Journal_24">Регламент 24 месяца</sys:String>
+    <sys:String x:Key="Journal_Other">Другая работа</sys:String>
+    <sys:String x:Key="Journal_ClearHistoryConfirm">Вы действительно хотите очистить историю журнала? Активные базовые работы сохранятся.</sys:String>
+
+</ResourceDictionary>
