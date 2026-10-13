@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
@@ -203,7 +203,7 @@ namespace logbook.Views
 
                 var dialog = info == null
                     ? new UpdateWindow(UpdateChecker.CurrentVersion)
-                    : new UpdateWindow(UpdateChecker.CurrentVersion, info.Version, info.Notes, info.Url);
+                    : new UpdateWindow(UpdateChecker.CurrentVersion, info.Version, info.Notes, info.Url, info.FileName);
                 dialog.Owner = this;
                 dialog.ShowDialog();
             }

@@ -110,8 +110,11 @@
     <sys:String x:Key="Update_Title">Обновление</sys:String>
     <sys:String x:Key="Update_NoUpdatesTitle">Обновлений нет</sys:String>
     <sys:String x:Key="Update_NewVersionTitle">Доступно обновление</sys:String>
-    <sys:String x:Key="Update_Download">Скачать</sys:String>
+    <sys:String x:Key="Update_Download">Обновить</sys:String>
     <sys:String x:Key="Update_Later">Позже</sys:String>
+    <sys:String x:Key="Update_Downloading">Загрузка обновления...</sys:String>
+    <sys:String x:Key="Update_StartingInstaller">Запуск программы установки...</sys:String>
+    <sys:String x:Key="Update_DownloadError">Ошибка при загрузке обновления</sys:String>
 
     <!-- О программе -->
     <sys:String x:Key="About_Help">Помощь</sys:String>

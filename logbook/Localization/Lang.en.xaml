@@ -110,8 +110,11 @@
     <sys:String x:Key="Update_Title">Update</sys:String>
     <sys:String x:Key="Update_NoUpdatesTitle">No updates available</sys:String>
     <sys:String x:Key="Update_NewVersionTitle">Update available</sys:String>
-    <sys:String x:Key="Update_Download">Download</sys:String>
+    <sys:String x:Key="Update_Download">Update</sys:String>
     <sys:String x:Key="Update_Later">Later</sys:String>
+    <sys:String x:Key="Update_Downloading">Downloading update...</sys:String>
+    <sys:String x:Key="Update_StartingInstaller">Starting installer...</sys:String>
+    <sys:String x:Key="Update_DownloadError">Error downloading update</sys:String>
 
     <!-- About -->
     <sys:String x:Key="About_Help">Help</sys:String>

@@ -125,7 +125,8 @@ namespace logbook
                         UpdateChecker.CurrentVersion,
                         info.Version,
                         info.Notes,
-                        info.Url)
+                        info.Url,
+                        info.FileName)
                     {
                         Owner = owner
                     };
