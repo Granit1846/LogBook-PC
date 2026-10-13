@@ -269,8 +269,24 @@ public static class ExchangeCodec
             profile["aggregateAssignmentsJson"]=assignments.ToString(Formatting.None);
             profile["resourcesJson"]=new JArray(Items(source,"ResourceRecords").OfType<JObject>().Select((r,i)=>Resource(r,false,i))).ToString(Formatting.None);
             profile["oilsJson"]=new JArray(Items(source,"OilRecords").OfType<JObject>().Select((r,i)=>Resource(r,true,i))).ToString(Formatting.None);
-            profile["maintenanceWorksJson"]=(source["MaintenanceWorks"] as JArray ?? new JArray()).ToString(Formatting.None);
-            profile["defectTasksJson"]=(source["DefectTasks"] as JArray ?? new JArray()).ToString(Formatting.None);
+            var mwList = (source["MaintenanceWorks"] as JArray ?? new JArray()).OfType<JObject>().Select(w => new JObject {
+                ["id"] = Text(w,"id").Length > 0 ? Text(w,"id") : (Text(w,"Id").Length > 0 ? Text(w,"Id") : Guid.NewGuid().ToString()),
+                ["kind"] = Text(w,"kind").Length > 0 ? Text(w,"kind") : Text(w,"Kind"),
+                ["date"] = Text(w,"date").Length > 0 ? Text(w,"date") : Text(w,"Date"),
+                ["counterMinutes"] = w["counterMinutes"]?.Value<int>() ?? w["CounterMinutes"]?.Value<int>() ?? 0,
+                ["description"] = Text(w,"description").Length > 0 ? Text(w,"description") : Text(w,"Description"),
+                ["createdAt"] = w["createdAt"]?.Value<long>() ?? w["CreatedAt"]?.Value<long>() ?? DateTimeOffset.UtcNow.ToUnixTimeMilliseconds()
+            });
+            profile["maintenanceWorksJson"] = new JArray(mwList).ToString(Formatting.None);
+
+            var dtList = (source["DefectTasks"] as JArray ?? new JArray()).OfType<JObject>().Select(t => new JObject {
+                ["id"] = Text(t,"id").Length > 0 ? Text(t,"id") : (Text(t,"Id").Length > 0 ? Text(t,"Id") : Guid.NewGuid().ToString()),
+                ["description"] = Text(t,"description").Length > 0 ? Text(t,"description") : Text(t,"Description"),
+                ["workId"] = Text(t,"workId").Length > 0 ? Text(t,"workId") : Text(t,"WorkId"),
+                ["createdAt"] = t["createdAt"]?.Value<long>() ?? t["CreatedAt"]?.Value<long>() ?? DateTimeOffset.UtcNow.ToUnixTimeMilliseconds(),
+                ["completedAt"] = t["completedAt"]?.Value<long>() ?? t["CompletedAt"]?.Value<long>() ?? 0L
+            });
+            profile["defectTasksJson"] = new JArray(dtList).ToString(Formatting.None);
             var history=new JArray(Items(source,"AggregateHistory").OfType<JObject>().Select(h=> new JObject { ["type"]=Text(h,"Type"),["oldNumber"]=Text(h,"OldNumber"),["newNumber"]=Text(h,"NewNumber"),["reason"]=Text(h,"Reason"),["date"]=DateTimeOffset.TryParse(Text(h,"ReplacedAt"),out var stamp) && stamp.Year>=1900 ? stamp.ToUnixTimeMilliseconds() : 0,["installationDate"]="" }));
             var previousHistory=JArray.Parse(Text(profile,"aggregateHistoryJson"));
             foreach(var h in history.OfType<JObject>()) {
