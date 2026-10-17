@@ -10,5 +10,7 @@
   "1.1.14": "Добавлена поддержка авторизации и связки аккаунтов через мессенджер MAX. Возможность беспарольного входа по коду через MAX и объединение данных с Telegram-профилем.",
   "1.1.14.en": "Added support for authorization and account linking via MAX messenger. Passwordless code authentication and unified profile syncing between MAX and Telegram.",
   "1.1.15": "Добавлена возможность привязки Email и пароля к аккаунту после авторизации через любого бота (Telegram или MAX). Улучшена синхронизация и индикация подключенных сервисов.",
-  "1.1.15.en": "Added option to link Email and password to account after bot authorization (Telegram or MAX). Improved synchronization and service link badges."
+  "1.1.15.en": "Added option to link Email and password to account after bot authorization (Telegram or MAX). Improved synchronization and service link badges.",
+  "1.1.16": "Исправлена авторизация через Telegram и MAX, восстановлен доступ по привязанному Email с отображением статуса всех сервисов, скрытие значков при полной привязке всех способов.",
+  "1.1.16.en": "Fixed Telegram and MAX bot authorization, unified Email login with full status of linked services, auto-hide badges when all accounts are connected."
 }

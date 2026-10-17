@@ -278,15 +278,17 @@ public sealed class DesktopSyncWindow: Window
             bool hasEmail = !string.IsNullOrEmpty(session.LinkedEmail) || !session.Email.StartsWith("tg_");
             string mailName = !string.IsNullOrEmpty(session.LinkedEmail) ? session.LinkedEmail : session.Email;
 
-            tgBadge.Visibility = hasTg ? Visibility.Visible : Visibility.Collapsed;
-            maxBadge.Visibility = hasMax ? Visibility.Visible : Visibility.Collapsed;
-            if (emailBadge.Child is TextBlock tb) tb.Text = $"✅ {mailName}";
-            emailBadge.Visibility = hasEmail ? Visibility.Visible : Visibility.Collapsed;
-            badgesPanel.Visibility = (hasTg || hasMax || hasEmail) ? Visibility.Visible : Visibility.Collapsed;
-
-            if (hasTg && hasMax && hasEmail) {
+            bool allLinked = hasTg && hasMax && hasEmail;
+            if (allLinked) {
+                badgesPanel.Visibility = Visibility.Collapsed;
                 linkPanel.Visibility = Visibility.Collapsed;
             } else {
+                tgBadge.Visibility = hasTg ? Visibility.Visible : Visibility.Collapsed;
+                maxBadge.Visibility = hasMax ? Visibility.Visible : Visibility.Collapsed;
+                if (emailBadge.Child is TextBlock tb) tb.Text = $"✅ {mailName}";
+                emailBadge.Visibility = hasEmail ? Visibility.Visible : Visibility.Collapsed;
+                badgesPanel.Visibility = (hasTg || hasMax || hasEmail) ? Visibility.Visible : Visibility.Collapsed;
+
                 linkPanel.Visibility = Visibility.Visible;
                 linkTgBtn.Visibility = hasTg ? Visibility.Collapsed : Visibility.Visible;
                 linkMaxBtn.Visibility = hasMax ? Visibility.Collapsed : Visibility.Visible;

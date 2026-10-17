@@ -110,14 +110,19 @@ public sealed class DesktopSupabase: IDesktopRemote,IDisposable
         } catch { }
         return (current.HasTelegram || current.Email.StartsWith("tg_"), current.HasMax, current.LinkedEmail);
     }
+    private static string BotPassword(long telegramId) {
+        using var md5 = System.Security.Cryptography.MD5.Create();
+        var digest = md5.ComputeHash(Encoding.UTF8.GetBytes($"salt_logbook_2026_{telegramId}"));
+        return "TgLogBook_" + string.Concat(digest.Select(b => b.ToString("x2")));
+    }
     public async Task LinkEmail(string newEmail, string newPassword) {
         var session = auth.Read() ?? throw new InvalidOperationException("Пользователь не авторизован");
         var cleanEmail = newEmail.Trim().ToLowerInvariant();
+
         using var request = new HttpRequestMessage(HttpMethod.Put, endpoint + "/auth/v1/user");
         request.Headers.Add("apikey", key);
         request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", await Token());
         var body = new JObject {
-            ["password"] = newPassword,
             ["data"] = new JObject { ["linked_email"] = cleanEmail }
         };
         request.Content = new StringContent(body.ToString(Formatting.None), Encoding.UTF8, "application/json");
@@ -148,14 +153,9 @@ public sealed class DesktopSupabase: IDesktopRemote,IDisposable
     public async Task<bool> SignIn(string email,string password,bool register) {
         var cleanEmail = email.Trim().ToLowerInvariant();
         if (!register) {
+            // First check if this email is an alias for a bot account (Telegram / MAX)
             try {
-                var response = await Request("/auth/v1/token?grant_type=password", new JObject { ["email"] = cleanEmail, ["password"] = password });
-                if (response["access_token"] != null && response["access_token"]!.Type != JTokenType.Null) {
-                    Store(response);
-                    return true;
-                }
-            } catch (HttpRequestException) {
-                using var req = new HttpRequestMessage(HttpMethod.Get, endpoint + $"/rest/v1/telegram_auth_sessions?code=eq.email_{cleanEmail}&select=auth_email,auth_password");
+                using var req = new HttpRequestMessage(HttpMethod.Get, endpoint + $"/rest/v1/telegram_auth_sessions?code=eq.email_{cleanEmail}&select=telegram_id,auth_email,auth_password");
                 req.Headers.Add("apikey", key);
                 req.Headers.Authorization = new AuthenticationHeaderValue("Bearer", key);
                 using var res = await http.SendAsync(req);
@@ -165,16 +165,31 @@ public sealed class DesktopSupabase: IDesktopRemote,IDisposable
                         var row = (JObject)arr[0];
                         var pass = (string?)row["auth_password"];
                         var realMail = (string?)row["auth_email"];
+                        var tgId = (long?)row["telegram_id"] ?? 0;
                         if (!string.IsNullOrEmpty(realMail) && pass == password) {
-                            var resp2 = await Request("/auth/v1/token?grant_type=password", new JObject { ["email"] = realMail, ["password"] = password });
-                            if (resp2["access_token"] != null && resp2["access_token"]!.Type != JTokenType.Null) {
+                            var botPw = tgId > 0 ? BotPassword(tgId) : password;
+                            JObject? resp2 = null;
+                            try {
+                                resp2 = await Request("/auth/v1/token?grant_type=password", new JObject { ["email"] = realMail, ["password"] = botPw });
+                            } catch {
+                                resp2 = await Request("/auth/v1/token?grant_type=password", new JObject { ["email"] = realMail, ["password"] = password });
+                            }
+                            if (resp2?["access_token"] != null && resp2["access_token"]!.Type != JTokenType.Null) {
                                 Store(resp2);
                                 return true;
                             }
+                        } else if (!string.IsNullOrEmpty(realMail) && pass != password) {
+                            throw new InvalidOperationException("Неверный пароль");
                         }
                     }
                 }
-                throw;
+            } catch (InvalidOperationException) { throw; }
+            catch { }
+
+            var response = await Request("/auth/v1/token?grant_type=password", new JObject { ["email"] = cleanEmail, ["password"] = password });
+            if (response["access_token"] != null && response["access_token"]!.Type != JTokenType.Null) {
+                Store(response);
+                return true;
             }
             return false;
         }

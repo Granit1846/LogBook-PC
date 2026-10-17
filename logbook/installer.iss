@@ -4,7 +4,7 @@
 ; ============================================================
 
 #define MyAppName "Logbook"
-#define MyAppVersion "1.1.15"
+#define MyAppVersion "1.1.16"
 #define MyAppPublisher "Skeorz_Lab"
 #define MyAppExeName "Logbook.exe"
 
@@ -23,7 +23,7 @@ AppName={#MyAppName}
 AppVersion={#MyAppVersion}
 AppVerName={#MyAppName} {#MyAppVersion}
 AppPublisher={#MyAppPublisher}
-VersionInfoVersion=1.1.15.0
+VersionInfoVersion=1.1.16.0
 DefaultDirName={autopf}\{#MyAppName}
 DefaultGroupName={#MyAppName}
 DisableProgramGroupPage=yes
