@@ -121,13 +121,22 @@ public static class ExchangeCodec
     private static string Time(long value)=>(value<0?"-":"")+(Math.Abs(value)/60).ToString(Inv)+":"+(Math.Abs(value)%60).ToString("00",Inv);
     private static DateTime Date(string value)
     {
+        if (string.IsNullOrWhiteSpace(value)) return DateTime.Today;
+        if (value.StartsWith("Итого", StringComparison.OrdinalIgnoreCase) || value.StartsWith("Total", StringComparison.OrdinalIgnoreCase))
+            return DateTime.Today;
         var parts=value.Split('.');if(parts.Length==3 && parts[2].Length==2) value=parts[0]+"."+parts[1]+".20"+parts[2];
-        if(!DateTime.TryParseExact(value,new[]{"dd.MM.yyyy","yyyy-MM-dd"},Inv,DateTimeStyles.None,out var d)) throw new InvalidDataException(SyncText.T("Sync_9256336538")+value);return d;
+        if(!DateTime.TryParseExact(value,new[]{"dd.MM.yyyy","yyyy-MM-dd","dd.MM.yy"},Inv,DateTimeStyles.None,out var d)) {
+            if (DateTime.TryParse(value, Inv, DateTimeStyles.None, out d)) return d;
+            return DateTime.Today;
+        }
+        return d;
     }
-    private static string Iso(string value)=>Date(value).ToString("yyyy-MM-dd",Inv);
-    private static string Local(string value)=>string.IsNullOrEmpty(value) ? value
+    private static string Iso(string value) => string.IsNullOrWhiteSpace(value) || value.StartsWith("Итого", StringComparison.OrdinalIgnoreCase) || value.StartsWith("Total", StringComparison.OrdinalIgnoreCase)
+        ? value : Date(value).ToString("yyyy-MM-dd",Inv);
+    private static string Local(string value) => string.IsNullOrEmpty(value) ? value
         : MonthlyTotals.TryMonth(value,out var month) ? MonthlyTotals.Label(month)
-        : Date(value).ToString("dd.MM.yyyy",Inv);
+        : DateTime.TryParseExact(value, new[]{"dd.MM.yyyy","yyyy-MM-dd","dd.MM.yy"}, Inv, DateTimeStyles.None, out var d) ? d.ToString("dd.MM.yyyy",Inv)
+        : value;
     public static bool HasSnkValue(string? val)
     {
         if (string.IsNullOrWhiteSpace(val) || val is "—" or "–" or "-") return false;
@@ -189,14 +198,14 @@ public static class ExchangeCodec
         var date=Text(source,"Date");if(start) wire["date"]=date.Length==0 ? "" : Iso(date);
         else {
             var isTotal=MonthlyTotals.TryMonth(date,out var monthDate);
-            if(!isTotal && (bool?)source["IsTotal"]==true) {
+            if(!isTotal && ((bool?)source["IsTotal"]==true || date.StartsWith("Итого", StringComparison.OrdinalIgnoreCase) || date.StartsWith("Total", StringComparison.OrdinalIgnoreCase))) {
                 var totalDate=Date(date);monthDate=new DateTime(totalDate.Year,totalDate.Month,1);isTotal=true;
             }
             DateTime d;
             if(isTotal) {
                 d=monthDate.AddMonths(1).AddDays(-1);
             } else d=Date(date);
-            wire["date"]=isTotal ? MonthlyTotals.Label(monthDate) : d.ToString("yyyy-MM-dd",Inv);
+            wire["date"]=isTotal ? (MonthlyTotals.TryMonth(date,out _) ? MonthlyTotals.Label(monthDate) : date) : d.ToString("yyyy-MM-dd",Inv);
             wire["sortOrder"]=(long)(d-new DateTime(1970,1,1)).TotalDays*2+(isTotal?1:0);
             wire["isTotal"]=isTotal?1:0;wire["totalMonth"]=isTotal ? d.ToString("yyyy-MM",Inv) : "";
         }

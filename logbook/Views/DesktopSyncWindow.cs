@@ -29,14 +29,29 @@ public sealed class DesktopSyncWindow: Window
     private readonly RadioButton personalSpace=new() {Content=SyncText.T("Sync_personal_space"),GroupName="CloudSpace",IsChecked=true,Margin=new Thickness(0,4,16,4)};
     private readonly RadioButton sharedSpace=new() {Content=SyncText.T("Sync_shared_space"),GroupName="CloudSpace",Margin=new Thickness(0,4,0,4)};
     private readonly TextBlock sharedWarning=new() {Text=SyncText.T("Sync_shared_warning"),TextWrapping=TextWrapping.Wrap,Margin=new Thickness(0,2,0,6)};
-    private readonly bool forcePersonalOnly;
+    private readonly StackPanel badgesPanel = new() { Orientation = Orientation.Horizontal, Margin = new Thickness(0, 4, 0, 8) };
+    private readonly Border tgBadge = CreateBadge("✅ Telegram", System.Windows.Media.Color.FromRgb(42, 171, 238));
+    private readonly Border maxBadge = CreateBadge("✅ MAX", System.Windows.Media.Color.FromRgb(0, 119, 255));
+    private readonly StackPanel linkPanel = new() { Orientation = Orientation.Horizontal, Margin = new Thickness(0, 4, 0, 8) };
+    private Button linkMaxBtn = null!;
+    private Button linkTgBtn = null!;
     private bool busy;
     private Button? wifi;
+    private static Border CreateBadge(string text, System.Windows.Media.Color color) {
+        return new Border {
+            Background = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromArgb(32, color.R, color.G, color.B)),
+            BorderBrush = new System.Windows.Media.SolidColorBrush(color),
+            BorderThickness = new Thickness(1),
+            CornerRadius = new CornerRadius(4),
+            Padding = new Thickness(8, 4, 8, 4),
+            Margin = new Thickness(0, 0, 8, 0),
+            Child = new TextBlock { Text = text, FontWeight = FontWeights.SemiBold }
+        };
+    }
     public DesktopSyncWindow(SettingsService settings,StorageService storage,Action downloaded,string? authFolder=null,bool personalOnly=false)
     {
         this.settings=settings;this.storage=storage;this.downloaded=downloaded;
         auth=new DesktopAuth(authFolder ?? Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),"LogbookApp"));
-        forcePersonalOnly=personalOnly;
         Title=SyncText.T("Sync_c08622028f");Width=590;Height=570;MinWidth=420;MinHeight=340;WindowStartupLocation=WindowStartupLocation.CenterOwner;
         SetResourceReference(BackgroundProperty,"WindowBackgroundBrush");SetResourceReference(ForegroundProperty,"WindowForegroundBrush");
         SetResourceReference(FontFamilyProperty,"AppFontFamily");FontSize=14;
@@ -49,60 +64,81 @@ public sealed class DesktopSyncWindow: Window
         content.Children.Add(wifi);
         content.Children.Add(Button(SyncText.T("Sync_236ecb49e8"),()=> {new SyncHistoryWindow(settings.Settings.DataFolder) {Owner=this}.ShowDialog();return Task.CompletedTask;}));
         content.Children.Add(sessionLabel);content.Children.Add(login);
+        var maxLogin = Button("🔵 Войти через MAX", async () => await MessengerAuth("max"));
+        maxLogin.Background = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromRgb(0, 119, 255));
+        maxLogin.Foreground = System.Windows.Media.Brushes.White;
+        maxLogin.FontWeight = FontWeights.SemiBold;
+        maxLogin.Padding = new Thickness(14, 8, 14, 8);
+        maxLogin.Margin = new Thickness(0, 4, 0, 4);
+
+        var tgLogin = Button("🔷 Войти через Telegram", async () => await MessengerAuth("telegram"));
+        tgLogin.Background = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromRgb(42, 171, 238));
+        tgLogin.Foreground = System.Windows.Media.Brushes.White;
+        tgLogin.FontWeight = FontWeights.SemiBold;
+        tgLogin.Padding = new Thickness(14, 8, 14, 8);
+        tgLogin.Margin = new Thickness(0, 0, 0, 10);
+
+        login.Children.Add(maxLogin);
+        login.Children.Add(tgLogin);
+        login.Children.Add(new TextBlock { Text = "── или через Email и пароль ──", Foreground = System.Windows.Media.Brushes.Gray, Margin = new Thickness(0, 2, 0, 8), HorizontalAlignment = HorizontalAlignment.Center });
         login.Children.Add(new TextBlock {Text="Email"});login.Children.Add(email);login.Children.Add(new TextBlock {Text=SyncText.T("Sync_14f7c63cc1")});login.Children.Add(password);
         var buttons=new StackPanel {Orientation=Orientation.Horizontal};login.Children.Add(buttons);
         var enter=Button(SyncText.T("Sync_939e95a11d"),async()=>await SignIn(false));var register=Button(SyncText.T("Sync_7224765e44"),async()=>await SignIn(true));buttons.Children.Add(enter);buttons.Children.Add(register);
         content.Children.Add(actions);
-        personalSpace.SetResourceReference(ForegroundProperty, "WindowForegroundBrush");
-        sharedSpace.SetResourceReference(ForegroundProperty, "WindowForegroundBrush");
         var spaces=new WrapPanel();spaces.Children.Add(personalSpace);spaces.Children.Add(sharedSpace);actions.Children.Add(spaces);
         actions.Children.Add(sharedWarning);actions.Children.Add(sync);actions.Children.Add(logout);
+        badgesPanel.Children.Add(tgBadge);
+        badgesPanel.Children.Add(maxBadge);
+        actions.Children.Add(badgesPanel);
+        linkMaxBtn = Button("🔗 Связать с MAX", () => { LinkMessenger("max"); return Task.CompletedTask; });
+        linkTgBtn = Button("🔗 Связать с Telegram", () => { LinkMessenger("telegram"); return Task.CompletedTask; });
+        linkPanel.Children.Add(linkMaxBtn);
+        linkPanel.Children.Add(linkTgBtn);
+        actions.Children.Add(linkPanel);
         personalSpace.Checked+=(_,_)=>Refresh();sharedSpace.Checked+=(_,_)=>Refresh();
-        void UpdateSyncButtonLabel() => sync.Content = sharedSpace.IsChecked == true ? SyncText.T("Sync_SharedButtonAction") : SyncText.T("Sync_5822fb7d95");
-        personalSpace.Checked+=(_,_)=>UpdateSyncButtonLabel();
-        sharedSpace.Checked+=(_,_)=>UpdateSyncButtonLabel();
         sync.Click+=async(_,_)=>await Operation(async()=> {
             var history=new SyncHistory(settings.Settings.DataFolder);
             try {
-            var session=auth.Read()??throw new InvalidOperationException(SyncText.T("Sync_4eb58e1e56"));
+            using var client=Client();var session=auth.Read()??throw new InvalidOperationException(SyncText.T("Sync_4eb58e1e56"));
             if(sharedSpace.IsChecked==true) {
-                // Общая синхронизация: ТОЛЬКО СКАЧИВАНИЕ с выбором профилей
-                using var sharedClient=new DesktopSupabase(settings.Settings.SupabaseUrl,settings.Settings.SupabaseKey,auth,true);
-                var catalog=await sharedClient.SharedProfileCatalog();
+                var publishing=storage.Snapshot();var profiles=ExchangeCodec.SharedProfilePackets(publishing);storage.Save(publishing);
+                var published=await client.PublishSharedProfiles(profiles);var catalog=await client.SharedProfileCatalog();
                 var picker=new SharedProfilePickerWindow(catalog) {Owner=this};picker.ShowDialog();
                 if(picker.Selected==null) {status.Text=SyncText.T("Sync_9c327e9ce5");return;}
-                var packets=await sharedClient.PullSharedProfiles(picker.Selected);var current=storage.Snapshot();
+                var packets=await client.PullSharedProfiles(picker.Selected);var current=storage.Snapshot();
                 var local=ExchangeCodec.Encode(current).ToString(Newtonsoft.Json.Formatting.None);storage.Save(current);
                 var merged=ExchangeCodec.MergeSharedProfiles(ExchangeCodec.Parse(local),packets).ToString(Newtonsoft.Json.Formatting.None);
                 storage.Download(merged,local,0,"","",true);downloaded();
                 var completed=storage.Snapshot();completed.Exchange.SelectCheckpoint(session.Endpoint,"shared");completed.Exchange.LastSuccess=DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();completed.Exchange.SaveCheckpoint();storage.Save(completed);
-                status.Text=SyncText.T("Sync_shared_downloaded_only",packets.Count);
+                status.Text=string.Format(SyncText.T("Sync_shared_done"),published,packets.Count);
                 history.Add(new SyncHistoryEntry(DateTimeOffset.UtcNow.ToUnixTimeMilliseconds(),SyncText.T("Sync_shared_space"),SyncText.T("Sync_shared_received"),status.Text,storage.LastSyncBackup));return;
             }
-            // Личная синхронизация: отправка в личное и общее, скачивание из личного
-            using var personalClient=new DesktopSupabase(settings.Settings.SupabaseUrl,settings.Settings.SupabaseKey,auth,false);
-            var engine=new DesktopSyncEngine(storage,personalClient,session.Endpoint,session.User);var result=await engine.Sync();
+            var account=sharedSpace.IsChecked==true?"shared":session.User;
+            var engine=new DesktopSyncEngine(storage,client,session.Endpoint,account);var result=await engine.Sync();
             while(result.Conflict!=null) {
                 var choice=new DesktopConflictWindow(result.Conflict) {Owner=this};choice.ShowDialog();
-                if(choice.UseLocal==null) {status.Text=SyncText.T("Sync_9c327e9ce5");history.Add(new SyncHistoryEntry(DateTimeOffset.UtcNow.ToUnixTimeMilliseconds(),SyncText.T("Sync_60a6800444"),SyncText.T("Sync_5ebee19fe9"),status.Text));return;}
+                if(choice.UseLocal==null) {status.Text=SyncText.T("Sync_9c327e9ce5");history.Add(new SyncHistoryEntry(DateTimeOffset.UtcNow.ToUnixTimeMilliseconds(),"Интернет","Отменено",status.Text));return;}
                 result=await engine.Resolve(result.Conflict,choice.UseLocal.Value);
             }
-            if(result.Downloaded)downloaded();
-            // Также публикуем профили в общее пространство
-            try {
-                using var sharedClient=new DesktopSupabase(settings.Settings.SupabaseUrl,settings.Settings.SupabaseKey,auth,true);
-                var publishing=storage.Snapshot();var packets=ExchangeCodec.SharedProfilePackets(publishing);storage.Save(publishing);
-                await sharedClient.PublishSharedProfiles(packets);
-            } catch { }
-            status.Text=result.Message;
-            history.Add(new SyncHistoryEntry(DateTimeOffset.UtcNow.ToUnixTimeMilliseconds(),SyncText.T("Sync_60a6800444"),result.Downloaded?SyncText.T("Sync_b571b20ab1"):result.Direction,result.Message,result.Downloaded?storage.LastSyncBackup:""));
-            } catch(Exception error) {history.Add(new SyncHistoryEntry(DateTimeOffset.UtcNow.ToUnixTimeMilliseconds(),SyncText.T("Sync_60a6800444"),SyncText.T("Sync_72aecd9ad8"),LocalizeError(error)));throw;}
+            if(result.Downloaded)downloaded();status.Text=result.Message;
+            history.Add(new SyncHistoryEntry(DateTimeOffset.UtcNow.ToUnixTimeMilliseconds(),"Интернет",result.Downloaded?"Получено":result.Direction,result.Message,result.Downloaded?storage.LastSyncBackup:""));
+            } catch(Exception error) {history.Add(new SyncHistoryEntry(DateTimeOffset.UtcNow.ToUnixTimeMilliseconds(),"Интернет","Ошибка",error is System.Net.Http.HttpRequestException ? SyncText.T("Sync_e48c5d1ecf") : error.Message));throw;}
         });
         logout.Click+=(_,_)=> {auth.Clear();status.Text=SyncText.T("Sync_8e4bf12752");Refresh();};
         content.Children.Add(status);
         var close=Button(SyncText.T("Sync_4ae50d3073"),()=> {Close();return Task.CompletedTask;});close.HorizontalAlignment=HorizontalAlignment.Right;Grid.SetRow(close,1);root.Children.Add(close);
         Closing+=(_,e)=> {if(busy){e.Cancel=true;status.Text=SyncText.T("Sync_c572544936");}};
-        Loaded+=(_,_)=>logbook.Helpers.DarkTitleBarHelper.Apply(this);Refresh();
+        Loaded+=async(_,_)=> {
+            logbook.Helpers.DarkTitleBarHelper.Apply(this);
+            Refresh();
+            if (auth.Read() != null) {
+                try {
+                    using var client = Client();
+                    await client.CheckLinkedStatus();
+                    Refresh();
+                } catch {}
+            }
+        };
     }
     private static Button Button(string title,Func<Task> action) {
         var button=new Button {Content=title,Padding=new Thickness(12,7,12,7),Margin=new Thickness(0,4,8,4)};
@@ -116,31 +152,86 @@ public sealed class DesktopSyncWindow: Window
             using var client=Client();status.Text=await client.SignIn(mail,secret,register)?SyncText.T("Sync_0127d2d21d"):SyncText.T("Sync_a8592f662c");
         });
     }
-    private static string LocalizeError(Exception error) {
-        if (error is OperationCanceledException) return SyncText.T("Sync_2818a93db8");
-        if (error is System.Net.Http.HttpRequestException) return SyncText.T("Sync_e48c5d1ecf");
-        if (error is FormatException) return logbook.Helpers.LocalizationManager.CurrentLanguage == "en" ? "Data format error." : "Ошибка формата данных.";
-        return error.Message;
+    private async Task MessengerAuth(string target) {
+        var code = "auth_" + Guid.NewGuid().ToString("N").Substring(0, 12);
+        var botUrl = target == "max"
+            ? $"https://max.ru/se14711712_bot?start={code}"
+            : $"https://t.me/my_logbook_app_bot?start={code}";
+
+        await Operation(async () => {
+            using var client = Client();
+            await client.CreateAuthSession(code);
+            status.Text = target == "max"
+                ? "Ожидание подтверждения в боте MAX (@se14711712_bot)... Откройте мессенджер и нажмите «Запустить»."
+                : "Ожидание подтверждения в боте Telegram (@my_logbook_app_bot)... Откройте мессенджер и нажмите «Запустить».";
+
+            try {
+                System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo {
+                    FileName = botUrl,
+                    UseShellExecute = true
+                });
+            } catch {}
+
+            for (int i = 0; i < 80; i++) {
+                await Task.Delay(1500);
+                var confirmed = await client.CheckAuthSession(code);
+                if (confirmed != null && confirmed.Status == "confirmed" && !string.IsNullOrEmpty(confirmed.Email)) {
+                    await client.SignIn(confirmed.Email, confirmed.Password ?? "", false);
+                    _ = client.DeleteAuthSession(code);
+                    var name = !string.IsNullOrEmpty(confirmed.Username)
+                        ? $"{confirmed.FirstName} (@{confirmed.Username})"
+                        : confirmed.FirstName ?? (target == "max" ? "MAX" : "Telegram");
+                    status.Text = $"Вход через {(target == "max" ? "MAX" : "Telegram")} выполнен: {name}";
+                    Refresh();
+                    return;
+                }
+            }
+            status.Text = "Время ожидания входа истекло. Повторите попытку.";
+        });
+    }
+    private void LinkMessenger(string target) {
+        var session = auth.Read();
+        if (session == null) return;
+        var m = System.Text.RegularExpressions.Regex.Match(session.Email, @"^tg_(\d+)@telegram\.logbook$");
+        var pilotId = m.Success ? m.Groups[1].Value : "";
+        var token = Guid.NewGuid().ToString("N").Substring(0, 8);
+        var param = !string.IsNullOrEmpty(pilotId) ? $"link_{pilotId}_{token}" : $"auth_{token}";
+        var url = target == "max"
+            ? $"https://max.ru/se14711712_bot?start={param}"
+            : $"https://t.me/my_logbook_app_bot?start={param}";
+        try {
+            System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo {
+                FileName = url,
+                UseShellExecute = true
+            });
+        } catch {}
     }
     private async Task Operation(Func<Task> action) {
         if(busy)return;busy=true;if(wifi!=null)wifi.IsEnabled=false;login.IsEnabled=false;actions.IsEnabled=false;status.Text=SyncText.T("Sync_9674b15f97");
         try {await action();}
-        catch(Exception error) {status.Text=LocalizeError(error);}
+        catch(Exception error) {status.Text=error is OperationCanceledException ? SyncText.T("Sync_2818a93db8") : error.Message;}
         finally {busy=false;if(wifi!=null)wifi.IsEnabled=true;login.IsEnabled=true;actions.IsEnabled=true;Refresh();}
     }
     private void Refresh() {
         var session=auth.Read();login.Visibility=session==null?Visibility.Visible:Visibility.Collapsed;actions.Visibility=session==null?Visibility.Collapsed:Visibility.Visible;
-                if (forcePersonalOnly) {
-            personalSpace.IsChecked = true;
-            personalSpace.Visibility = Visibility.Collapsed;
-            sharedSpace.Visibility = Visibility.Collapsed;
-            sharedWarning.Visibility = Visibility.Collapsed;
-        } else {
-            sharedWarning.Visibility=sharedSpace.IsChecked==true?Visibility.Visible:Visibility.Collapsed;
-        }
+        sharedWarning.Visibility=sharedSpace.IsChecked==true?Visibility.Visible:Visibility.Collapsed;
         var account=sharedSpace.IsChecked==true?"shared":session?.User;
         var last=session==null?0:storage.Snapshot().Exchange.LastSuccessFor(session.Endpoint,account!);
         sessionLabel.Text=session==null?SyncText.T("Sync_515b79cbb5"):SyncText.T("Sync_752d2f234f")+session.Email+(last>0?SyncText.T("Sync_eff80d43ef")+DateTimeOffset.FromUnixTimeMilliseconds(last).LocalDateTime.ToString("dd.MM.yyyy HH:mm"):"");
+        if (session != null) {
+            bool hasTg = session.HasTelegram || session.Email.StartsWith("tg_");
+            bool hasMax = session.HasMax;
+            tgBadge.Visibility = hasTg ? Visibility.Visible : Visibility.Collapsed;
+            maxBadge.Visibility = hasMax ? Visibility.Visible : Visibility.Collapsed;
+            badgesPanel.Visibility = (hasTg || hasMax) ? Visibility.Visible : Visibility.Collapsed;
+            if (hasTg && hasMax) {
+                linkPanel.Visibility = Visibility.Collapsed;
+            } else {
+                linkPanel.Visibility = Visibility.Visible;
+                linkMaxBtn.Visibility = hasMax ? Visibility.Collapsed : Visibility.Visible;
+                linkTgBtn.Visibility = hasTg ? Visibility.Collapsed : Visibility.Visible;
+            }
+        }
     }
 }
 public sealed class SharedProfilePickerWindow: Window
@@ -154,8 +245,8 @@ public sealed class SharedProfilePickerWindow: Window
         var list=new StackPanel();var scroll=new ScrollViewer {Content=list,VerticalScrollBarVisibility=ScrollBarVisibility.Auto};Grid.SetRow(scroll,1);root.Children.Add(scroll);
         var choices=new List<(CheckBox Box,SharedProfileInfo Profile)>();
         foreach(var profile in profiles) {
-            var title=profile.Name+(string.IsNullOrWhiteSpace(profile.BoardNumber)?"":" · "+SyncText.T("Sync_shared_board",profile.BoardNumber));
-            var box=new CheckBox {Content=title,Tag=profile,Margin=new Thickness(4,8,4,2),FontWeight=FontWeights.SemiBold};box.SetResourceReference(ForegroundProperty, "WindowForegroundBrush");list.Children.Add(box);
+            var title=profile.Name+(string.IsNullOrWhiteSpace(profile.BoardNumber)?"":" · "+string.Format(SyncText.T("Sync_shared_board"),profile.BoardNumber));
+            var box=new CheckBox {Content=title,Tag=profile,Margin=new Thickness(4,8,4,2),FontWeight=FontWeights.SemiBold};list.Children.Add(box);
             list.Children.Add(new TextBlock {Text=DateTimeOffset.FromUnixTimeMilliseconds(profile.UpdatedAt).LocalDateTime.ToString("dd.MM.yyyy HH:mm"),Margin=new Thickness(28,0,4,8)});choices.Add((box,profile));
         }
         if(profiles.Count==0)list.Children.Add(new TextBlock {Text=SyncText.T("Sync_shared_empty"),Margin=new Thickness(0,16,0,16)});

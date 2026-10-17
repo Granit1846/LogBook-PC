@@ -15,12 +15,13 @@ using Newtonsoft.Json.Linq;
 using logbook.Models;
 
 namespace logbook.Services;
-public record DesktopSession(string Endpoint,string User,string Email,string Access,string Refresh,long Expires);
+public record DesktopSession(string Endpoint,string User,string Email,string Access,string Refresh,long Expires,bool HasTelegram=false,bool HasMax=false);
 public record DesktopRemote(long Revision,string? Payload);
 public record DesktopCommit(bool Accepted,long Revision);
 public record DesktopConflict(string Local,string Remote,long Revision);
 public record DesktopSyncResult(string Message,DesktopConflict? Conflict=null,bool Downloaded=false,string Direction="Без изменений");
 public record SharedProfileInfo(string ProfileId,string Name,string BoardNumber,long Revision,long UpdatedAt);
+public record AuthSessionResult(string Status, string? Email, string? Password, string? FirstName, string? Username);
 public interface IDesktopRemote {
     Task<DesktopRemote> Pull();
     Task<DesktopCommit> Commit(string change,long expected,string payload);
@@ -76,12 +77,73 @@ public sealed class DesktopSupabase: IDesktopRemote,IDisposable
         return ExchangeCodec.Parse(Encoding.UTF8.GetString(buffer.ToArray()));
     }
     private DesktopSession Store(JObject value) {
-        var session=new DesktopSession(endpoint,(string)value["user"]!["id"]!,(string)value["user"]!["email"]!,(string)value["access_token"]!,(string)value["refresh_token"]!,DateTimeOffset.UtcNow.ToUnixTimeMilliseconds()+(long)value["expires_in"]!*1000);
+        var user = (JObject)value["user"]!;
+        var meta = user["user_metadata"] as JObject;
+        var email = (string)user["email"]!;
+        var hasTg = email.StartsWith("tg_") || meta?["telegram_id"] != null || (bool?)meta?["tg_linked"] == true;
+        var hasMax = meta?["max_id"] != null || (bool?)meta?["max_linked"] == true;
+        var session = new DesktopSession(endpoint, (string)user["id"]!, email, (string)value["access_token"]!, (string)value["refresh_token"]!, DateTimeOffset.UtcNow.ToUnixTimeMilliseconds() + (long)value["expires_in"]! * 1000, hasTg, hasMax);
         auth.Save(session);return session;
+    }
+    public async Task<(bool HasTelegram, bool HasMax)> CheckLinkedStatus() {
+        var current = auth.Read();
+        if (current == null) return (false, false);
+        try {
+            using var request = new HttpRequestMessage(HttpMethod.Get, endpoint + "/auth/v1/user");
+            request.Headers.Add("apikey", key);
+            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", await Token());
+            using var timeout = new CancellationTokenSource(TimeSpan.FromSeconds(10));
+            using var response = await http.SendAsync(request, timeout.Token);
+            if (response.IsSuccessStatusCode) {
+                var text = await response.Content.ReadAsStringAsync();
+                var obj = JObject.Parse(text);
+                var meta = obj["user_metadata"] as JObject;
+                var email = (string?)obj["email"] ?? current.Email;
+                var hasTg = email.StartsWith("tg_") || meta?["telegram_id"] != null || (bool?)meta?["tg_linked"] == true;
+                var hasMax = meta?["max_id"] != null || (bool?)meta?["max_linked"] == true;
+                var updated = current with { HasTelegram = hasTg, HasMax = hasMax };
+                auth.Save(updated);
+                return (hasTg, hasMax);
+            }
+        } catch { }
+        return (current.HasTelegram || current.Email.StartsWith("tg_"), current.HasMax);
     }
     public async Task<bool> SignIn(string email,string password,bool register) {
         var response=await Request(register?"/auth/v1/signup":"/auth/v1/token?grant_type=password",new JObject {["email"]=email.Trim(),["password"]=password});
         if(response["access_token"]==null||response["access_token"]!.Type==JTokenType.Null)return false;Store(response);return true;
+    }
+    public async Task CreateAuthSession(string code) {
+        using var request = new HttpRequestMessage(HttpMethod.Post, endpoint + "/rest/v1/telegram_auth_sessions");
+        request.Headers.Add("apikey", key);
+        request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", key);
+        request.Headers.Add("Prefer", "return=minimal");
+        request.Content = new StringContent(new JObject { ["code"] = code, ["status"] = "pending" }.ToString(Formatting.None), Encoding.UTF8, "application/json");
+        using var response = await http.SendAsync(request);
+        response.EnsureSuccessStatusCode();
+    }
+    public async Task<AuthSessionResult?> CheckAuthSession(string code) {
+        using var request = new HttpRequestMessage(HttpMethod.Get, endpoint + $"/rest/v1/telegram_auth_sessions?code=eq.{code}&select=status,auth_email,auth_password,first_name,username");
+        request.Headers.Add("apikey", key);
+        request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", key);
+        using var response = await http.SendAsync(request);
+        if (!response.IsSuccessStatusCode) return null;
+        var text = await response.Content.ReadAsStringAsync();
+        var array = JArray.Parse(text);
+        if (array.Count == 0) return null;
+        var obj = (JObject)array[0];
+        return new AuthSessionResult(
+            (string?)obj["status"] ?? "pending",
+            (string?)obj["auth_email"],
+            (string?)obj["auth_password"],
+            (string?)obj["first_name"],
+            (string?)obj["username"]
+        );
+    }
+    public async Task DeleteAuthSession(string code) {
+        using var request = new HttpRequestMessage(HttpMethod.Delete, endpoint + $"/rest/v1/telegram_auth_sessions?code=eq.{code}");
+        request.Headers.Add("apikey", key);
+        request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", key);
+        using var response = await http.SendAsync(request);
     }
     private async Task<string> Token(bool refresh=false) {
         var session=auth.Read()??throw new InvalidOperationException(SyncText.T("Sync_4eb58e1e56"));
