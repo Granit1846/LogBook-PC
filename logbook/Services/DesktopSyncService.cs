@@ -15,7 +15,7 @@ using Newtonsoft.Json.Linq;
 using logbook.Models;
 
 namespace logbook.Services;
-public record DesktopSession(string Endpoint,string User,string Email,string Access,string Refresh,long Expires,bool HasTelegram=false,bool HasMax=false);
+public record DesktopSession(string Endpoint,string User,string Email,string Access,string Refresh,long Expires,bool HasTelegram=false,bool HasMax=false,string? LinkedEmail=null);
 public record DesktopRemote(long Revision,string? Payload);
 public record DesktopCommit(bool Accepted,long Revision);
 public record DesktopConflict(string Local,string Remote,long Revision);
@@ -82,12 +82,13 @@ public sealed class DesktopSupabase: IDesktopRemote,IDisposable
         var email = (string)user["email"]!;
         var hasTg = email.StartsWith("tg_") || meta?["telegram_id"] != null || (bool?)meta?["tg_linked"] == true;
         var hasMax = meta?["max_id"] != null || (bool?)meta?["max_linked"] == true;
-        var session = new DesktopSession(endpoint, (string)user["id"]!, email, (string)value["access_token"]!, (string)value["refresh_token"]!, DateTimeOffset.UtcNow.ToUnixTimeMilliseconds() + (long)value["expires_in"]! * 1000, hasTg, hasMax);
+        var linkedEmail = (string?)meta?["linked_email"];
+        var session = new DesktopSession(endpoint, (string)user["id"]!, email, (string)value["access_token"]!, (string)value["refresh_token"]!, DateTimeOffset.UtcNow.ToUnixTimeMilliseconds() + (long)value["expires_in"]! * 1000, hasTg, hasMax, linkedEmail);
         auth.Save(session);return session;
     }
-    public async Task<(bool HasTelegram, bool HasMax)> CheckLinkedStatus() {
+    public async Task<(bool HasTelegram, bool HasMax, string? LinkedEmail)> CheckLinkedStatus() {
         var current = auth.Read();
-        if (current == null) return (false, false);
+        if (current == null) return (false, false, null);
         try {
             using var request = new HttpRequestMessage(HttpMethod.Get, endpoint + "/auth/v1/user");
             request.Headers.Add("apikey", key);
@@ -101,16 +102,86 @@ public sealed class DesktopSupabase: IDesktopRemote,IDisposable
                 var email = (string?)obj["email"] ?? current.Email;
                 var hasTg = email.StartsWith("tg_") || meta?["telegram_id"] != null || (bool?)meta?["tg_linked"] == true;
                 var hasMax = meta?["max_id"] != null || (bool?)meta?["max_linked"] == true;
-                var updated = current with { HasTelegram = hasTg, HasMax = hasMax };
+                var linkedEmail = (string?)meta?["linked_email"] ?? current.LinkedEmail;
+                var updated = current with { HasTelegram = hasTg, HasMax = hasMax, LinkedEmail = linkedEmail };
                 auth.Save(updated);
-                return (hasTg, hasMax);
+                return (hasTg, hasMax, linkedEmail);
             }
         } catch { }
-        return (current.HasTelegram || current.Email.StartsWith("tg_"), current.HasMax);
+        return (current.HasTelegram || current.Email.StartsWith("tg_"), current.HasMax, current.LinkedEmail);
+    }
+    public async Task LinkEmail(string newEmail, string newPassword) {
+        var session = auth.Read() ?? throw new InvalidOperationException("Пользователь не авторизован");
+        var cleanEmail = newEmail.Trim().ToLowerInvariant();
+        using var request = new HttpRequestMessage(HttpMethod.Put, endpoint + "/auth/v1/user");
+        request.Headers.Add("apikey", key);
+        request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", await Token());
+        var body = new JObject {
+            ["password"] = newPassword,
+            ["data"] = new JObject { ["linked_email"] = cleanEmail }
+        };
+        request.Content = new StringContent(body.ToString(Formatting.None), Encoding.UTF8, "application/json");
+        using var response = await http.SendAsync(request);
+        response.EnsureSuccessStatusCode();
+
+        using var req2 = new HttpRequestMessage(HttpMethod.Post, endpoint + "/rest/v1/telegram_auth_sessions");
+        req2.Headers.Add("apikey", key);
+        req2.Headers.Authorization = new AuthenticationHeaderValue("Bearer", key);
+        req2.Headers.Add("Prefer", "resolution=merge-duplicates");
+        var m = System.Text.RegularExpressions.Regex.Match(session.Email, @"^tg_(\d+)@");
+        long pilotId = m.Success ? long.Parse(m.Groups[1].Value) : 0;
+        var sessionObj = new JObject {
+            ["code"] = "email_" + cleanEmail,
+            ["telegram_id"] = pilotId,
+            ["first_name"] = cleanEmail,
+            ["username"] = "",
+            ["auth_email"] = session.Email,
+            ["auth_password"] = newPassword,
+            ["status"] = "confirmed"
+        };
+        req2.Content = new StringContent(sessionObj.ToString(Formatting.None), Encoding.UTF8, "application/json");
+        using var res2 = await http.SendAsync(req2);
+        res2.EnsureSuccessStatusCode();
+
+        auth.Save(session with { LinkedEmail = cleanEmail });
     }
     public async Task<bool> SignIn(string email,string password,bool register) {
-        var response=await Request(register?"/auth/v1/signup":"/auth/v1/token?grant_type=password",new JObject {["email"]=email.Trim(),["password"]=password});
-        if(response["access_token"]==null||response["access_token"]!.Type==JTokenType.Null)return false;Store(response);return true;
+        var cleanEmail = email.Trim().ToLowerInvariant();
+        if (!register) {
+            try {
+                var response = await Request("/auth/v1/token?grant_type=password", new JObject { ["email"] = cleanEmail, ["password"] = password });
+                if (response["access_token"] != null && response["access_token"]!.Type != JTokenType.Null) {
+                    Store(response);
+                    return true;
+                }
+            } catch (HttpRequestException) {
+                using var req = new HttpRequestMessage(HttpMethod.Get, endpoint + $"/rest/v1/telegram_auth_sessions?code=eq.email_{cleanEmail}&select=auth_email,auth_password");
+                req.Headers.Add("apikey", key);
+                req.Headers.Authorization = new AuthenticationHeaderValue("Bearer", key);
+                using var res = await http.SendAsync(req);
+                if (res.IsSuccessStatusCode) {
+                    var arr = JArray.Parse(await res.Content.ReadAsStringAsync());
+                    if (arr.Count > 0) {
+                        var row = (JObject)arr[0];
+                        var pass = (string?)row["auth_password"];
+                        var realMail = (string?)row["auth_email"];
+                        if (!string.IsNullOrEmpty(realMail) && pass == password) {
+                            var resp2 = await Request("/auth/v1/token?grant_type=password", new JObject { ["email"] = realMail, ["password"] = password });
+                            if (resp2["access_token"] != null && resp2["access_token"]!.Type != JTokenType.Null) {
+                                Store(resp2);
+                                return true;
+                            }
+                        }
+                    }
+                }
+                throw;
+            }
+            return false;
+        }
+        var regResp = await Request("/auth/v1/signup", new JObject { ["email"] = cleanEmail, ["password"] = password });
+        if (regResp["access_token"] == null || regResp["access_token"]!.Type == JTokenType.Null) return false;
+        Store(regResp);
+        return true;
     }
     public async Task CreateAuthSession(string code) {
         using var request = new HttpRequestMessage(HttpMethod.Post, endpoint + "/rest/v1/telegram_auth_sessions");

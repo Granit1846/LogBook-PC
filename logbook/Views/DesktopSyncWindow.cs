@@ -32,9 +32,11 @@ public sealed class DesktopSyncWindow: Window
     private readonly StackPanel badgesPanel = new() { Orientation = Orientation.Horizontal, Margin = new Thickness(0, 4, 0, 8) };
     private readonly Border tgBadge = CreateBadge("✅ Telegram", System.Windows.Media.Color.FromRgb(42, 171, 238));
     private readonly Border maxBadge = CreateBadge("✅ MAX", System.Windows.Media.Color.FromRgb(0, 119, 255));
+    private readonly Border emailBadge = CreateBadge("✅ Email", System.Windows.Media.Color.FromRgb(46, 125, 50));
     private readonly StackPanel linkPanel = new() { Orientation = Orientation.Horizontal, Margin = new Thickness(0, 4, 0, 8) };
     private Button linkMaxBtn = null!;
     private Button linkTgBtn = null!;
+    private Button linkEmailBtn = null!;
     private bool busy;
     private Button? wifi;
     private static Border CreateBadge(string text, System.Windows.Media.Color color) {
@@ -89,11 +91,14 @@ public sealed class DesktopSyncWindow: Window
         actions.Children.Add(sharedWarning);actions.Children.Add(sync);actions.Children.Add(logout);
         badgesPanel.Children.Add(tgBadge);
         badgesPanel.Children.Add(maxBadge);
+        badgesPanel.Children.Add(emailBadge);
         actions.Children.Add(badgesPanel);
         linkMaxBtn = Button("🔗 Связать с MAX", () => { LinkMessenger("max"); return Task.CompletedTask; });
         linkTgBtn = Button("🔗 Связать с Telegram", () => { LinkMessenger("telegram"); return Task.CompletedTask; });
+        linkEmailBtn = Button("📧 Привязать Email", async () => await LinkEmailDialog());
         linkPanel.Children.Add(linkMaxBtn);
         linkPanel.Children.Add(linkTgBtn);
+        linkPanel.Children.Add(linkEmailBtn);
         actions.Children.Add(linkPanel);
         personalSpace.Checked+=(_,_)=>Refresh();sharedSpace.Checked+=(_,_)=>Refresh();
         sync.Click+=async(_,_)=>await Operation(async()=> {
@@ -212,6 +217,55 @@ public sealed class DesktopSyncWindow: Window
         catch(Exception error) {status.Text=error is OperationCanceledException ? SyncText.T("Sync_2818a93db8") : error.Message;}
         finally {busy=false;if(wifi!=null)wifi.IsEnabled=true;login.IsEnabled=true;actions.IsEnabled=true;Refresh();}
     }
+    private async Task LinkEmailDialog() {
+        var dlg = new Window {
+            Title = "Привязать Email к аккаунту",
+            Width = 440, Height = 280,
+            WindowStartupLocation = WindowStartupLocation.CenterOwner,
+            Owner = this,
+            ResizeMode = ResizeMode.NoResize
+        };
+        dlg.SetResourceReference(BackgroundProperty, "WindowBackgroundBrush");
+        dlg.SetResourceReference(ForegroundProperty, "WindowForegroundBrush");
+        dlg.FontSize = 14;
+        var pnl = new StackPanel { Margin = new Thickness(20) };
+        dlg.Content = pnl;
+        pnl.Children.Add(new TextBlock { Text = "Привязка Email и пароля", FontWeight = FontWeights.Bold, FontSize = 16, Margin = new Thickness(0,0,0,8) });
+        pnl.Children.Add(new TextBlock { Text = "Укажите Email и пароль для входа без привязки к конкретному мессенджеру:", TextWrapping = TextWrapping.Wrap, Margin = new Thickness(0,0,0,12) });
+        pnl.Children.Add(new TextBlock { Text = "Email" });
+        var emailBox = new TextBox { Margin = new Thickness(0, 4, 0, 8) };
+        pnl.Children.Add(emailBox);
+        pnl.Children.Add(new TextBlock { Text = "Пароль (не менее 6 символов)" });
+        var passBox = new PasswordBox { Margin = new Thickness(0, 4, 0, 16) };
+        pnl.Children.Add(passBox);
+        var btnRow = new StackPanel { Orientation = Orientation.Horizontal, HorizontalAlignment = HorizontalAlignment.Right };
+        pnl.Children.Add(btnRow);
+        var cancel = new Button { Content = "Отмена", Padding = new Thickness(12, 6, 12, 6), Margin = new Thickness(0, 0, 8, 0) };
+        cancel.Click += (_, _) => dlg.Close();
+        var save = new Button { Content = "Привязать", Padding = new Thickness(16, 6, 16, 6) };
+        save.Click += async (_, _) => {
+            if (string.IsNullOrWhiteSpace(emailBox.Text) || passBox.Password.Length < 6) {
+                MessageBox.Show("Укажите корректный Email и пароль (не менее 6 символов).", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+            try {
+                save.IsEnabled = false;
+                using var client = Client();
+                await client.LinkEmail(emailBox.Text, passBox.Password);
+                dlg.Close();
+                status.Text = $"Email успешно привязан: {emailBox.Text.Trim()}";
+                Refresh();
+            } catch (Exception ex) {
+                MessageBox.Show(ex.Message, "Ошибка привязки Email", MessageBoxButton.OK, MessageBoxImage.Error);
+            } finally {
+                save.IsEnabled = true;
+            }
+        };
+        btnRow.Children.Add(cancel);
+        btnRow.Children.Add(save);
+        logbook.Helpers.DarkTitleBarHelper.Apply(dlg);
+        dlg.ShowDialog();
+    }
     private void Refresh() {
         var session=auth.Read();login.Visibility=session==null?Visibility.Visible:Visibility.Collapsed;actions.Visibility=session==null?Visibility.Collapsed:Visibility.Visible;
         sharedWarning.Visibility=sharedSpace.IsChecked==true?Visibility.Visible:Visibility.Collapsed;
@@ -221,15 +275,22 @@ public sealed class DesktopSyncWindow: Window
         if (session != null) {
             bool hasTg = session.HasTelegram || session.Email.StartsWith("tg_");
             bool hasMax = session.HasMax;
+            bool hasEmail = !string.IsNullOrEmpty(session.LinkedEmail) || !session.Email.StartsWith("tg_");
+            string mailName = !string.IsNullOrEmpty(session.LinkedEmail) ? session.LinkedEmail : session.Email;
+
             tgBadge.Visibility = hasTg ? Visibility.Visible : Visibility.Collapsed;
             maxBadge.Visibility = hasMax ? Visibility.Visible : Visibility.Collapsed;
-            badgesPanel.Visibility = (hasTg || hasMax) ? Visibility.Visible : Visibility.Collapsed;
-            if (hasTg && hasMax) {
+            if (emailBadge.Child is TextBlock tb) tb.Text = $"✅ {mailName}";
+            emailBadge.Visibility = hasEmail ? Visibility.Visible : Visibility.Collapsed;
+            badgesPanel.Visibility = (hasTg || hasMax || hasEmail) ? Visibility.Visible : Visibility.Collapsed;
+
+            if (hasTg && hasMax && hasEmail) {
                 linkPanel.Visibility = Visibility.Collapsed;
             } else {
                 linkPanel.Visibility = Visibility.Visible;
-                linkMaxBtn.Visibility = hasMax ? Visibility.Collapsed : Visibility.Visible;
                 linkTgBtn.Visibility = hasTg ? Visibility.Collapsed : Visibility.Visible;
+                linkMaxBtn.Visibility = hasMax ? Visibility.Collapsed : Visibility.Visible;
+                linkEmailBtn.Visibility = hasEmail ? Visibility.Collapsed : Visibility.Visible;
             }
         }
     }

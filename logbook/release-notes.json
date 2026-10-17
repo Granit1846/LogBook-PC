@@ -8,5 +8,7 @@
   "1.1.13": "Общее пространство хранит профили отдельно. При обмене все локальные профили публикуются в общий каталог, а пользователь выбирает, какие профили загрузить. Невыбранные локальные профили сохраняются.",
   "1.1.13.en": "The shared space stores profiles separately. Each exchange publishes all local profiles to the shared catalog, and the user chooses which profiles to download. Unselected local profiles are preserved.",
   "1.1.14": "Добавлена поддержка авторизации и связки аккаунтов через мессенджер MAX. Возможность беспарольного входа по коду через MAX и объединение данных с Telegram-профилем.",
-  "1.1.14.en": "Added support for authorization and account linking via MAX messenger. Passwordless code authentication and unified profile syncing between MAX and Telegram."
+  "1.1.14.en": "Added support for authorization and account linking via MAX messenger. Passwordless code authentication and unified profile syncing between MAX and Telegram.",
+  "1.1.15": "Добавлена возможность привязки Email и пароля к аккаунту после авторизации через любого бота (Telegram или MAX). Улучшена синхронизация и индикация подключенных сервисов.",
+  "1.1.15.en": "Added option to link Email and password to account after bot authorization (Telegram or MAX). Improved synchronization and service link badges."
 }
