@@ -158,14 +158,12 @@ public sealed class DesktopSyncWindow: Window
         });
     }
     private async Task MessengerAuth(string target) {
-        var code = "auth_" + Guid.NewGuid().ToString("N").Substring(0, 12);
-        var botUrl = target == "max"
-            ? $"https://max.ru/se14711712_bot?start={code}"
-            : $"https://t.me/my_logbook_app_bot?start={code}";
-
         await Operation(async () => {
             using var client = Client();
-            await client.CreateAuthSession(code);
+            var code = await client.StartBotAuth();
+            var botUrl = target == "max"
+                ? $"https://max.ru/se14711712_bot?start={code.Code}"
+                : $"https://t.me/my_logbook_app_bot?start={code.Code}";
             status.Text = target == "max"
                 ? "Ожидание подтверждения в боте MAX (@se14711712_bot)... Откройте мессенджер и нажмите «Запустить»."
                 : "Ожидание подтверждения в боте Telegram (@my_logbook_app_bot)... Откройте мессенджер и нажмите «Запустить».";
@@ -179,14 +177,8 @@ public sealed class DesktopSyncWindow: Window
 
             for (int i = 0; i < 80; i++) {
                 await Task.Delay(1500);
-                var confirmed = await client.CheckAuthSession(code);
-                if (confirmed != null && confirmed.Status == "confirmed" && !string.IsNullOrEmpty(confirmed.Email)) {
-                    await client.SignIn(confirmed.Email, confirmed.Password ?? "", false);
-                    _ = client.DeleteAuthSession(code);
-                    var name = !string.IsNullOrEmpty(confirmed.Username)
-                        ? $"{confirmed.FirstName} (@{confirmed.Username})"
-                        : confirmed.FirstName ?? (target == "max" ? "MAX" : "Telegram");
-                    status.Text = $"Вход через {(target == "max" ? "MAX" : "Telegram")} выполнен: {name}";
+                if (await client.PollBotAuth(code)) {
+                    status.Text = $"Вход через {(target == "max" ? "MAX" : "Telegram")} выполнен";
                     Refresh();
                     return;
                 }

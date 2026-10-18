@@ -21,7 +21,8 @@ public record DesktopCommit(bool Accepted,long Revision);
 public record DesktopConflict(string Local,string Remote,long Revision);
 public record DesktopSyncResult(string Message,DesktopConflict? Conflict=null,bool Downloaded=false,string Direction="Без изменений");
 public record SharedProfileInfo(string ProfileId,string Name,string BoardNumber,long Revision,long UpdatedAt);
-public record AuthSessionResult(string Status, string? Email, string? Password, string? FirstName, string? Username);
+/// <summary>Secret never leaves the app: it proves to the server that this computer started the bot login.</summary>
+public record BotAuthCode(string Code, string Secret);
 public interface IDesktopRemote {
     Task<DesktopRemote> Pull();
     Task<DesktopCommit> Commit(string change,long expected,string payload);
@@ -198,38 +199,22 @@ public sealed class DesktopSupabase: IDesktopRemote,IDisposable
         Store(regResp);
         return true;
     }
-    public async Task CreateAuthSession(string code) {
-        using var request = new HttpRequestMessage(HttpMethod.Post, endpoint + "/rest/v1/telegram_auth_sessions");
-        request.Headers.Add("apikey", key);
-        request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", key);
-        request.Headers.Add("Prefer", "return=minimal");
-        request.Content = new StringContent(new JObject { ["code"] = code, ["status"] = "pending" }.ToString(Formatting.None), Encoding.UTF8, "application/json");
-        using var response = await http.SendAsync(request);
-        response.EnsureSuccessStatusCode();
+    public async Task<BotAuthCode> StartBotAuth() {
+        var reply = await Request("/functions/v1/platform-auth", new JObject { ["action"] = "start_code" });
+        return new BotAuthCode((string)reply["code"]!, (string)reply["secret"]!);
     }
-    public async Task<AuthSessionResult?> CheckAuthSession(string code) {
-        using var request = new HttpRequestMessage(HttpMethod.Get, endpoint + $"/rest/v1/telegram_auth_sessions?code=eq.{code}&select=status,auth_email,auth_password,first_name,username");
-        request.Headers.Add("apikey", key);
-        request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", key);
-        using var response = await http.SendAsync(request);
-        if (!response.IsSuccessStatusCode) return null;
-        var text = await response.Content.ReadAsStringAsync();
-        var array = JArray.Parse(text);
-        if (array.Count == 0) return null;
-        var obj = (JObject)array[0];
-        return new AuthSessionResult(
-            (string?)obj["status"] ?? "pending",
-            (string?)obj["auth_email"],
-            (string?)obj["auth_password"],
-            (string?)obj["first_name"],
-            (string?)obj["username"]
-        );
-    }
-    public async Task DeleteAuthSession(string code) {
-        using var request = new HttpRequestMessage(HttpMethod.Delete, endpoint + $"/rest/v1/telegram_auth_sessions?code=eq.{code}");
-        request.Headers.Add("apikey", key);
-        request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", key);
-        using var response = await http.SendAsync(request);
+    /// <summary>True once the bot confirmed the code; the session is then stored. Unconfirmed codes expire after 10 minutes.</summary>
+    public async Task<bool> PollBotAuth(BotAuthCode code) {
+        JObject reply;
+        try {
+            reply = await Request("/functions/v1/platform-auth", new JObject { ["action"] = "poll_code", ["code"] = code.Code, ["secret"] = code.Secret });
+        } catch (HttpRequestException e) when (e.StatusCode == HttpStatusCode.BadRequest) {
+            throw new InvalidOperationException("Код входа не найден или истёк. Повторите попытку.");
+        }
+        var tokenHash = (string?)reply["tokenHash"];
+        if (string.IsNullOrEmpty(tokenHash)) return false;
+        Store(await Request("/auth/v1/verify", new JObject { ["token_hash"] = tokenHash, ["type"] = "email" }));
+        return true;
     }
     private async Task<string> Token(bool refresh=false) {
         var session=auth.Read()??throw new InvalidOperationException(SyncText.T("Sync_4eb58e1e56"));
