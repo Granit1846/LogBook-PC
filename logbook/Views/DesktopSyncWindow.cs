@@ -157,10 +157,10 @@ public sealed class DesktopSyncWindow: Window
             using var client=Client();status.Text=await client.SignIn(mail,secret,register)?SyncText.T("Sync_0127d2d21d"):SyncText.T("Sync_a8592f662c");
         });
     }
-    private async Task MessengerAuth(string target) {
+    private async Task MessengerAuth(string target, bool link = false) {
         await Operation(async () => {
             using var client = Client();
-            var code = await client.StartBotAuth();
+            var code = await client.StartBotAuth(link);
             var botUrl = target == "max"
                 ? $"https://max.ru/se14711712_bot?start={code.Code}"
                 : $"https://t.me/my_logbook_app_bot?start={code.Code}";
@@ -190,9 +190,10 @@ public sealed class DesktopSyncWindow: Window
         var session = auth.Read();
         if (session == null) return;
         var m = System.Text.RegularExpressions.Regex.Match(session.Email, @"^tg_(\d+)@telegram\.logbook$");
-        var pilotId = m.Success ? m.Groups[1].Value : "";
+        // An email account attaches the bot through a server-registered code; afterwards it opens the bot account.
+        if (!m.Success) { _ = MessengerAuth(target, link: true); return; }
         var token = Guid.NewGuid().ToString("N").Substring(0, 8);
-        var param = !string.IsNullOrEmpty(pilotId) ? $"link_{pilotId}_{token}" : $"auth_{token}";
+        var param = $"link_{m.Groups[1].Value}_{token}";
         var url = target == "max"
             ? $"https://max.ru/se14711712_bot?start={param}"
             : $"https://t.me/my_logbook_app_bot?start={param}";
@@ -270,22 +271,18 @@ public sealed class DesktopSyncWindow: Window
             bool hasEmail = !string.IsNullOrEmpty(session.LinkedEmail) || !session.Email.StartsWith("tg_");
             string mailName = !string.IsNullOrEmpty(session.LinkedEmail) ? session.LinkedEmail : session.Email;
 
-            bool allLinked = hasTg && hasMax && hasEmail;
-            if (allLinked) {
-                badgesPanel.Visibility = Visibility.Collapsed;
-                linkPanel.Visibility = Visibility.Collapsed;
-            } else {
-                tgBadge.Visibility = hasTg ? Visibility.Visible : Visibility.Collapsed;
-                maxBadge.Visibility = hasMax ? Visibility.Visible : Visibility.Collapsed;
-                if (emailBadge.Child is TextBlock tb) tb.Text = $"✅ {mailName}";
-                emailBadge.Visibility = hasEmail ? Visibility.Visible : Visibility.Collapsed;
-                badgesPanel.Visibility = (hasTg || hasMax || hasEmail) ? Visibility.Visible : Visibility.Collapsed;
+            tgBadge.Visibility = hasTg ? Visibility.Visible : Visibility.Collapsed;
+            maxBadge.Visibility = hasMax ? Visibility.Visible : Visibility.Collapsed;
+            if (emailBadge.Child is TextBlock tb) tb.Text = $"✅ {mailName}";
+            emailBadge.Visibility = hasEmail ? Visibility.Visible : Visibility.Collapsed;
+            badgesPanel.Visibility = (hasTg || hasMax || hasEmail) && !(hasTg && hasMax && hasEmail) ? Visibility.Visible : Visibility.Collapsed;
 
-                linkPanel.Visibility = Visibility.Visible;
-                linkTgBtn.Visibility = hasTg ? Visibility.Collapsed : Visibility.Visible;
-                linkMaxBtn.Visibility = hasMax ? Visibility.Collapsed : Visibility.Visible;
-                linkEmailBtn.Visibility = hasEmail ? Visibility.Collapsed : Visibility.Visible;
-            }
+            linkTgBtn.Visibility = hasTg ? Visibility.Collapsed : Visibility.Visible;
+            linkMaxBtn.Visibility = hasMax ? Visibility.Collapsed : Visibility.Visible;
+            // A bot account can always set a new email or password; an email account already is one.
+            linkEmailBtn.Visibility = session.Email.StartsWith("tg_") ? Visibility.Visible : Visibility.Collapsed;
+            linkEmailBtn.Content = hasEmail ? "📧 Изменить Email" : "📧 Привязать Email";
+            linkPanel.Visibility = Visibility.Visible;
         }
     }
 }

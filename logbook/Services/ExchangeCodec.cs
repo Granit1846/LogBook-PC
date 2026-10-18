@@ -421,7 +421,10 @@ public static class ExchangeCodec
                     if(field.Name is "id" or "profileId" or "dayId") {if(!Guid.TryParseExact(field.Value.ToString(),"D",out _))throw new InvalidDataException(SyncText.T("Sync_102b915c5e"));continue;}
                     var type=columns[field.Name]!["type"]!.ToString();
                     if(type=="INTEGER") {if(field.Value.Type!=JTokenType.Integer)throw new InvalidDataException(SyncText.T("Sync_ee92f6be54"));var n=field.Value.Value<long>();if(columns[field.Name]!["default"]!.Type==JTokenType.Integer && field.Name is not "sortOrder" and not "createdAt" and not "savedAt" and not "importedAt" and not "resourcesUpdatedAt" && (n<int.MinValue||n>int.MaxValue))throw new InvalidDataException(SyncText.T("Sync_2513b7838f"));}
-                    else if(type=="REAL") {if(field.Value.Type!=JTokenType.String)throw new InvalidDataException(SyncText.T("Sync_66fe7b0d0d"));_ = Number(field.Value.ToString());}
+                    else if(type=="REAL") {
+                        // Android accepts REAL as a JSON number, so payloads from other clients may carry one.
+                        if(field.Value.Type is JTokenType.Float or JTokenType.Integer)field.Value=field.Value.Value<decimal>().ToString("0.0############################",Inv);
+                        if(field.Value.Type!=JTokenType.String)throw new InvalidDataException(SyncText.T("Sync_66fe7b0d0d"));_ = Number(field.Value.ToString());}
                     else if(field.Value.Type!=JTokenType.String)throw new InvalidDataException(SyncText.T("Sync_6f7f71e403"));
                 }
                 if(table=="profiles") {

@@ -83,7 +83,8 @@ public sealed class DesktopSupabase: IDesktopRemote,IDisposable
         var email = (string)user["email"]!;
         var hasTg = email.StartsWith("tg_") || meta?["telegram_id"] != null || (bool?)meta?["tg_linked"] == true;
         var hasMax = meta?["max_id"] != null || (bool?)meta?["max_linked"] == true;
-        var linkedEmail = (string?)meta?["linked_email"];
+        // Only a server-made alias makes the email usable for login; user_metadata alone is editable by the client.
+        var linkedEmail = user["app_metadata"]?["email_alias_id"] != null ? (string?)meta?["linked_email"] : null;
         var session = new DesktopSession(endpoint, (string)user["id"]!, email, (string)value["access_token"]!, (string)value["refresh_token"]!, DateTimeOffset.UtcNow.ToUnixTimeMilliseconds() + (long)value["expires_in"]! * 1000, hasTg, hasMax, linkedEmail);
         auth.Save(session);return session;
     }
@@ -103,7 +104,7 @@ public sealed class DesktopSupabase: IDesktopRemote,IDisposable
                 var email = (string?)obj["email"] ?? current.Email;
                 var hasTg = email.StartsWith("tg_") || meta?["telegram_id"] != null || (bool?)meta?["tg_linked"] == true;
                 var hasMax = meta?["max_id"] != null || (bool?)meta?["max_linked"] == true;
-                var linkedEmail = (string?)meta?["linked_email"] ?? current.LinkedEmail;
+                var linkedEmail = obj["app_metadata"]?["email_alias_id"] != null ? (string?)meta?["linked_email"] : null;
                 var updated = current with { HasTelegram = hasTg, HasMax = hasMax, LinkedEmail = linkedEmail };
                 auth.Save(updated);
                 return (hasTg, hasMax, linkedEmail);
@@ -111,96 +112,42 @@ public sealed class DesktopSupabase: IDesktopRemote,IDisposable
         } catch { }
         return (current.HasTelegram || current.Email.StartsWith("tg_"), current.HasMax, current.LinkedEmail);
     }
-    private static string BotPassword(long telegramId) {
-        using var md5 = System.Security.Cryptography.MD5.Create();
-        var digest = md5.ComputeHash(Encoding.UTF8.GetBytes($"salt_logbook_2026_{telegramId}"));
-        return "TgLogBook_" + string.Concat(digest.Select(b => b.ToString("x2")));
-    }
+    /// <summary>The password goes only to Supabase Auth, which keeps it on a separate email alias of the bot account.</summary>
     public async Task LinkEmail(string newEmail, string newPassword) {
-        var session = auth.Read() ?? throw new InvalidOperationException("Пользователь не авторизован");
         var cleanEmail = newEmail.Trim().ToLowerInvariant();
-
-        using var request = new HttpRequestMessage(HttpMethod.Put, endpoint + "/auth/v1/user");
-        request.Headers.Add("apikey", key);
-        request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", await Token());
-        var body = new JObject {
-            ["data"] = new JObject { ["linked_email"] = cleanEmail }
-        };
-        request.Content = new StringContent(body.ToString(Formatting.None), Encoding.UTF8, "application/json");
-        using var response = await http.SendAsync(request);
-        response.EnsureSuccessStatusCode();
-
-        using var req2 = new HttpRequestMessage(HttpMethod.Post, endpoint + "/rest/v1/telegram_auth_sessions");
-        req2.Headers.Add("apikey", key);
-        req2.Headers.Authorization = new AuthenticationHeaderValue("Bearer", key);
-        req2.Headers.Add("Prefer", "resolution=merge-duplicates");
-        var m = System.Text.RegularExpressions.Regex.Match(session.Email, @"^tg_(\d+)@");
-        long pilotId = m.Success ? long.Parse(m.Groups[1].Value) : 0;
-        var sessionObj = new JObject {
-            ["code"] = "email_" + cleanEmail,
-            ["telegram_id"] = pilotId,
-            ["first_name"] = cleanEmail,
-            ["username"] = "",
-            ["auth_email"] = session.Email,
-            ["auth_password"] = newPassword,
-            ["status"] = "confirmed"
-        };
-        req2.Content = new StringContent(sessionObj.ToString(Formatting.None), Encoding.UTF8, "application/json");
-        using var res2 = await http.SendAsync(req2);
-        res2.EnsureSuccessStatusCode();
-
-        auth.Save(session with { LinkedEmail = cleanEmail });
+        try {
+            await Request("/functions/v1/platform-auth", new JObject { ["action"] = "link_email", ["email"] = cleanEmail, ["password"] = newPassword }, await Token());
+        } catch (HttpRequestException e) when (e.StatusCode == HttpStatusCode.Conflict) {
+            throw new InvalidOperationException("Этот email уже занят другим аккаунтом");
+        } catch (HttpRequestException e) when (e.StatusCode == HttpStatusCode.BadRequest) {
+            throw new InvalidOperationException("Проверьте email; пароль должен содержать от 6 до 72 символов. Email привязывается только к аккаунту Telegram или MAX");
+        }
+        if (auth.Read() is { } session) auth.Save(session with { LinkedEmail = cleanEmail });
     }
     public async Task<bool> SignIn(string email,string password,bool register) {
         var cleanEmail = email.Trim().ToLowerInvariant();
         if (!register) {
-            // First check if this email is an alias for a bot account (Telegram / MAX)
-            try {
-                using var req = new HttpRequestMessage(HttpMethod.Get, endpoint + $"/rest/v1/telegram_auth_sessions?code=eq.email_{cleanEmail}&select=telegram_id,auth_email,auth_password");
-                req.Headers.Add("apikey", key);
-                req.Headers.Authorization = new AuthenticationHeaderValue("Bearer", key);
-                using var res = await http.SendAsync(req);
-                if (res.IsSuccessStatusCode) {
-                    var arr = JArray.Parse(await res.Content.ReadAsStringAsync());
-                    if (arr.Count > 0) {
-                        var row = (JObject)arr[0];
-                        var pass = (string?)row["auth_password"];
-                        var realMail = (string?)row["auth_email"];
-                        var tgId = (long?)row["telegram_id"] ?? 0;
-                        if (!string.IsNullOrEmpty(realMail) && pass == password) {
-                            var botPw = tgId > 0 ? BotPassword(tgId) : password;
-                            JObject? resp2 = null;
-                            try {
-                                resp2 = await Request("/auth/v1/token?grant_type=password", new JObject { ["email"] = realMail, ["password"] = botPw });
-                            } catch {
-                                resp2 = await Request("/auth/v1/token?grant_type=password", new JObject { ["email"] = realMail, ["password"] = password });
-                            }
-                            if (resp2?["access_token"] != null && resp2["access_token"]!.Type != JTokenType.Null) {
-                                Store(resp2);
-                                return true;
-                            }
-                        } else if (!string.IsNullOrEmpty(realMail) && pass != password) {
-                            throw new InvalidOperationException("Неверный пароль");
-                        }
-                    }
-                }
-            } catch (InvalidOperationException) { throw; }
-            catch { }
-
             var response = await Request("/auth/v1/token?grant_type=password", new JObject { ["email"] = cleanEmail, ["password"] = password });
-            if (response["access_token"] != null && response["access_token"]!.Type != JTokenType.Null) {
-                Store(response);
-                return true;
+            if (response["access_token"] == null || response["access_token"]!.Type == JTokenType.Null) return false;
+            if (response["user"]?["app_metadata"]?["alias_of"] == null) { Store(response); return true; }
+            // Email linked to a Telegram/MAX account: exchange the alias session for that account.
+            JObject reply;
+            try {
+                reply = await Request("/functions/v1/platform-auth", new JObject { ["action"] = "alias_session" }, (string)response["access_token"]!);
+            } catch (HttpRequestException e) when (e.StatusCode == HttpStatusCode.BadRequest) {
+                throw new InvalidOperationException("Этот email больше не привязан к аккаунту. Войдите через бота и привяжите email заново");
             }
-            return false;
+            Store(await Request("/auth/v1/verify", new JObject { ["token_hash"] = (string)reply["tokenHash"]!, ["type"] = "email" }));
+            return true;
         }
         var regResp = await Request("/auth/v1/signup", new JObject { ["email"] = cleanEmail, ["password"] = password });
         if (regResp["access_token"] == null || regResp["access_token"]!.Type == JTokenType.Null) return false;
         Store(regResp);
         return true;
     }
-    public async Task<BotAuthCode> StartBotAuth() {
-        var reply = await Request("/functions/v1/platform-auth", new JObject { ["action"] = "start_code" });
+    /// <summary><paramref name="link"/>: the signed-in email account becomes the email login of the bot account once the bot confirms.</summary>
+    public async Task<BotAuthCode> StartBotAuth(bool link = false) {
+        var reply = await Request("/functions/v1/platform-auth", new JObject { ["action"] = "start_code", ["link"] = link }, link ? await Token() : null);
         return new BotAuthCode((string)reply["code"]!, (string)reply["secret"]!);
     }
     /// <summary>True once the bot confirmed the code; the session is then stored. Unconfirmed codes expire after 10 minutes.</summary>
