@@ -12,5 +12,7 @@
   "1.1.15": "Добавлена возможность привязки Email и пароля к аккаунту после авторизации через любого бота (Telegram или MAX). Улучшена синхронизация и индикация подключенных сервисов.",
   "1.1.15.en": "Added option to link Email and password to account after bot authorization (Telegram or MAX). Improved synchronization and service link badges.",
   "1.1.16": "Исправлена авторизация через Telegram и MAX, восстановлен доступ по привязанному Email с отображением статуса всех сервисов, скрытие значков при полной привязке всех способов.",
-  "1.1.16.en": "Fixed Telegram and MAX bot authorization, unified Email login with full status of linked services, auto-hide badges when all accounts are connected."
+  "1.1.16.en": "Fixed Telegram and MAX bot authorization, unified Email login with full status of linked services, auto-hide badges when all accounts are connected.",
+  "1.1.17": "Привязка Email переделана: пароль хранится только в Supabase Auth, вход по Email открывает тот же аккаунт, что и вход через бота. К аккаунту, созданному по Email, можно привязать Telegram или MAX. Email и пароль можно сменить в любой момент. Синхронизация больше не прерывается из-за дробных значений, записанных другими устройствами числом.",
+  "1.1.17.en": "Email linking reworked: the password is kept only by Supabase Auth, and Email login opens the same account as bot login. Telegram or MAX can be linked to an account created with Email. Email and password can be changed at any time. Synchronization no longer stops on decimal values written as numbers by other devices."
 }
